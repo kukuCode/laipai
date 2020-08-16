@@ -41,27 +41,32 @@
 					<view class="rf-screen-top">
 						<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
 							<text>{{selectedName}}</text>
-							<text class="iconfont" :class="selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+							<text class="iconfont" :class="tabIndex==0 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
 						</view>
 						<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
 							区域
+							<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#444'}"></text>
 						</view>
-						<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+						<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
 							状态
+							<text class="iconfont" :class="tabIndex ==2 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==2? themeColor.color:'#444'}"></text>
 						</view>
-						<view class="rf-top-item" @tap="screen" data-index="2">
+						<view class="rf-top-item" :class="[tabIndex == 3?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
 							类型
+							<text class="iconfont" :class="tabIndex ==3 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==3? themeColor.color:'#444'}"></text>
 						</view>
-						<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="3">
+						<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="4">
 							<text>筛选</text>
 							<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
 						</view>
 						<!--下拉选择列表--综合-->
-						<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'upx'}">
-							<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in priceDropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
+						<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'px'}">
+							<scroll-view scroll-y @touchmove.stop.prevent style="height: 90%;position: absolute;left: 0px;overflow: hidden;">
+							<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
 								<text class="rf-ml rf-middle">{{item.name}}</text>
 								<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
 							</view>
+							</scroll-view>
 						</view>
 						<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 						<!--下拉选择列表--综合-->
@@ -79,6 +84,8 @@
 					</view>
 				
 				<!-- 商品列表 -->
+				<!-- <z-filter :ref="'slFilter'" :topFixed="true" :isTransNav="true" :navHeight="50" :menuList="menuList"
+		 			@result="result"></z-filter> -->
 				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 			</view>
 			<view v-else class="index-cate-product-list">
@@ -120,7 +127,8 @@ import {
 import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
-import {commodityList} from "@/Json.js"
+import {commodityList, addressList, menuList} from "@/Json.js"
+// import zFilter from '@/components/z-filter/z-filter.vue';
 
 import { mapMutations } from 'vuex';
 export default {
@@ -132,10 +140,12 @@ export default {
 		// rfSwiperSlide,
 		zHeaderSearch,
 		zFloorIndex,
-		zProductList
+		zProductList,
+		// zFilter
 	},
 	data() {
 		return {
+			menuList:menuList,
 			hotProductList: [], // 热门商品列表
 			newProductList: [], // 新品上市商品列表
 			productCateList: [], // 商品栏目
@@ -163,6 +173,18 @@ export default {
 
 			selectedName:'价格',
 			selectH: 0,
+			tabIndex: 0,
+			dropdownList:[],
+			paimaiState:[{
+				name: "即将开始",
+				param: {v:0}
+			},{
+				name: "正在进行",
+				param: {v:1}
+			},{
+				name: "已成交",
+				param: {v:2}
+			}],
 			priceDropdownList:[{
 					name: "综合",
 					selected: true,
@@ -286,38 +308,109 @@ export default {
 	methods: {
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
+			
 			if (index === 0) {
-				this.showDropdownList();
-			} else if (index === 1) {
-				let params = {}
-				if (this.tabIndex === 1) {
+				
+				if(this.tabIndex==0 && this.selectH != 0){
+					this.selectH = 0;
 					this.tabIndex = null;
-					params.total_sales = 'asc';
 				} else {
-					this.tabIndex = 1;
-					params.total_sales = 'desc';
+					this.tabIndex = index
+					this.selectH = 123;
+					this.dropdownList = this.priceDropdownList;
 				}
-				this.page = 1;
-				// this.productList = [];
-				this.loading = true;
-				// this.productParams = params;
-				// this.getProductList();
+			} else if (index === 1) {
+				// this.tabIndex = index
+				this.selectH = 200
+				let params = {}
+				if (this.tabIndex == 1) {
+					this.tabIndex = null;
+					this.selectH = 0;
+					// this.showDropdownList()
+				} else {
+					this.dropdownList = addressList;
+					this.tabIndex = index
+				}
 			} else if (index === 2) {
+				if (this.tabIndex === 2) {
+					this.tabIndex = null;
+					this.selectH = 0
+				} else {
+					this.tabIndex = 2;
+					this.selectH = 150
+					this.dropdownList = this.paimaiState;
+				}
 				// this.isList = !this.isList
 			} else if (index === 3) {
-				if (this.productCateList.length === 0) {
-					// this.getProductCate();
+				if (this.tabIndex === 3) {
+					this.tabIndex = null;
+					this.selectH = 0
+				} else {
+					this.tabIndex = 3;
+					this.selectH = 240
+					this.dropdownList = this.appCenterList;
 				}
-				if (this.brandList.length === 0) {
-					// this.getBrandList();
-				}
-				// this.drawer = true;
+			} else if(index === 4){
+				// 这里不是下拉选择了,,待优化
 			}
 		},
+		hideDropdownList(){
+			this.selectH = 0;
+			this.tabIndex = null;
+		},
+		dropdownItem(e) {
+			let index = parseInt(e.currentTarget.dataset.index, 10);
+			let arr = this.dropdownList;
+			for (let i = 0; i < arr.length; i++) {
+				if (i === index) {
+					arr[i].selected = true;
+				} else {
+					arr[i].selected = false;
+				}
+			}
+			this.dropdownList = arr;
+			switch (index) {
+				case 0:
+					this.selectedName = index === 0 ? '综合' : index === 1 ? '价格升序' : '价格降序';
+				break;
+				case 1:
+				
+				break;
+				case 2:
+				
+				break;
+				case 3:
+				
+				break;
+			
+				default:
+					break;
+			}
+
+			
+			this.selectH = 0;
+			this.page = 1;
+			// this.productList = [];
+			this.loading = true;
+			// this.productParams = this.dropdownList[index].param;
+			setTimeout(() => {
+				this.loading = false
+			}, 2e3);
+			// this.getProductList();
+		},
+		toggleDropdownShow(e){
+			let index = parseInt(e.currentTarget.dataset.index, 10);
+			if(this.selectH == 0){
+				this.showDropdownList()
+			} else {
+				this.selectH = 0;
+			}
+
+		},
 		showDropdownList() {
-				this.selectH = 246;
-				this.tabIndex = 0;
-			},
+			this.selectH = 150;
+			// this.tabIndex = 0;
+		},
 		// 顶部tab点击
 		tabClick(index, id) {
 			this.currentCate = id;
@@ -593,7 +686,6 @@ page {
 				align-items: center;
 				justify-content: center;
 				font-size: $font-base;
-				font-weight: 600;
 				.iconfont {
 					font-size: $font-lg + 4upx;
 					font-weight: 600;
