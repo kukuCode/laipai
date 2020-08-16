@@ -237,14 +237,7 @@ export default {
 						provider: provider,
 						success: (infoRes)=>{
 							debugger;
-							let params = {};
-								authApi = mpWechatLogin;
-								params = { ...infoRes, ...params };
-								params.code = loginRes.code;
-							this.thirdPartyAuthLogin(authApi, params);
-
-
-								
+							
 							console.log('用户信息：' + JSON.stringify(infoRes.userInfo));
 							let userInfo = {
 									nickname: infoRes.userInfo.nickName,
@@ -256,6 +249,14 @@ export default {
 								}
 
 							this.userInfo = userInfo;
+
+							debugger;
+							// !调用后台接口......
+							let params = {};
+							let authApi = mpWechatLogin;
+								params = { ...infoRes, ...params };
+								params.code = loginRes.code;
+							this.thirdPartyAuthLogin(authApi, params);
 
 						/* 	uni.setStorage({
 								key: 'UserInfo',
@@ -279,6 +280,7 @@ export default {
 		},
 
 		thirdPartyAuthLogin(authApi, params = {}) {
+			if(!authApi) return;
 			const _this = this;
 			_this.$http
 				.post(authApi, params)

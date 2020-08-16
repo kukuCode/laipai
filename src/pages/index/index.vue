@@ -215,29 +215,6 @@ export default {
 		// this.setCartNum(uni.getStorageSync('cartNum'));
 	},
 	onLoad() {
-		// 获取高度顶部菜单高/宽
-		let obj = {};
-		// #ifdef MP-WEIXIN
-		obj = wx.getMenuButtonBoundingClientRect();
-		// #endif
-		// #ifdef MP-BAIDU
-		obj = swan.getMenuButtonBoundingClientRect();
-		// #endif
-		// #ifdef MP-ALIPAY
-		my.hideAddToDesktopMenu();
-		// #endif
-		uni.getSystemInfo({
-			success: (res) => {
-				this.width = obj.left || res.windowWidth;
-				this.height = obj.top ? (obj.top + obj.height + 8) : (res.statusBarHeight + 44);
-				this.inputTop = obj.top ? (obj.top + (obj.height - 30) / 2) : (res.statusBarHeight + 7);
-				this.arrowTop = obj.top ? (obj.top + (obj.height - 32) / 2) : (res.statusBarHeight + 6);
-				this.searchKey = options.searchKey || "";
-				//略小，避免误差带来的影响
-				this.dropScreenH = this.height * 750 / res.windowWidth + 186;
-				this.drawerH = res.windowHeight - uni.upx2px(100) - this.height
-			}
-		});
 		// 初始化数据
 		this.initData();
 	},
@@ -411,16 +388,14 @@ export default {
 			this.selectH = 150;
 			// this.tabIndex = 0;
 		},
-		// 顶部tab点击
-		tabClick(index, id) {
-			this.currentCate = id;
-			this.tabCurrentIndex = index;
-			if (id === 0) return;
-			this.loading = true;
-			this.page = 1;
-			this.productLoading = true;
-			this.categoryProductList = [];
-			this.getProductList(id);
+		doSearch(){
+			if(this.keyword){
+				this.loading = true;
+				console.log("keyword=",this.keyword);
+				setTimeout(() => {
+					this.loading = false;
+				}, 2e3);
+			}
 		},
 		getCommodityList(){
 			// 请求服务加载更多
