@@ -275,6 +275,7 @@ export default {
 	// 下拉刷新
 	onPullDownRefresh() {
 		this.getIndexList('refresh');
+
 	},
 	// 加载更多
 	onReachBottom() {
@@ -336,6 +337,7 @@ export default {
 			this.tabIndex = null;
 		},
 		dropdownItem(e) {
+			this.tabIndex = null;
 			let index = parseInt(e.currentTarget.dataset.index, 10);
 			let arr = this.dropdownList;
 			for (let i = 0; i < arr.length; i++) {
@@ -478,6 +480,7 @@ export default {
 				setTimeout(() => {
 					if (type === 'refresh') {
 						this.page = 1;
+						this.loadingType = 'more';
 						uni.stopPullDownRefresh();
 					}
 					this.commodityList = commodityList

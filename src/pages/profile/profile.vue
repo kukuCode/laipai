@@ -80,6 +80,9 @@
 					</view>
 				</view>
 			</view>
+			<view class="log-out-btn"  @click="toLogout" v-if="hasLogin">
+				<text :class="['text-'+themeColor.name]">退出登录</text>
+			</view>
 		</view>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -93,7 +96,7 @@ import { footPrintList, memberInfo, notifyUnRreadCount } from '@/api/userInfo';
 import { mpWechatLogin} from '@/api/login';
 
 // import listCell from '@/components/rf-list-cell';
-import { mapMutations } from 'vuex';
+// import { mapMutations } from 'vuex';
 import rfBadge from '@/components/rf-badge/rf-badge';
 import $mAssetsPath from '@/config/assets.config';
 let startY = 0, moveY = 0, pageAtTop = true;
@@ -115,7 +118,7 @@ export default {
 			moving: false,
 			userInfo: {
 				// 用户信息
-				promoter: null // 分销商信息
+				promoter: null
 			},
 			footPrintList: [], // 足迹列表
 			loading: true,
@@ -169,7 +172,6 @@ export default {
 			this.$mHelper.handleAppShare(url, this.appName, `欢迎来到${this.appName}`, shareImg);
 			// #endif
 		},
-		...mapMutations(['login']),
 		// 数据初始化
 		async initData() {
 			this.hasLogin = this.$mStore.getters.hasLogin;
@@ -217,13 +219,13 @@ export default {
 				this.$mRouter.push({ route });
 			} else if (!this.hasLogin) {
 				// uni.removeStorageSync('backToPage');
-				// this.$mRouter.push({ route: '/pages/public/logintype' });
-				this.wixinLogin('weixin')
+				this.$mRouter.push({ route: '/pages/public/login' });
+				// this.weixinLogin('weixin')
 			} else {
 				this.$mRouter.push({ route });
 			}
 		},
-		wixinLogin(provider = 'weixin'){
+		weixinLogin(provider = 'weixin'){
 			/*  #ifdef MP-WEIXIN */
 			uni.showLoading();
 			uni.login({
@@ -328,6 +330,22 @@ export default {
 					}
 				}).catch(() => {
 				_this.btnLoading = false;
+			});
+		},
+		toLogout(){
+			uni.showModal({
+				content: '确定要退出登录么',
+				success: (e)=>{
+					if(e.confirm){
+						// this.logout();
+						this.$mStore.commit('logout');
+						setTimeout(()=>{
+							this.$mRouter.reLaunch({
+									route: '/pages/profile/profile'
+								});
+						}, 200)
+					}
+				}
 			});
 		},
 		
@@ -518,6 +536,15 @@ page {
 			}
 		}
 	}
+}
+.log-out-btn{
+	text-align: center;
+	margin-top: 40upx;
+	background: #fff;    
+	align-items: baseline;
+    padding: 10px 15px;
+    // line-height: 30px;
+	
 }
 %flex-center {
 	display: flex;

@@ -84,7 +84,7 @@ export default {
 	data() {
 		return {
 			active: false,
-			isFocus: true,
+			isFocus: false,
 			inputVal: '',
 			searchName: '取消',
 			isDelShow: false
