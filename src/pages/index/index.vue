@@ -34,10 +34,8 @@
 			<view v-if="commodityList.length>0" style="margin-top:16upx;" class="commodity-wrapper">
 				<!-- 过滤条件 -->
 				<!-- <view class="rf-header-screen" :style="{top:height+'px'}" :class="{isFixed:isFixed}"> -->
+					<view v-if="false">
 				<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
-					<view class="">
-
-					</view>
 					<view class="rf-screen-top">
 						<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
 							<text>{{selectedName}}</text>
@@ -72,20 +70,20 @@
 						<!--下拉选择列表--综合-->
 					</view>
 				</view>
-					<view :class="{'fixed-show':isFixed}">
-					</view>
-					<view class="rf-screen-bottom">
-						<!-- <block v-for="(item,index) in attrArr" :key="index">
-							<view class="rf-bottom-item rf-icon-ml" :class="[item.isActive ? `bg-${themeColor.name} rf-btmItem-active` : 'rf-btmItem-normal',attrIndex==index?'rf-btmItem-tap':'']" :data-index="index" @tap="btnDropChange">
-								<view class="rf-bottom-text" :class="[attrIndex==index?'rf-active':'']">{{item.isActive?item.selectedName:item.name}}</view>
-								<text class="iconfont" :class="attrIndex==index?'iconshang':'iconxia'" :size="14" :color="attrIndex==index || item.isActive?'$base-color':'#444'" rf-icon-class="rf-ml" v-if="item.list.length>0"></text>
-							</view>
-						</block> -->
-					</view>
-				
+				<view :class="{'fixed-show':isFixed}"></view>
+				<view class="rf-screen-bottom">
+					<!-- <block v-for="(item,index) in attrArr" :key="index">
+						<view class="rf-bottom-item rf-icon-ml" :class="[item.isActive ? `bg-${themeColor.name} rf-btmItem-active` : 'rf-btmItem-normal',attrIndex==index?'rf-btmItem-tap':'']" :data-index="index" @tap="btnDropChange">
+							<view class="rf-bottom-text" :class="[attrIndex==index?'rf-active':'']">{{item.isActive?item.selectedName:item.name}}</view>
+							<text class="iconfont" :class="attrIndex==index?'iconshang':'iconxia'" :size="14" :color="attrIndex==index || item.isActive?'$base-color':'#444'" rf-icon-class="rf-ml" v-if="item.list.length>0"></text>
+						</view>
+					</block> -->
+				</view>
+
+				</view>
 				<!-- 商品列表 -->
-				<!-- <z-filter :ref="'slFilter'" :topFixed="true" :isTransNav="true" :navHeight="50" :menuList="menuList"
-		 			@result="result"></z-filter> -->
+				<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown>
+				<view :class="{'fixed-show':isFixed}"></view>
 				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 			</view>
 			<view v-else class="index-cate-product-list">
@@ -127,8 +125,8 @@ import {
 import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
-import {commodityList, addressList, menuList} from "@/Json.js"
-// import zFilter from '@/components/z-filter/z-filter.vue';
+import {commodityList, addressList, menuList, filterDataList} from "@/Json.js"
+import zFilterDropdown from '@/components/z-filter-dropdown';
 
 import { mapMutations } from 'vuex';
 export default {
@@ -141,7 +139,7 @@ export default {
 		zHeaderSearch,
 		zFloorIndex,
 		zProductList,
-		// zFilter
+		zFilterDropdown
 	},
 	data() {
 		return {
@@ -174,6 +172,10 @@ export default {
 			selectedName:'价格',
 			selectH: 0,
 			tabIndex: 0,
+			//  过滤数据BEBIN
+			filterData: filterDataList,
+			defaultSelected:[],
+			// 过滤数据END
 			dropdownList:[],
 			paimaiState:[{
 				name: "即将开始",
@@ -284,6 +286,12 @@ export default {
 		this.getCommodityList()
 	},
 	methods: {
+		handleConfirm(e){
+			debugger;
+			// this.indexArr = e.index;
+			// this.valueArr = e.value;
+			
+		},
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
 			
@@ -577,6 +585,17 @@ page {
 		}
 	}
 }
+.zd-filter-wrapper{
+// .z-filter-dowpdown {
+/* 	&.is-fixed{
+		top:100upx !important;
+		z-index: 9;
+		position: fixed;
+		left:0;
+        right:0;
+	} */
+
+}
 
 // 商品栏
 .commodity-wrapper{
@@ -585,7 +604,7 @@ page {
 			width: 100%;
 			background: $color-white;
 			&.is-fixed{
-				top:100upx;
+				top:100upx !important;
 				z-index: 9;
 				position: fixed;
 			}
