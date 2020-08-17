@@ -383,6 +383,11 @@ export const filterDataList = [{
     ]
 },
 {
+    "name":'类型',
+    "type": 'hierarchy',
+    "submenu": []
+},
+{
     "name":'筛选',
     "type": 'radio',
     "submenu": [{

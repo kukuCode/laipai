@@ -34,7 +34,7 @@
 			<view v-if="commodityList.length>0" style="margin-top:16upx;" class="commodity-wrapper">
 				<!-- 过滤条件 -->
 				<!-- <view class="rf-header-screen" :style="{top:height+'px'}" :class="{isFixed:isFixed}"> -->
-					<view v-if="false">
+					<view >
 						<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
 							<view class="rf-screen-top">
 								<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
@@ -75,7 +75,7 @@
 				<!-- 商品列表 -->
 				<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown>
 				<view :class="{'fixed-show':isFixed}"></view>
-				
+
 				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 			</view>
 			<view v-else class="index-cate-product-list">
@@ -214,6 +214,8 @@ export default {
 		// 填充区域模拟数据
 		this.filterData[0].submenu = this.priceDropdownList
 		this.filterData[1].submenu = addressList
+		this.filterData[3].submenu = this.appCenterList
+
 	},
 	mounted(){
 		/* const query = uni.createSelectorQuery().in(this);
