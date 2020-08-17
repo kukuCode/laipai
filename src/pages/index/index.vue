@@ -25,8 +25,8 @@
 					</view>
 				</view>
 			</view>
-		
-			
+
+
 		</block>
 
 		<!-- 商品栏目 -->
@@ -35,55 +35,47 @@
 				<!-- 过滤条件 -->
 				<!-- <view class="rf-header-screen" :style="{top:height+'px'}" :class="{isFixed:isFixed}"> -->
 					<view v-if="false">
-				<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
-					<view class="rf-screen-top">
-						<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
-							<text>{{selectedName}}</text>
-							<text class="iconfont" :class="tabIndex==0 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
-						</view>
-						<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
-							区域
-							<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#444'}"></text>
-						</view>
-						<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
-							状态
-							<text class="iconfont" :class="tabIndex ==2 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==2? themeColor.color:'#444'}"></text>
-						</view>
-						<view class="rf-top-item" :class="[tabIndex == 3?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
-							类型
-							<text class="iconfont" :class="tabIndex ==3 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==3? themeColor.color:'#444'}"></text>
-						</view>
-						<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="4">
-							<text>筛选</text>
-							<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
-						</view>
-						<!--下拉选择列表--综合-->
-						<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'px'}">
-							<scroll-view scroll-y @touchmove.stop.prevent style="height: 90%;position: absolute;left: 0px;overflow: hidden;">
-							<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
-								<text class="rf-ml rf-middle">{{item.name}}</text>
-								<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+						<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
+							<view class="rf-screen-top">
+								<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
+									<text>{{selectedName}}</text>
+									<text class="iconfont" :class="tabIndex==0 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+								</view>
+								<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+									区域
+									<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#444'}"></text>
+								</view>
+								<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
+									状态
+									<text class="iconfont" :class="tabIndex ==2 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==2? themeColor.color:'#444'}"></text>
+								</view>
+								<view class="rf-top-item" :class="[tabIndex == 3?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
+									类型
+									<text class="iconfont" :class="tabIndex ==3 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==3? themeColor.color:'#444'}"></text>
+								</view>
+								<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="4">
+									<text>筛选</text>
+									<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
+								</view>
+								<!--下拉选择列表--综合-->
+								<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'px'}">
+									<scroll-view scroll-y @touchmove.stop.prevent style="height: 90%;position: absolute;left: 0px;overflow: hidden;">
+									<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
+										<text class="rf-ml rf-middle">{{item.name}}</text>
+										<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+									</view>
+									</scroll-view>
+								</view>
+								<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
+								<!--下拉选择列表--综合-->
 							</view>
-							</scroll-view>
 						</view>
-						<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
-						<!--下拉选择列表--综合-->
-					</view>
-				</view>
-				<view :class="{'fixed-show':isFixed}"></view>
-				<view class="rf-screen-bottom">
-					<!-- <block v-for="(item,index) in attrArr" :key="index">
-						<view class="rf-bottom-item rf-icon-ml" :class="[item.isActive ? `bg-${themeColor.name} rf-btmItem-active` : 'rf-btmItem-normal',attrIndex==index?'rf-btmItem-tap':'']" :data-index="index" @tap="btnDropChange">
-							<view class="rf-bottom-text" :class="[attrIndex==index?'rf-active':'']">{{item.isActive?item.selectedName:item.name}}</view>
-							<text class="iconfont" :class="attrIndex==index?'iconshang':'iconxia'" :size="14" :color="attrIndex==index || item.isActive?'$base-color':'#444'" rf-icon-class="rf-ml" v-if="item.list.length>0"></text>
-						</view>
-					</block> -->
-				</view>
-
+					<view :class="{'fixed-show':isFixed}"></view>
 				</view>
 				<!-- 商品列表 -->
 				<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown>
 				<view :class="{'fixed-show':isFixed}"></view>
+				
 				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 			</view>
 			<view v-else class="index-cate-product-list">
@@ -174,7 +166,7 @@ export default {
 			tabIndex: 0,
 			//  过滤数据BEBIN
 			filterData: filterDataList,
-			defaultSelected:[],
+			defaultSelected: [],
 			// 过滤数据END
 			dropdownList:[],
 			paimaiState:[{
@@ -219,6 +211,9 @@ export default {
 	onLoad() {
 		// 初始化数据
 		this.initData();
+		// 填充区域模拟数据
+		this.filterData[0].submenu = this.priceDropdownList
+		this.filterData[1].submenu = addressList
 	},
 	mounted(){
 		/* const query = uni.createSelectorQuery().in(this);
@@ -287,16 +282,16 @@ export default {
 	},
 	methods: {
 		handleConfirm(e){
-			debugger;
+			// debugger;
 			// this.indexArr = e.index;
 			// this.valueArr = e.value;
-			
+
 		},
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
-			
+
 			if (index === 0) {
-				
+
 				if(this.tabIndex==0 && this.selectH != 0){
 					this.selectH = 0;
 					this.tabIndex = null;
@@ -361,20 +356,20 @@ export default {
 					this.selectedName = index === 0 ? '综合' : index === 1 ? '价格升序' : '价格降序';
 				break;
 				case 1:
-				
+
 				break;
 				case 2:
-				
+
 				break;
 				case 3:
-				
+
 				break;
-			
+
 				default:
 					break;
 			}
 
-			
+
 			this.selectH = 0;
 			this.page = 1;
 			// this.productList = [];
@@ -484,7 +479,7 @@ export default {
 						uni.stopPullDownRefresh();
 					}
 				}); */
-				
+
 				setTimeout(() => {
 					if (type === 'refresh') {
 						this.page = 1;
@@ -623,7 +618,7 @@ page {
 				position: relative;
 				// background: $color-white;
 				background: #f5f5f5;
-				
+
 				.rf-dropdownlist {
 						width: 100%;
 						position: absolute;
@@ -673,7 +668,7 @@ page {
 						align-items: center;
 						justify-content: space-between;
 					}
-					
+
 			}
 			.rf-top-item {
 				height: 28upx;

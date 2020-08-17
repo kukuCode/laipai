@@ -1,11 +1,10 @@
 <template>
-	<!-- <view class="z-filter-dowpdown" :class="{'setDropdownBottom':maskVisibility}" :style="{'top':menuTop+'rpx'}" @touchmove.stop.prevent="discard" @tap.stop="discard"> -->
-	<view class="z-filter-dowpdown" :class="{'setDropdownBottom':maskVisibility,'is-fixed': isFixed}" :style="{'top': isFixed ? menuTop+'upx':''}" @touchmove.stop.prevent="discard" @tap.stop="discard">
+	<view class="z-filter-dowpdown" :class="{'setDropdownBottom':maskVisibility,'is-fixed': isFixed}" :style="{'top': isFixed ? menuTop+'rpx':''}" @touchmove.stop.prevent="discard" @tap.stop="discard">
 		<view class="nav">
 			<block v-for="(item,index) in menu" :key="index">
 				<view class="first-menu" :class="{'on':showPage==index}" @tap="togglePage(index)">
 					<text class="name">{{item.name}}</text>
-					<text class="iconfont triangle" :style="'transform:rotate('+triangleDeg[index]+'deg);'"></text>
+					<text class="iconfont iconxia" :style="'transform:rotate('+triangleDeg[index]+'deg);'"></text>
 				</view>
 			</block>
 		</view>
@@ -19,7 +18,7 @@
 							<view class="sub-menu" :id="'first_id'+index" :class="{'on':activeMenuArr[page_index][0]==index}" @tap="selectHierarchyMenu(page_index,index,null,null)">
 								<view class="menu-name">
 									<text>{{sub.name}}</text>
-									<text class="iconfont selected"></text>
+									<text class="iconfont icongouxuan"></text>
 								</view>
 							</view>
 						</block>
@@ -31,14 +30,14 @@
 								<view class="sub-menu" :id="'second_id'+second_index" :class="{'on':activeMenuArr[page_index][1]==second_index}">
 									<view class="menu-name" @tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,null)">
 										<text>{{sub_second.name}}</text>
-										<text class="iconfont selected"></text>
+										<text class="iconfont icongouxuan"></text>
 									</view>
 									<view class="more-sub-menu" v-if="sub_second.submenu&&sub.submenu.length>0&&sub_second.submenu.length>0">
 										<block v-for="(sub2,sub2_index) in sub_second.submenu" :key="sub2_index">
 											<text v-if="sub_second.showAllSub || (sub2_index<8)" :class="{'on':activeMenuArr[page_index][1]==second_index&&activeMenuArr[page_index][2]==sub2_index}"
 											 @tap="selectHierarchyMenu(page_index,activeMenuArr[page_index][0],second_index,sub2_index)">{{sub2.name}}</text>
 											<text v-if="sub_second.showAllSub!=true && sub2_index==8 && sub_second.submenu.length>9" @tap="showMoreSub(second_index)">更多<text
-												 class="iconfont triangle"></text></text>
+												 class="iconfont iconxia"></text></text>
 										</block>
 									</view>
 								</view>
@@ -263,7 +262,7 @@
 			},
 			//选中单选类label-UI状态
 			selectRadioLabel(page_index, box_index, label_index) {
-				
+
 				let activeIndex = this.activeMenuArr[page_index][box_index][0];
 				if(activeIndex == label_index){
 					this.subData[page_index].submenu[box_index].submenu[activeIndex].selected = false;
@@ -272,7 +271,7 @@
 					if(activeIndex!=null && activeIndex<this.subData[page_index].submenu[box_index].submenu.length){
 						this.subData[page_index].submenu[box_index].submenu[activeIndex].selected = false;
 					}
-					
+
 					this.subData[page_index].submenu[box_index].submenu[label_index].selected = true;
 					this.activeMenuArr[page_index][box_index][0] = label_index;
 				}
@@ -326,7 +325,7 @@
 			confirm() {
 				let index = JSON.parse(JSON.stringify(this.shadowActiveMenuArr));
 				let value = JSON.parse(JSON.stringify(this.shadowActiveMenuArr));
-				
+
 				//对结果做一下处理
 				index.forEach((item, i) => {
 					if (typeof(item[0]) == 'object') {
@@ -367,7 +366,7 @@
 						}
 					}
 					index[i] = item;
-					
+
 				});
 				// 输出
 				this.$emit('confirm', {
@@ -384,7 +383,7 @@
 						this.showPage = index;
 					}, 0);
 				})
-				this.triangleDeg[index] = 180;
+				this.triangleDeg[index] = -180;
 			},
 			reloadActiveMenuArr(){
 				for (let i = 0; i < this.filterData.length; i++) {
@@ -396,7 +395,7 @@
 						this.activeMenuArr.splice(i, 1, JSON.parse(JSON.stringify(tmpArr)));
 						this.shadowActiveMenuArr.splice(i, 1, JSON.parse(JSON.stringify(tmpArr)));
 					}
-				} 
+				}
 				this.subData = this.filterData;
 				this.$forceUpdate();
 			},
@@ -439,7 +438,7 @@
 							}
 						}
 					}
-				} 
+				}
 			},
 			processActive(tmpitem) {
 				let tmpArr = []
@@ -502,22 +501,14 @@
 		// position: fixed;
         position:relative;
 		// position: sticky;
-		
+
 		flex-wrap: nowrap;
 		display: flex;
 		flex-direction: row;
 		top: var(--window-top);
-		
+
 		// top:100px;
 		// overflow-y: hidden;
-        &.is-fixed {
-            width: 100%;
-            z-index: 9;
-            position: fixed;
-            // top: var(--window-top);
-            left:0;
-            right:0;
-        }
 		&.setDropdownBottom{
 			// height: 345px;
 			bottom: 0;
@@ -561,8 +552,8 @@
 				overflow: hidden;
 			}
 			.iconfont {
-				width: 13px;
-				height: 13px;
+				width: 16px;
+				height: 20px;
 				align-items: center;
 				justify-content: center;
 				transition: transform .2s linear, color .2s linear;
@@ -573,6 +564,8 @@
 		width: 100%;
 		position: absolute;
 		left: 0;
+
+
 		// transform: translate3d(0, - 100%, 0);
 		max-height: 345px;
 		background-color: #ffffff;
@@ -580,13 +573,18 @@
 		box-shadow: 0 5px 5px rgba(0, 0, 0, .1);
 		overflow: hidden;
 		flex-direction: row;
-		transition: transform .15s linear;
-        top: 88upx;
+		// transition: transform .15s linear;
+		transition: all 0.2s ease-in-out;
+		// visibility: hidden;
+		    opacity: 0;
+        top: 88rpx;
 		&.hide {
 			display: none;
 		}
 
 		&.show {
+			    opacity: 1;
+			// visibility: visible;
 			// transform: translate3d(0, calc(44px + 1rpx), 0);
 		}
 	}
@@ -728,7 +726,7 @@
 						width: 148rpx;
 						height: 30px;
 						border: solid 1rpx #adadad;
-						border-radius: 2px;
+						border-radius: 30px;
 						margin-right: 15px;
 						margin-top: 8px;
 						font-size: 12px;
@@ -766,43 +764,44 @@
 			}
 		}
 	}
-	.mask {
-		z-index: 8;
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: rgba(0, 0, 0, 0);
-		transition: background-color .15s linear;
-		&.show {
-			background-color: rgba(0, 0, 0, 0.5);
+	.z-filter-dowpdown {
+		&.is-fixed {
+		    width: 100%;
+		    z-index: 9;
+		    position: fixed;
+		    top: var(--window-top);
+		    left:0;
+		    right:0;
+			.mask {
+					display:none;
+					&.hide{
+						display:none;
+					}
+					&.show{
+						display:flex;
+					}
+				}
 		}
-		&.hide {
-			display: none;
+
+		.mask {
+			z-index: 8;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0);
+			transition: background-color .15s linear;
+			display:none;
+			&.show {
+				background-color: rgba(0, 0, 0, 0.5);
+			}
+			&.hide {
+				display: none;
+			}
 		}
 	}
 
-    
-	/* 字体图标 */
-	@font-face {
-		font-family: "HM-FD-font";
-		src: url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAALAAAsAAAAABpQAAAJzAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgp4gQIBNgIkAwwLCAAEIAWEbQc5G8sFERWMIbIfCbbzqA4hp7InSBibVsYGb4J42o82b3e/nJlHMw/NHbGOlwKJRCRpwzPtpAECCOZubdqxjYpQLMlVg+70/08edrgQOtx2ukpVyApZn+dyehPoQObHo3O85rYx9vOjXoBxQIHugW2yIkqIW2QXcScu4jwE8CSWbKSmrqUHFwOaJoCsLM5P4haSGIxRcRHshrUGucLCVcfqI3AZfV/+USguKCwNmtsxVztDxU/n55C+3W0Z4QQpEOTNFqCBbMCAjDUWB9CIwWk87aa70cYgqLkyd3dEmm+18R8eKATEBrV7A5CulBT8dKiWOYZk412XNcDdKSEKSGODnyKIDl+dmVt9/Dx4pu/xyeutkMlHISGPTsPCnoTNP9nOT6wTtDdlO6dPr47efvj942lkYuQzrhMKEjq9N6y98P3340gmlJ/RStUD6F31CAEEPtUW94/7rf+7XgaAz57X0ZHXAGsFFwVgw38yALuMb0IBbVyNamFYEw4oKMDTj3AHRQP5Pt4dci9VwSVkRNQh5r7CLskZadhsWHhRDBsXczk8ZYk3ewnCxmQeQKa3BOHvA8XXO2j+vqRhf7CE+sPmn4anvoL29JLa4qqaUQkmoK+QG2osCckq7txi2leK86aIPyJ3eQZ8xytXYmyQ51jQndJAxIJlqiGSLsOqImiZCjTiZCJt6Lq26U2OoXqwUo0hRaAE0K5AziANy/uLVeXzWyjVqyjcoeupjxDr5MMDn8MDkLG9Aenu5ZrOSSoghAUsRmogkkahSoWAtnlUARnCkY3It0Iu7mWhdmd9Z/19BwBP6GidEi0G56opckXTGZVSPxgAAAA=');
-	}
-	.iconfont {
-		font-family: "HM-FD-font" !important;
-		font-size: 13px;
-		font-style: normal;
-		color: #757575;
-		&.triangle {
-			&:before {
-				content: "\e65a";
-			}
-		}
-		&.selected {
-			&:before {
-				content: "\e607";
-			}
-		}
-	}
+
+
 </style>
