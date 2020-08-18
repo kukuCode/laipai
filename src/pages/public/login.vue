@@ -14,7 +14,7 @@
 					允许
 				</button>
 
-				<button class='bottom' v-if="loginStatus" type='primary' open-type="getPhoneNumber"  @getphonenumber="getPhoneNumber">
+				<button class='bottom' v-if="loginStatus" style="margin-top:140rpx" type='primary' open-type="getPhoneNumber"  @getphonenumber="getPhoneNumber">
 					微信授权登录
 				</button>
 				<view class="cancel-btn">
@@ -69,13 +69,13 @@
 			},
 
 		/*
-		 * 获取手机号 
-		 * 
+		 * 获取手机号
+		 *
 		 * 参数:obj{
 		 *	sessionkey,
 		 *	ivdata,
 		 *	encrypdata
-		 *  } 
+		 *  }
 		 * */
 			getphone (obj){
 				return new Promise((resolve, reject)=>{
