@@ -45,6 +45,10 @@ const refreshToken = '/tiny-shop/v1/site/refresh';
 // 登录令牌有效性检测
 const verifyAccessToken = '/tiny-shop/v1/site/verify-access-token';
 
+
+// 获取手机号
+const getPhone = '/tiny-shop/v1/site/getphone'
+
 export {
 	registerByPass,
 	loginByPass,
@@ -58,5 +62,6 @@ export {
 	loginBySmsCode,
 	logout,
 	refreshToken,
-	verifyAccessToken
+	verifyAccessToken,
+	getPhone
 };
