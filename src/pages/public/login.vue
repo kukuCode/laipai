@@ -1,188 +1,190 @@
 <template>
-	<view class="login-wrapper">
-			<view class="logo">
-				<rf-image :preview="false" :src="logo || errorImage"></rf-image>
+	<view>
+		<view>
+			 <view>
+				<view class='header'>
+					<rf-image :preview="false" :src="logo"></rf-image>
+				</view>
+				<view class='content' v-if="!loginStatus">
+					<view>申请获取以下权限</view>
+					<text>获得你的公开信息(昵称，头像、地区等)</text>
+					<!-- <text>获得你微信绑定的手机号</text> -->
+				</view>
+				<button class='bottom' v-if="!loginStatus" type='primary' open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo">
+					允许
+				</button>
+
+				<button class='bottom' v-if="loginStatus" type='primary' open-type="getPhoneNumber"  @getphonenumber="getPhoneNumber">
+					微信授权登录
+				</button>
+				<view class="cancel-btn">
+					<text  @tap="navBack">取消</text>
+				</view>
 			</view>
-			<button openType="getUserInfo" lang="zh_CN" @getuserinfo="wxLogin" :disabled="btnLoading" class="confirm-btn confirm-btn-bg"
-				:class="'text-' + themeColor.name">微信授权登录</button>
-			<view class="cancel-btn">
-				<text  @tap="navBack">取消</text>
-			</view>
+		</view>
 	</view>
 </template>
+
 <script>
-import { mpWechatLogin } from '@/api/login';
-import moment from '@/common/moment';
-export default {
-	data() {
-		return {
-			logo: this.$mSettingConfig.appLogo,
-			errorImage: this.$mAssetsPath.errorImage,
-			btnLoading: false,
-			reqBody: {},
-			loginByPass: true,
-			smsCodeBtnDisabled: true,
-			userInfo: null,
-			loginBg: this.$mAssetsPath.loginBg,
-			loginPic: this.$mAssetsPath.loginPic,
-			appName: this.$mSettingConfig.appName,
-			styleLoginType: this.$mSettingConfig.styleLoginType,
-		};
-	},
-	onShow() {
-		if (this.$mStore.getters.hasLogin) {
-			this.$mRouter.reLaunch({ route: '/pages/index/index' });
-		}
-	},
-	onLoad(options) {
-	},
-	methods: {
-		loginTest(mobile, password) {
-			this.loginParams.mobile = mobile;
-			this.loginParams.password = password;
+	import { mpWechatLogin, getPhone } from '@/api/login';
+	import { wxlogin, wxUserInfo} from "./wxlogin.js"
+	export default {
+		data() {
+			return {
+				logo: this.$mSettingConfig.appLogo,
+				appid: this.$mConfig.weixinAppId,
+				secret: this.$mConfig.weixinSecretId,
+				btnLoading:false,
+				type:0,
+				phone:"",
+				phoneParams:{
+					sessionkey:"",
+					ivdata:"",
+					encrypdata:""
+				},
+				loginStatus:false,
+				phoneStatus:false
+			}
 		},
-		// 返回上一页
-		navBack() {
-			this.$mRouter.back();
+		onShow() {
+			if (this.$mStore.getters.hasLogin) {
+				this.$mRouter.reLaunch({ route: '/pages/index/index' });
+			}
 		},
-		// 统一跳转路由
-		navTo(route) {
-			this.$mRouter.push({ route });
+		onLoad() {
+			try{
+				this.loginStatus = uni.getStorageSync('loginStatus') || false
+				this.init()
+			}catch(e){
+				console.log("init错误信息：",e)
+			}
 		},
-		// 返回主页
-		toHome() {
-			this.$mRouter.reLaunch({ route: '/pages/index/index' });
-		},
-		wxLogin(e){
-			debugger;
-			this.btnLoading = true;
-			const _this = this;
-			let userInfo = e.detail.userInfo;
-			uni.login({
-				provider:"weixin",
-				success:(login_res => {
-					let code = login_res.code;
-					uni.getUserInfo({
-						success(info_res) {
-							console.log(info_res)
-							uni.request({
-								url: mpWechatLogin,
-								method:"POST",
-								header: {'content-type': 'application/x-www-form-urlencoded'},
-								data:{
-									code : code,
-									rawData : info_res.rawData
-								},
-								success(res) {
-									debugger;
-									_this.$mHelper.toast('登录成功!');
-									if(res.data.status == 200){
-										that.$store.commit('login',userInfo);
-									}else{
-										console.log('服务器异常')
-									}
-								},
-								fail(error) {
-									console.log(error)
-									_this.$mHelper.toast('登录失败!');
-									/* setTimeout(() => {
-										uni.navigateBack();
-									}, 300); */
-								}
-							})
-						}
+		methods: {
+			async init(){
+				var code = await wxlogin()
+				// 获取sessionkey
+				debugger;
+				var key = await this.getSessionKey(this.appid,this.secret,code)
+				this.phoneParams.sessionkey = key.data.session_key;
+			},
+
+		/*
+		 * 获取手机号 
+		 * 
+		 * 参数:obj{
+		 *	sessionkey,
+		 *	ivdata,
+		 *	encrypdata
+		 *  } 
+		 * */
+			getphone (obj){
+				return new Promise((resolve, reject)=>{
+					getPhone(obj).then(res=>{
+						resolve(JSON.parse(res.data.data.phone))
+					},err=>{
+						reject(err)
 					})
-					
-            })
-            })
-
-
-		},
-		// 提交表单
-		async toLogin() {
-			this.handleLogin(this.reqBody, loginApi);
-		},
-		// 登录
-		async handleLogin(params, loginApi) {
-			this.btnLoading = true;
-			await this.$http
-				.post(loginApi, params)
-				.then(r => {
-					this.$mHelper.toast('登录成功！');
-					this.$mStore.commit('login', r.data);
-					if (this.userInfo) {
-						this.btnLoading = false;
-						const oauthClientParams = {};
-						/*  #ifdef MP-WEIXIN */
-						oauthClientParams.oauth_client = 'wechatMp';
-						/*  #endif  */
-						/*  #ifndef MP-WEIXIN */
-						oauthClientParams.oauth_client = 'wechat';
-						/*  #endif  */
-						const userInfo = JSON.parse(this.userInfo);
-						this.$http.post(authLogin, {
-							...userInfo,
-							...oauthClientParams,
-							gender: userInfo.sex || userInfo.gender,
-							oauth_client_user_id: userInfo.openid || userInfo.openId,
-							head_portrait: userInfo.headimgurl || userInfo.avatarUrl
-						});
-					}
-					uni.removeStorageSync('wechatUserInfo');
-					const backToPage = uni.getStorageSync('backToPage');
-					uni.removeStorageSync('backToPage');
-					if (backToPage) {
-						if (
-							backToPage.indexOf('/pages/profile/profile') !== -1 ||
-							backToPage.indexOf('/pages/cart/cart') !== -1 ||
-							backToPage.indexOf('/pages/index/index') !== -1 ||
-							backToPage.indexOf('/pages/notify/notify') !== -1 ||
-							backToPage.indexOf('/pages/category/category') !== -1
-						) {
-							this.$mRouter.reLaunch(JSON.parse(backToPage));
-						} else {
-							this.$mRouter.redirectTo(JSON.parse(backToPage));
-						}
-					} else {
-						this.$mRouter.reLaunch({ route: '/pages/profile/profile' });
-					}
 				})
-				.catch(() => {
-					this.btnLoading = false;
-				});
+			},
+			/* 获取sessionkey */
+			getSessionKey (appid, secret, code) {
+				return new Promise((resolve, reject)=>{
+					// !! 注意 !!
+					// 这里需要后端调用: https://api.weixin.qq.com无法加入白名单
+					let url = "https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+code+"&grant_type=authorization_code"
+					this.$http.post(url).then(res=>{
+						resolve(res)
+					},err=>{
+						reject(err)
+					})
+				})
+				},
+
+			async getPhoneNumber(e){
+				try{
+					this.phoneParams.encrypdata = e.detail.encryptedData
+					this.phoneParams.ivdata = e.detail.iv
+					debugger;
+					var phone = await getphone(this.phoneParams)
+					this.phone = phone.purePhoneNumber
+					console.log("phone:",this.phone)
+
+					if(this.phone){
+						this.phoneStatus = true
+						this.reLaunch()
+					}
+				}catch(e){
+					this.$mHelper.toast('发生了点小错误,请重试!');
+				}
+			},
+			async wxGetUserInfo(res){
+				debugger;
+				uni.setStorageSync('loginStatus', true);
+				var info = await wxUserInfo()
+				console.log('info=',info)
+				debugger;
+				this.loginStatus = true
+				// this.reLaunch()
+			},
+			// 返回上一页
+			navBack() {
+				this.$mRouter.back();
+			},
+			reLaunch(){
+				if(this.loginStatus && this.phoneStatus){
+					uni.setStorageSync("tongfang-phone",this.phone)
+					// 后续业务代码
+					this.$mRouter.reLaunch({ route: '/pages/profile/profile' });
+					/* uni.reLaunch({//信息更新成功后跳转到小程序首页
+						url: '/pages/index/index'
+					}); */
+				}
+			}
 		}
 	}
-};
 </script>
-<style lang="scss">
-page {
-	background: $color-white;
-	height: calc(100% - 88upx);
-}
-.login-wrapper{
-	padding-top: 100upx;
-	.logo {
-		text-align: center;
-		margin-bottom: 80upx;
-		image {
-			width: 180upx;
-			height: 180upx;
-			border-radius: 28upx;
-		}
+
+<style>
+	.header {
+	    margin: 90rpx 0 50rpx 50rpx;
+	    /* border-bottom: 1px solid #ccc; */
+	    text-align: center;
+	    width: 650rpx;
+	    height: 300rpx;
+	    line-height: 450rpx;
 	}
+	.header image {
+	    width: 200rpx;
+	    height: 200rpx;
+	}
+	.content {
+	    margin-left: 50rpx;
+	    margin-bottom: 50rpx;
+	}
+	.content text {
+	    display: block;
+	    color: #9d9d9d;
+	    margin-top: 40rpx;
+	}
+	.bottom {
+	    border-radius: 80rpx;
+	    margin: 35rpx 50rpx;
+	    font-size: 35rpx;
+	}
+	.bottom:first-child{
+		margin-top: 50rpx;
+	}
+
+	.view_input{
+		margin: 0 50rpx;
+		background-color: white;
+		padding: 10px;
+		height: 1rem;
+		line-height: 1rem;
+	}
+
 	.cancel-btn{
 		text-align: center;
 		color: $font-color-light
 	}
-	.confirm-btn {
-		background-color:#fff;
-			width: 84%;
-			margin: 0 7% 50upx;
-			height: 84upx;
-			line-height: 84upx;
-			font-size: $font-lg;
-			border: 1upx solid;
-		}
-
-}
 </style>
