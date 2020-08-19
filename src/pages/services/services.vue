@@ -2,8 +2,8 @@
   <view class="services">
     <view class="button-sp-area">
       <view class="action-btn-group2"></view>
-      <button type="default" class="action-btn">金融贷款</button>
-      <button type="default" class="action-btn">税费过户</button>
+      <button type="default" open-type="contact" class="action-btn">金融贷款</button>
+      <button type="default"  open-type="contact" class="action-btn">税费过户</button>
     </view>
   </view>
 </template>

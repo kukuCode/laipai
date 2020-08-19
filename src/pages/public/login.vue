@@ -2,24 +2,32 @@
 	<view>
 		<view>
 			 <view>
-				<view class='header'>
-					<rf-image :preview="false" :src="logo"></rf-image>
-				</view>
-				<view class='content' v-if="!loginStatus">
-					<view>申请获取以下权限</view>
-					<text>获得你的公开信息(昵称，头像、地区等)</text>
-					<!-- <text>获得你微信绑定的手机号</text> -->
-				</view>
-				<button class='bottom' v-if="!loginStatus" type='primary' open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo">
-					允许
-				</button>
+				
+					<view class='header'>
+						<rf-image :preview="false" :src="logo"></rf-image>
+					</view>
+					 <!-- #ifdef MP-WEIXIN -->
+					<view class='content' v-if="!loginStatus">
+						<view>申请获取以下权限</view>
+						<text>获得你的公开信息(昵称，头像、地区等)</text>
+						<!-- <text>获得你微信绑定的手机号</text> -->
+					</view>
+					<button class='bottom' v-if="!loginStatus" type='primary' open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo">
+						允许
+					</button>
 
-				<button class='bottom' v-if="loginStatus" style="margin-top:140rpx" type='primary' open-type="getPhoneNumber"  @getphonenumber="getPhoneNumber">
-					微信授权登录
-				</button>
-				<view class="cancel-btn">
-					<text  @tap="navBack">取消</text>
-				</view>
+					<button class='bottom' v-if="loginStatus" style="margin-top:140rpx" type='primary' open-type="getPhoneNumber"  @getphonenumber="getPhoneNumber">
+						微信授权登录
+					</button>
+					<view class="cancel-btn">
+						<text  @tap="navBack">取消</text>
+					</view>
+					<!-- #endif -->
+					<!-- #ifndef MP-WEIXIN -->
+					<view>
+						<view style="margin-top:100rpx;text-align: center;font-size:36rpx">请使用微信小程序登录</view>
+					</view>
+					<!-- #endif -->
 			</view>
 		</view>
 	</view>
@@ -53,8 +61,10 @@
 		},
 		onLoad() {
 			try{
+				// #ifdef MP-WEIXIN
 				this.loginStatus = uni.getStorageSync('loginStatus') || false
 				this.init()
+				// #endif
 			}catch(e){
 				console.log("init错误信息：",e)
 			}
