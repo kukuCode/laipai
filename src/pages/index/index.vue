@@ -12,7 +12,7 @@
 		<!-- 推荐分类 -->
 		<block>
 			<view v-if="recommendCenterList.length>0">
-				<view class="category-list-wrapper" style="height:324upx" ref='refCategory'>
+				<view class="category-list-wrapper" style="height:324rpx" ref='refCategory'>
 					<view class="category-list">
 					<view class="category" v-for="(nav, ii) in recommendCenterList" :key="ii"
 					@tap="navToCategory(nav.name, nav.name)">
@@ -73,7 +73,14 @@
 					<view :class="{'fixed-show':isFixed}"></view>
 				</view>
 				<!-- 商品列表 -->
-				<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown>
+				<!-- <z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown> -->
+				<z-sticky :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="true">
+					<template v-slot:header>
+						<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="menuClick"></z-filter-dropdown>
+					</template>
+				</z-sticky>
+
+
 				<view :class="{'fixed-show':isFixed}"></view>
 
 				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
@@ -92,6 +99,49 @@
 				v-if="recommendCenterList.length > 0"
 			></rf-load-more>
 		</block>
+
+
+		<uni-drawer
+			class="rf-drawer"
+			:visible="drawer"
+			mode="right"
+			@close="closeDrawer()"
+		>
+			<view class="z-drawer-box" :style="{paddingTop:drawerTop+'px'}">
+				<scroll-view class="rf-drawer-scroll" scroll-y :style="{height:drawerH+'px'}">
+					<view class="rf-drawer-title">
+						<text class="rf-title-bold">价格区间</text>
+						<view class="rf-attr-right" :class="'text-' + themeColor.name">
+							<text>请输入价格区间</text>
+						</view>
+					</view>
+					<view class="rf-drawer-content">
+						<input placeholder-class="rf-phcolor" v-model="minPrice" class="rf-input" placeholder="最低价" maxlength="11" type='number' />
+						<text>-</text>
+						<input placeholder-class="rf-phcolor" v-model="maxPrice"  class="rf-input" placeholder="最高价" maxlength="11" type='number' />
+					</view>
+					<view class="rf-drawer-title">
+						<text class="rf-title-bold">全部分类</text>
+						<view class="rf-all-box rf-icon-ml">
+							<view class="rf-attr-right" :class="'text-' + themeColor.name">{{ currentCateStr }}</view>
+						</view>
+					</view>
+					<view class="rf-drawer-content rf-flex-attr">
+						<view class="rf-attr-item" :class="[item.isActive ? `bg-${themeColor.name} rf-btmItem-active` : 'rf-btmItem-normal']" v-for="(item, index) in productCateList" :key="item.id" @tap.stop="cateBtnSelected(index)">
+							<view class="rf-attr-ellipsis">{{ item.title }}</view>
+						</view>
+					</view>
+
+					<view class="rf-safearea-bottom"></view>
+				</scroll-view>
+				<view class="rf-attr-btnbox">
+					<view class="rf-attr-safearea">
+						<view class="rf-drawer-btn rf-drawerbtn-black" :class="'text-' + themeColor.name" hover-class="rf-white-hover" :hover-stay-time="150" @tap="reset">重置</view>
+						<view class="rf-drawer-btn rf-drawerbtn-primary" :class="'bg-' + themeColor.name" hover-class="rf-red-hover" :hover-stay-time="150" @tap="closeDrawer">确定</view>
+					</view>
+				</view>
+			</view>
+		</uni-drawer>
 
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -119,6 +169,7 @@ import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
 import {commodityList, addressList, menuList, filterDataList} from "@/Json.js"
 import zFilterDropdown from '@/components/z-filter-dropdown';
+import zSticky from '@/components/z-sticky/z-sticky';
 
 import { mapMutations } from 'vuex';
 export default {
@@ -131,7 +182,8 @@ export default {
 		zHeaderSearch,
 		zFloorIndex,
 		zProductList,
-		zFilterDropdown
+		zFilterDropdown,
+		zSticky
 	},
 	data() {
 		return {
@@ -160,6 +212,16 @@ export default {
 			appCenterList: [{ name: "住宅用房", second_class: "residence" }, { name: "车辆", second_class: "vehicle" }, { name: "建筑用地", second_class: "buildland" }, { name: "一般动产", second_class: "property" }, { name: "股权", second_class: "equity" }, { name: "商业用房", second_class: "commercial" }, { name: "工业用房", second_class: "industrial" }, { name: "其他用房", second_class: "otherhouse" }, { name: "其他交通运输工具", second_class: "traffic" }, { name: "其他用地", second_class: "otherland" }, { name: "土地承包经营权", second_class: "contractland" }, { name: "宅基地使用权", second_class: "homestead" }, { name: "海域使用权", second_class: "sea" }, { name: "船舶", second_class: "ship" }, { name: "渔船", second_class: "fishboat" }, { name: "航空器", second_class: "aircraft" }, { name: "其他财产", second_class: "otherassets" }, { name: "股票", second_class: "stock" }, { name: "基金", second_class: "fund" }, { name: "债券", second_class: "bond" }, { name: "债权", second_class: "debt" }, { name: "机器设备", second_class: "equipment" }, { name: "产品原材料", second_class: "material" }, { name: "知识产权", second_class: "knowledge" }, { name: "古玩字画", second_class: "artwork" }, { name: "森林、林木所有权", second_class: "forest" }, { name: "集体土地所有权", second_class: "collective" }, { name: "珠宝玉石首饰", second_class: "gems" }, { name: "探矿/采矿权", second_class: "mine" }],
 			commodityList:[], // 商品列表
 			isFixed:false, // 筛选栏是否固定
+
+			// 筛选START
+			drawer:false,
+			drawerTop:0,
+			drawerH:0,
+			productCateList:[],
+			currentCateStr:"",
+			minPrice:null,
+			maxPrice:null,
+			// 筛选END
 
 			selectedName:'价格',
 			selectH: 0,
@@ -197,24 +259,48 @@ export default {
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop;
 
-		if(this.scrollTop > 170){
+		/* if(this.scrollTop > 170){
 		// if(this.scrollTop >= 162){
 			this.isFixed = true
 		} else {
 			this.isFixed = false
-		}
+		} */
 	},
 	onShow() {
 		// 初始化购物车数量
 		// this.setCartNum(uni.getStorageSync('cartNum'));
 	},
-	onLoad() {
+	onLoad(options) {
 		// 初始化数据
 		this.initData();
 		// 填充区域模拟数据
 		this.filterData[0].submenu = this.priceDropdownList
 		this.filterData[1].submenu = addressList
 		this.filterData[3].submenu = this.appCenterList
+
+		let obj = {};
+		// #ifdef MP-WEIXIN
+		obj = wx.getMenuButtonBoundingClientRect();
+		// #endif
+		// #ifdef MP-BAIDU
+		obj = swan.getMenuButtonBoundingClientRect();
+		// #endif
+		// #ifdef MP-ALIPAY
+		my.hideAddToDesktopMenu();
+		// #endif
+		uni.getSystemInfo({
+			success: res => {
+				this.width = obj.left || res.windowWidth;
+				// this.drawerTop = obj.top ? obj.top + obj.height + 8 : res.statusBarHeight + 44;
+				this.drawerTop = 22;
+				this.inputTop = obj.top ? obj.top + (obj.height - 30) / 2 : res.statusBarHeight + 7;
+				this.arrowTop = obj.top ? obj.top + (obj.height - 32) / 2 : res.statusBarHeight + 6;
+				this.searchKey = options.searchKey || '';
+				//略小，避免误差带来的影响
+				// this.dropScreenH = (this.drawerTop * 750) / res.windowWidth + 186;
+				this.drawerH = res.windowHeight - uni.upx2px(100) - this.drawerTop;
+			}
+		});
 
 	},
 	mounted(){
@@ -288,6 +374,10 @@ export default {
 			// this.indexArr = e.index;
 			// this.valueArr = e.value;
 
+		},
+		menuClick(){
+		debugger;
+			this.drawer = true;
 		},
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
@@ -780,5 +870,134 @@ page {
 			top: 58upx;
 		}
 
+}
+.z-drawer-box{
+		width: 686upx;
+		font-size: 24upx;
+		overflow: hidden;
+		position: relative;
+		padding-bottom: 100upx;
+	.rf-drawer-title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 30upx;
+		box-sizing: border-box;
+		height: 80upx;
+	}
+	.rf-title-bold {
+		font-size: 26upx;
+		font-weight: bold;
+		flex-shrink: 0;
+	}
+	.rf-location {
+		margin-right: 6upx;
+	}
+	.rf-attr-right {
+		width: 70%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: right;
+	}
+	.rf-all-box {
+		width: 90%;
+		white-space: nowrap;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+	.rf-drawer-content {
+		padding: 16upx 30upx 30upx 30upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+	}
+	.rf-input {
+		border: 0;
+		height: 64upx;
+		border-radius: 32upx;
+		width: 45%;
+		background: #f7f7f7;
+		text-align: center;
+		font-size: $font-base;
+		color: #333;
+	}
+	.rf-phcolor {
+		text-align: center;
+		color: #b2b2b2;
+		font-size: 24upx;
+	}
+	.rf-flex-attr {
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+	.rf-attr-item {
+		width: 30%;
+		height: 64upx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 4upx;
+		box-sizing: border-box;
+		border-radius: 32upx;
+		margin-right: 5%;
+		margin-bottom: 5%;
+	}
+	.rf-attr-ellipsis {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		width: 96%;
+		text-align: center;
+	}
+	.rf-attr-item:nth-of-type(3n) {
+		margin-right: 0%;
+	}
+	.rf-attr-btnbox {
+		width: 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		box-sizing: border-box;
+		padding: 0 30upx;
+		background: $color-white;
+	}
+	.rf-attr-safearea {
+		height: 100upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		/*padding-bottom: env(safe-area-inset-bottom);*/
+	}
+	.rf-safearea-bottom {
+		width: 100%;
+		height: env(safe-area-inset-bottom);
+	}
+	.rf-attr-btnbox::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		border-top: 1upx solid #eaeef1;
+		-webkit-transform: scaleY(0.5);
+		transform: scaleY(0.5);
+	}
+	.rf-drawer-btn {
+		width: 47%;
+		text-align: center;
+		height: 60upx;
+		border-radius: 30upx;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+	}
+	.rf-drawerbtn-black {
+		border: 1upx solid;
+	}
 }
 </style>

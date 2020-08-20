@@ -388,6 +388,10 @@ export const filterDataList = [{
     "submenu": []
 },
 {
+	"type": 'filter'
+}
+/* 
+{
     "name":'筛选',
     "type": 'radio',
     "submenu": [{
@@ -443,5 +447,5 @@ export const filterDataList = [{
             ]
         }
     ]
-}
+} */
 ]

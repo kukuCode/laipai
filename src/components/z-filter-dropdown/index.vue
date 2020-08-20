@@ -2,13 +2,13 @@
 	<view class="z-filter-dowpdown" :class="{'setDropdownBottom':maskVisibility,'is-fixed': isFixed}" :style="{'top': isFixed ? menuTop+'rpx':''}" @touchmove.stop.prevent="discard" @tap.stop="discard">
 		<view class="nav">
 			<block v-for="(item,index) in menu" :key="index">
-				<view class="first-menu" :class="{'on':showPage==index}" @tap="togglePage(index)">
+				<view class="first-menu" :class="{'on':showPage==index}" @tap="togglePage(index, item.type)">
 					<text class="name">{{item.name}}</text>
-					<text class="iconfont iconxia" :style="'transform:rotate('+triangleDeg[index]+'deg);'"></text>
+					<text class="iconfont iconxia" v-show="item.type !=='filter'" :style="'transform:rotate('+triangleDeg[index]+'deg);'"></text>
 				</view>
 			</block>
 		</view>
-		<view v-show="isFixed" class="mask" :class="{'show':isShowMask,'hide':maskVisibility!=true}" @tap="togglePage(showPage)"></view>
+		<view v-show="isFixed" class="mask" :class="{'show':isShowMask,'hide':maskVisibility!=true}" @tap="togglePage(showPage, item.type)"></view>
 		<block v-for="(page,page_index) in subData" :key="page_index">
 			<view class="sub-menu-class" :class="{'show':showPage==page_index,'hide':pageState[page_index]!=true}">
 				<block v-if="page.type=='hierarchy'&& page.submenu.length>0">
@@ -278,7 +278,12 @@
 				this.$forceUpdate();
 			},
 			//菜单开关
-			togglePage(index) {
+			togglePage(index,type) {
+				debugger;
+				if(type&&type == "filter"){
+					this.$emit('menuClick', index)
+					return;
+				}
 				if (index == this.showPage) {
 					this.hidePageLayer(true);
 					this.hideMask();
@@ -347,7 +352,8 @@
 						});
 					}else{
 						let submenu = this.subData[i].submenu[item[0]];
-						value[i][0] = submenu.value;
+						if(submenu){
+						value[i][0] = submenu && submenu.value;
 						if(value[i].length>=2  && item[1]!=null){
 							if(submenu.submenu.length>0){
 								submenu = submenu.submenu[item[1]];
@@ -363,6 +369,8 @@
 									value[i][2] = null;
 								}
 							}
+						}
+
 						}
 					}
 					index[i] = item;
@@ -449,7 +457,7 @@
 						level--;
 					}
 				} else if (tmpitem.type == 'filter') {
-					let level = tmpitem.submenu.length;
+					let level = tmpitem.hasOwnProperty('submenu') && tmpitem.submenu.length;
 					while (level > 0) {
 						tmpArr.push([]);
 						level--;

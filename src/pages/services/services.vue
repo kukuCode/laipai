@@ -1,9 +1,10 @@
 <template>
   <view class="services">
     <view class="button-sp-area">
-      <view class="action-btn-group2"></view>
+      <view class="action-btn-group">
       <button type="default" open-type="contact" class="action-btn">金融贷款</button>
       <button type="default"  open-type="contact" class="action-btn">税费过户</button>
+			</view>
     </view>
   </view>
 </template>
@@ -51,9 +52,11 @@ export default {
 page {
   background-color: $page-color-base;
 }
-.action-btn {
-  border: 1px solid #ccc;
-  background-color: #fff;
-  margin: 40upx;
+.action-btn-group{
+	.action-btn {
+		border: 0;
+		background-color: #fff;
+		margin: 40upx;
+	}
 }
 </style>
