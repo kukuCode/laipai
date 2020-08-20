@@ -376,8 +376,34 @@ export default {
 
 		},
 		menuClick(){
-		debugger;
 			this.drawer = true;
+		},
+		closeDrawer(){
+			this.drawer = false;
+			const params = {};
+			if (this.maxPrice) {
+				params.max_price = this.maxPrice;
+			}
+			if (this.minPrice) {
+				params.min_price = this.minPrice;
+			}
+			const cateArr = [];
+			this.productCateList.forEach(item => {
+				if (item.isActive) {
+					cateArr.push(item.id);
+				}
+			});
+			if (cateArr.join(',')) {
+			params.cate_id = cateArr.join(',');
+			}
+			this.page = 1;
+			this.productList = [];
+			this.loading = true;
+			this.productParams = params;
+			setTimeout(() => {
+				this.loading = false;
+			}, 1500);
+			// this.getProductList();
 		},
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
