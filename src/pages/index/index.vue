@@ -83,7 +83,7 @@
 
 				<view :class="{'fixed-show':isFixed}"></view>
 
-				<z-product-list style="padding:0 20upx" v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
+				<z-product-list v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 			</view>
 			<view v-else class="index-cate-product-list">
 				<rf-empty

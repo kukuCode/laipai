@@ -1,12 +1,12 @@
 <template>
-	<view class="rf-product-list">
+	<view class="rf-product-list" style="padding:20rpx">
 		<view class="rf-product-list-container">
 			<block v-for="(item, index) in list" :key="index">
 				<!--商品列表-->
 				<view
 					v-if="(index + 1) % 2 !== 0 || isList"
 					class="rf-product-item"
-					@tap.stop="navTo(`/pages/product/product?id=${item.id}`)"
+					@tap.stop="navTo(`/pages/product/productDetail?id=${item.id}`)"
 					:class="[isList ? 'rf-product-flex-list' : '']"
 					hover-class="hover"
 					:hover-start-time="150"
@@ -45,7 +45,7 @@
 				<view
 					v-if="(index + 1) % 2 === 0"
 					class="rf-product-item"
-					@tap.stop="navTo(`/pages/product/product?id=${item.id}`)"
+					@tap.stop="navTo(`/pages/product/productDetail?id=${item.id}`)"
 					:class="[isList ? 'rf-product-flex-list' : '']"
 					hover-class="hover"
 					:hover-start-time="150"

@@ -81,6 +81,26 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "pages/product",
+			"pages": [
+				{
+					"path": "productDetail",
+					"style": {
+						"navigationBarTitleText": "商品详情",
+						// #ifdef MP
+						"navigationStyle": "custom",
+						// #endif
+						"app-plus": {
+							"bounce": "none",
+							"titleNView": {
+								"type": "transparent"
+							}
+						}
+					}
+				}
+			]
 		}
 	],
 	"globalStyle": {
