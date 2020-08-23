@@ -1,23 +1,25 @@
 <template>
     <view class="container">
         <!--#ifdef MP-WEIXIN-->
-		<text class="back-btn iconfont iconzuo" @tap="navBack"></text>
+		<!-- <text class="back-btn iconfont iconzuo" @tap="navBack"></text> -->
 		<!--#endif-->
         <!-- header -->
         <view class="zui-header-box" :style="{ height: height + 'px', background: 'rgba(255,255,255,' + opcity + ')' }">
 			<view class="zui-header" :style="{ paddingTop: top + 'px', opacity: opcity }">商品详情</view>
-			<!-- <view class="zui-header-icon" :style="{ marginTop: top + 'px' }">
-				<view class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="back">
-					<zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
+			<view class="zui-header-icon" :style="{ marginTop: top + 'px' }">
+				<view class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="navBack">
+					<!-- <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon> -->
+                    <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
+                    <!-- <text class="iconfont iconzuo" :style="{color:opcity >= 1 ? '#000' : '#fff'}"></text> -->
 				</view>
 
-				<view class="zui-icon-box zui-icon-ml" :style="{backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')'}" @tap.stop="openMenu">
+				<!-- <view class="zui-icon-box zui-icon-ml" :style="{backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')'}" @tap.stop="openMenu">
 					<zui-icon name="more-fill" :size="20" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
 					<zui-badge type="red" :scaleRatio="0.8" absolute top="0" right="-4rpx">5</zui-badge>
-				</view> 
+				</view>  -->
 
 			</view>
-            -->
+           
 		</view>
         <!-- header -->
         <!--banner-->
@@ -148,6 +150,14 @@
                 <view style="margin-bottom:10px;font-size:16px;">重要提示</view>
             </block>
             <view v-html="htmlCode"></view>
+        </view>
+
+        <view class="zui-nomore-box">
+            <view class="zui-nomore-class">
+                <view class="zui-nomore">
+                    <view class="zui-txt">商品详情</view>
+                </view>
+            </view>
         </view>
 
     </view>
@@ -309,8 +319,31 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+        box-sizing: content-box;
     }
-    
+    .zui-header-icon {
+		position: fixed;
+		top: 0;
+		left: 10px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		height: 32px;
+		transform: translateZ(0);
+		z-index: 9999;
+        .zui-icon-box {
+            position: relative;
+            height: 20px !important;
+            width: 20px !important;
+            padding: 14px !important;
+
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+    }
     // banner
     .zui-banner-swiper{
         position: relative;
@@ -451,7 +484,7 @@ export default {
 		left: 40upx;
 		z-index: 9999;
 		padding-top: var(--status-bar-height);
-		// top: 40upx;
+		top: 40upx;
 		font-size: 40upx;
 		color: $font-color-dark;
     }
@@ -482,5 +515,54 @@ export default {
         padding:20px;
         background-color: #fff;
         border-radius: 6px;
+    }
+
+    .zui-nomore-box{
+        .zui-nomore-class{
+            width: 50%;
+            margin: 1.5em auto;
+            line-height: 1.5em;
+            font-size: 12px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            .zui-nomore{
+                width: 100%;
+                height: 100%;
+                position: relative;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                margin-top: 5px;
+                padding-bottom: 3px;
+                &::before {
+                content: ' ';
+                position: absolute;
+                border-bottom: 0.5px solid #e5e5e5;
+                -webkit-transform: scaleY(0.5);
+                transform: scaleY(0.5);
+                width: 100%;
+                top: 9px;
+                left: 0;
+            }
+                .zui-txt{
+                    background-color: #f1f1f1;
+                    color: #999;
+                    font-size: 12px;
+                    text-align: center;
+                    padding: 0 9px;
+                    height: 18px;
+                    line-height: 18px;
+                    position: relative;
+                    z-index: 1;
+                }
+            }
+        }
     }
 </style>

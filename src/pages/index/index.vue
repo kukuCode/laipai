@@ -523,10 +523,10 @@ export default {
 		getCommodityList(){
 			// 请求服务加载更多
 			// !!目前是模拟的数据!!
-			this.loadingType =this.page != 5 ? 'more' : 'nomore';
 			setTimeout(() => {
 				this.commodityList = [...this.commodityList, ...commodityList];
 				this.loading = false;
+				this.loadingType =this.page != 5 ? 'more' : 'nomore';
 			}, 1500);
 
 		},

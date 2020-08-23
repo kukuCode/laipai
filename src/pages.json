@@ -103,6 +103,12 @@
 			]
 		}
 	],
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"zui-(.*)": "@/components/zui/zui-$1/zui-$1.vue"
+		}
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "中环来拍",
