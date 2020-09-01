@@ -1,18 +1,28 @@
-/**
- *@des 产品营销
- *@author stav stavyan@qq.com
- *@blog https://stavtop.club
- *@date 2019/11/18 13:57:54
+/*
+ * 商品API
+ * @Author: mikey.zhaopeng 
+ * @Date: 2020-09-01 22:19:08 
+ * @Last Modified by:   mikey.zhaopeng 
+ * @Last Modified time: 2020-09-01 22:19:08 
  */
+
 // 首页列表
-// const indexList = '/tiny-shop/v1/index/index';
-const indexList = '/management/auctionItems/list';
+const indexList = '/wx/auctionItem/list';
+
+ // 产品列表
+const productList = '/wx/auctionItem/list';
+
+
+// 推荐分类
+const recommendCateList = '/wx/auctionItem/type';
+
+
+
 // 产品分类列表
 const productCate = '/tiny-shop/v1/product/cate/index';
 // 首页推荐分类
 const productCateList = '/tiny-shop/v1/product/cate/list';
-// 产品列表
-const productList = '/tiny-shop/v1/product/product/index';
+
 // 产品详情
 const productDetail = '/tiny-shop/v1/product/product/view';
 // 组合套餐详情
@@ -99,6 +109,7 @@ export {
 	productCate,
 	productCateList,
 	productList,
+	recommendCateList,
 	guessYouLikeList,
 	productDetail,
 	combinationView,

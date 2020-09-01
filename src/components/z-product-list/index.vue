@@ -29,7 +29,8 @@
 						</view>
 					</view>
 					<view class="rf-product-image-wrapper">
-						<image :src="item.picUrl" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image>
+						<!-- <image :src="item.picUrl" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image> -->
+						<image src="http://47.108.156.173:8089/img/TB1mk.Xcvb2gK0jSZK9rxCEgFXa_460x460.jpg" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image>
 						<text class="sketch in1line" v-if="item.sketch">{{ item.sketch }}</text>
 					<!-- 	<view class="triangle-wrapper">
 							<image class="triangle-tag" :src="item | filterTagName"></image>

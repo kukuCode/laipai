@@ -143,6 +143,7 @@ export default {
 	},
 	// #ifndef MP
 	onNavigationBarButtonTap(e) {
+		debugger;
 		const index = e.index;
 		if (index === 0) {
 			this.navTo('/pages/set/set');
@@ -213,11 +214,8 @@ export default {
 		},
 		// 统一跳转接口,拦截未登录路由
 		navTo(route) {
-			debugger;
 			if (!route) return;
-			if (route === '/pages/index/notice/notice') {
-				this.$mRouter.push({ route });
-			} else if (!this.hasLogin) {
+			if (!this.hasLogin) {
 				// uni.removeStorageSync('backToPage');
 				this.$mRouter.push({ route: '/pages/public/login' });
 				// this.weixinLogin('weixin')

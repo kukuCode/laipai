@@ -156,7 +156,7 @@
 
 <style>
 	.header {
-	    margin: 90rpx 0 50rpx 50rpx;
+	    margin: 100rpx 0 70rpx 50rpx;
 	    /* border-bottom: 1px solid #ccc; */
 	    text-align: center;
 	    width: 650rpx;

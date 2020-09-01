@@ -18,7 +18,7 @@
 					@tap="navToCategory(nav.name, nav.name)">
 							<view class="img">
 								<!-- <image :src="sItem.cover || errorImage" mode="aspectFill"></image> -->
-								<image lazy-load='true' fade-show='true' src="http://shegnqx.oss-cn-beijing.aliyuncs.com/1592358296803.png" mode="widthFix" style="height: 90upx;width: 90upx" ></image>
+								<image lazy-load='true' fade-show='true' :src="nav.icon" mode="widthFix" style="height: 90upx;width: 90upx" ></image>
 							</view>
 							<view class="text in1line">{{ nav['name'] }}</view>
 					</view>
@@ -31,7 +31,7 @@
 
 		<!-- 商品栏目 -->
 		<block>
-			<view v-if="commodityList.length>0" style="margin-top:16upx;" class="commodity-wrapper">
+			<view v-if="commodityList.length>0" class="commodity-wrapper">
 				<!-- 过滤条件 -->
 				<!-- <view class="rf-header-screen" :style="{top:height+'px'}" :class="{isFixed:isFixed}"> -->
 					<view v-if="false">
@@ -156,7 +156,8 @@
  */
 import {
 	indexList,
-	productList
+	productList,
+	recommendCateList
 } from '@/api/product';
 // import rfSwipeDot from '@/components/rf-swipe-dot';
 // import rfFloorIndex from '@/components/rf-floor-index';
@@ -187,12 +188,13 @@ export default {
 	},
 	data() {
 		return {
+			page:1,
+			pageSize:20,
 			menuList:menuList,
 			hotProductList: [], // 热门商品列表
 			newProductList: [], // 新品上市商品列表
 			productCateList: [], // 商品栏目
 			config: {}, // 商户配置
-			announceList: [], // 公告列表
 			share: {},
 			loading: true,
 			scrollTop: 0,
@@ -205,11 +207,11 @@ export default {
 			categoryProductList: [], // 分类列表
 			currentCate: 0,
 			productLoading: true,
-			page: 1,
 			isOpenIndexCate: this.$mSettingConfig.isOpenIndexCate,
 			moneySymbol: this.moneySymbol, // 金额符号
 			keyword:'',
 			appCenterList: [{ name: "住宅用房", second_class: "residence" }, { name: "车辆", second_class: "vehicle" }, { name: "建筑用地", second_class: "buildland" }, { name: "一般动产", second_class: "property" }, { name: "股权", second_class: "equity" }, { name: "商业用房", second_class: "commercial" }, { name: "工业用房", second_class: "industrial" }, { name: "其他用房", second_class: "otherhouse" }, { name: "其他交通运输工具", second_class: "traffic" }, { name: "其他用地", second_class: "otherland" }, { name: "土地承包经营权", second_class: "contractland" }, { name: "宅基地使用权", second_class: "homestead" }, { name: "海域使用权", second_class: "sea" }, { name: "船舶", second_class: "ship" }, { name: "渔船", second_class: "fishboat" }, { name: "航空器", second_class: "aircraft" }, { name: "其他财产", second_class: "otherassets" }, { name: "股票", second_class: "stock" }, { name: "基金", second_class: "fund" }, { name: "债券", second_class: "bond" }, { name: "债权", second_class: "debt" }, { name: "机器设备", second_class: "equipment" }, { name: "产品原材料", second_class: "material" }, { name: "知识产权", second_class: "knowledge" }, { name: "古玩字画", second_class: "artwork" }, { name: "森林、林木所有权", second_class: "forest" }, { name: "集体土地所有权", second_class: "collective" }, { name: "珠宝玉石首饰", second_class: "gems" }, { name: "探矿/采矿权", second_class: "mine" }],
+			recommendCenterList:[],
 			commodityList:[], // 商品列表
 			isFixed:false, // 筛选栏是否固定
 
@@ -313,9 +315,9 @@ export default {
 
 	},
 	computed: {
-		recommendCenterList() {
+		/* recommendCenterList() {
 			return this.appCenterList.slice(0,10)
-		},
+		}, */
 		bottom () {
 			let bottom = 0;
 			/*  #ifdef H5  */
@@ -523,15 +525,29 @@ export default {
 		getCommodityList(){
 			// 请求服务加载更多
 			// !!目前是模拟的数据!!
-			setTimeout(() => {
+			/* setTimeout(() => {
 				this.commodityList = [...this.commodityList, ...commodityList];
 				this.loading = false;
 				this.loadingType =this.page != 5 ? 'more' : 'nomore';
-			}, 1500);
+			}, 1500); */
+			this.getProductList()
 
 		},
-		// 获取产品列表
 		async getProductList(id) {
+			await this.$http
+				.get(`${productList}`, {page:this.page, limit:this.pageSize})
+				.then(async r => {
+					this.loading = false;
+					this.productLoading = false;
+					this.loadingType = r.data.length >= 20 ? 'more' : 'nomore';
+					this.commodityList = [...this.commodityList, ...r.data];
+				}).catch(() => {
+					this.loading = false;
+					this.productLoading = false;
+				});
+		},
+		// 获取产品列表
+		async getProductList2(id) {
 			await this.$http
 				.get(`${productList}`, {
 					cate_id: id,
@@ -554,7 +570,11 @@ export default {
 		},
 		// 数据初始化
 		initData() {
+			// 查询分类
+			this.getRecommendCenter()
+			// 首页商品
 			this.getIndexList();
+			
 		},
 		// 通用跳转
 		navTo(route) {
@@ -562,7 +582,6 @@ export default {
 		},
 		// 跳转至分类模块
 		navToCategory(id) {
-			debugger;
 			if (this.$mSettingConfig.appCateType === '2') {
 				uni.setStorageSync('indexToCateId', id);
 				this.$mRouter.reLaunch({ route: '/pages/category/category' });
@@ -576,19 +595,42 @@ export default {
 				route: `/pages/index/search/search?data=${JSON.stringify(this.keyword)}`
 			});
 		},
+		// 查询分类
+		async getRecommendCenter(){
+			// this.recommendCenterList
+			let params={}
+			await this.$http
+				.get(`${recommendCateList}`, params)
+				.then(async r => {
+					console.log('getRecommendCenter---->',r)
+					this.appCenterList = r.data
+					this.recommendCenterList = r.data.slice(0,10)
+				})
+				.catch(() => {
+				});
+		},
 		// 获取主页数据
 		async getIndexList(type) {
 			// !待联调服务!
-			let p = '?page=1&limit=15&title=&status=&typeCode=&addressDistrictCode=&addressCityCode=&disposalUnit=&initialprices=&initialpricee=&startdate=&enddate='
-			/* await this.$http
-				.get(`${indexList}${p}`, {})
+			// let p = '?page=1&limit=15&title=&status=&typeCode=&addressDistrictCode=&addressCityCode=&disposalUnit=&initialprices=&initialpricee=&startdate=&enddate='
+			// let p = `?page=${this.currPage}&limit=${this.pageSize}`
+			if(type === 'refresh'){
+				this.page = 1;
+				this.loadingType = 'more';
+			}
+			let params={page:this.page,limit:this.pageSize}
+			await this.$http
+				.get(`${indexList}`, params)
 				.then(async r => {
 					uni.setNavigationBarTitle({ title: this.appName });
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
+					console.log('rrr---->',r)
+					debugger;
 					// 首页参数赋值
 					// this.initIndexData(r.data);
+					this.commodityList = r.data
 					this.loading = false;
 				})
 				.catch(() => {
@@ -596,9 +638,9 @@ export default {
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
-				}); */
+				});
 
-				setTimeout(() => {
+				/* setTimeout(() => {
 					if (type === 'refresh') {
 						this.page = 1;
 						this.loadingType = 'more';
@@ -608,13 +650,13 @@ export default {
 					// 假数据
 					// this.initIndexData(r.data);
 					this.loading = false;
-				}, 2000);
+				}, 2000); */
 
 		},
 		// 首页参数赋值
 		initIndexData(data) {
-			uni.setStorageSync('search', this.keyword);
-			this.guessYouLikeProductList = data.guess_you_like;
+			// uni.setStorageSync('search', this.keyword);
+			// this.guessYouLikeProductList = data.guess_you_like;
 			this.newProductList = data.product_new;
 			this.config = data.config;
 			// this.$mHelper.handleWxH5Share(this.share.share_title || this.appName, this.share.share_desc || `欢迎来到${this.appName}商城`, this.share.share_link || this.$mConfig.hostUrl, this.share.share_cover || this.$mSettingConfig.appLogo);

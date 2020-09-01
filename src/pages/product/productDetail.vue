@@ -7,10 +7,11 @@
         <view class="zui-header-box" :style="{ height: height + 'px', background: 'rgba(255,255,255,' + opcity + ')' }">
 			<view class="zui-header" :style="{ paddingTop: top + 'px', opacity: opcity }">商品详情</view>
 			<view class="zui-header-icon" :style="{ marginTop: top + 'px' }">
-				<view class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="navBack">
-					<!-- <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon> -->
+				<view v-if="!isshare" class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="navBack">
                     <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
-                    <!-- <text class="iconfont iconzuo" :style="{color:opcity >= 1 ? '#000' : '#fff'}"></text> -->
+				</view>
+				<view v-else class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="backHome">
+                    <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
 				</view>
 
 				<!-- <view class="zui-icon-box zui-icon-ml" :style="{backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')'}" @tap.stop="openMenu">
@@ -22,6 +23,7 @@
            
 		</view>
         <!-- header -->
+
         <!--banner-->
 		<view class="zui-banner-swiper">
 			<swiper indicator-dots :autoplay="true" :interval="5000" :duration="150" :circular="true" touchable :style="{ height: scrollH + 'px' }"
@@ -172,6 +174,7 @@ export default {
         return {
             hasLogin: this.$mStore.getters.hasLogin,
             moneySymbol:this.moneySymbol,
+            isshare: false,
             productDetail: {},
             loading: true,
             errorInfo: '',
@@ -218,6 +221,12 @@ export default {
 
     },
     methods: {
+        /**
+         * 回到首页(分享的时候)
+         */
+        backHome: function () {
+            this.$mRouter.reLaunch({ route: '/pages/index/index' });
+        },
         navBack() {
 		    this.$mRouter.back();
 		},
@@ -252,7 +261,7 @@ export default {
             // #ifdef APP-PLUS
             
             // this.$mHelper.handleAppShare(this.url, this.appName, this.product.name, this.product.picture); // url,引用名,商品名,图片
-                this.$mHelper.handleAppShare(this.url, this.appName, "分享示例", "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"); // url,引用名,商品名,图片
+                this.$mHelper.handleAppShare(this.url+'&isshare=1', this.appName, "分享示例", "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"); // url,引用名,商品名,图片
             // #endif
         },
 
@@ -261,6 +270,13 @@ export default {
 
     },
     async onLoad(options) {
+        console.log('detail-onload-options',options)
+        // 是否是分享链接进入
+        if (options.isshare == 1) {
+            console.log('分享进入详情');
+            this.isshare = true
+        }
+
 		this.productId = options.id;
 		this.userInfo = uni.getStorageSync('userInfo') || {};
         // await this.initData();

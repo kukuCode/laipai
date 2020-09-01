@@ -7,8 +7,8 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/management': {
-          target: 'http://47.108.156.173', // 外网
+      '/api': {
+          target: 'http://laipai.as.com:8090', // 外网
           ws: false,
           changeOrigin: true
       }
