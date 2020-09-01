@@ -208,6 +208,12 @@ export default {
 
         };
     },
+    onShareAppMessage() {
+		return {
+			title: `分享标题Test`,
+			path: `pages/product/productDetail?id=123123&isshare=1`
+		};
+	},
     computed: {
 
     },
