@@ -22,7 +22,7 @@
 				</view>  -->
 
 			</view>
-           
+
 		</view>
         <!-- header -->
 
@@ -93,7 +93,7 @@
                         <view class="gray-title">开拍时间</view>
                         <view class="price1">{{proDetail.start}}</view>
                   </view>
-                
+
                 <view></view>
              </view>
         </view>
@@ -153,17 +153,19 @@
             <block>
                 <view style="margin-bottom:10px;font-size:16px;">重要提示</view>
             </block>
-            <view v-html="htmlCode"></view>
+            <!-- <view v-html="htmlCode"></view> -->
+						<rich-text :nodes="htmlCode"></rich-text>
         </view>
 
-        <view class="zui-nomore-box">
+        <view class="zui-nomore-box" v-if="proDetail.introductionOfItem">
             <view class="zui-nomore-class">
                 <view class="zui-nomore">
                     <view class="zui-txt">标的物介绍</view>
                 </view>
             </view>
             <block>
-                 <view v-html="proDetail.introductionOfItem"></view>
+                 <!-- <view v-html="proDetail.introductionOfItem"></view> -->
+								 <rich-text :nodes="proDetail.introductionOfItem"></rich-text>
             </block>
         </view>
         <view class="zui-nomore-box">
@@ -173,7 +175,8 @@
                 </view>
             </view>
             <block>
-                 <view v-html="proDetail.saleAnnouncement"></view>
+                 <!-- <view v-html="proDetail.saleAnnouncement"></view> -->
+								 <rich-text :nodes="proDetail.saleAnnouncement"></rich-text>
             </block>
         </view>
         <view class="zui-nomore-box">
@@ -183,7 +186,8 @@
                 </view>
             </view>
             <block>
-                 <view v-html="proDetail.saleAnnouncement"></view>
+                 <!-- <view v-html="proDetail.saleNotice"></view> -->
+								 <rich-text :nodes="proDetail.saleNotice"></rich-text>
             </block>
         </view>
 
@@ -248,7 +252,7 @@ export default {
                 "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/5f204ba3f7924960989cf6b11dc0fa0f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"
             ],
             htmlCode:`<div class="container detail-important-warming-text color-grey"><p>来拍法服平台受
-            	<span class="color-red">柘城县人民法院</span> 
+            	<span class="color-red">柘城县人民法院</span>
             	委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`
             //
 
@@ -311,7 +315,7 @@ export default {
                 this.$mHelper.h5Copy(`${this.$mConfig.hostUrl}/pages/product/proDetail?id=${this.productId}`);
             // #endif
             // #ifdef APP-PLUS
-            
+
             // this.$mHelper.handleAppShare(this.url, this.appName, this.product.name, this.product.picture); // url,引用名,商品名,图片
                 this.$mHelper.handleAppShare(this.url+'&isshare=1', this.appName, "分享示例", "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"); // url,引用名,商品名,图片
             // #endif
@@ -350,7 +354,7 @@ export default {
 
 		this.userInfo = uni.getStorageSync('userInfo') || {};
         // await this.initData();
-        
+
         let obj = {};
         // #ifdef MP-WEIXIN
         obj = wx.getMenuButtonBoundingClientRect();
@@ -428,7 +432,7 @@ export default {
             align-items: center;
             justify-content: center;
         }
-        
+
     }
     // banner
     .zui-banner-swiper{
@@ -462,7 +466,7 @@ export default {
                 padding: 0 10px;
                 color:#fff;
                 font-size:$font-sm;
-            
+
                     background: green;
             }
             .p-start-time{
@@ -515,12 +519,12 @@ export default {
     }
         .gray-title{
             color: #a0a0a0;
-           &:after { 
+           &:after {
                     content: ":";
                     position: relative;
                     top: -.5px;
                     margin: 0 8px 0 2px;
-                    
+
                 }
         }
         .price1{
@@ -606,6 +610,7 @@ export default {
     }
 
     .zui-nomore-box{
+			padding:20rpx 30rpx;
         .zui-nomore-class{
             width: 50%;
             margin: 1.5em auto;
