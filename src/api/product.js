@@ -2,19 +2,22 @@
  * 商品API
  * @Author: mikey.zhaopeng 
  * @Date: 2020-09-01 22:19:08 
- * @Last Modified by:   mikey.zhaopeng 
- * @Last Modified time: 2020-09-01 22:19:08 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-09-02 22:38:11
  */
 
 // 首页列表
 const indexList = '/wx/auctionItem/list';
 
- // 产品列表
+ // 商品列表
 const productList = '/wx/auctionItem/list';
 
 
 // 推荐分类
 const recommendCateList = '/wx/auctionItem/type';
+
+// 单个商品详情
+const productDetailUrl = `/wx/auctionItem/info/`
 
 
 
@@ -106,10 +109,12 @@ const thirdPartyQrCode = '/tiny-shop/v1/third-party/qr-code';
 
 export {
 	indexList,
-	productCate,
-	productCateList,
 	productList,
 	recommendCateList,
+	productDetailUrl,
+	
+	productCate,
+	productCateList,
 	guessYouLikeList,
 	productDetail,
 	combinationView,
