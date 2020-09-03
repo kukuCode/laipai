@@ -101,6 +101,23 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "pages/user",
+			"pages": [
+				{
+					"path": "userinfo/userinfo",
+					"style": {
+						"navigationBarTitleText": "个人信息"
+					}
+				},
+				{
+					"path": "appointment/application",
+					"style": {
+						"navigationBarTitleText": "申请预约"
+					}
+				}
+			]
 		}
 	],
 	"easycom": {

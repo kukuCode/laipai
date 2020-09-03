@@ -101,12 +101,19 @@
 
         <!--底部操作栏-->
 		<view class="page-bottom">
-			<view class="page-bottom-bth-wrapper" style="width:">
-				<view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150">
-					<i class="iconfont iconkefu2"></i>
-					<view class="tui-operation-text tui-scale-small" @tap="hanldeAdvisory">咨询</view>
-				</view>
-			</view>
+                <view class="page-bottom-bth-wrapper" style="width:">
+                    <button open-type="contact" class="action-btn">
+                        <view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150">
+                            <i class="iconfont iconkefu2"></i>
+                            <view class="tui-operation-text tui-scale-small">客服</view>
+                        </view>
+                    </button>
+                
+                    <!-- <view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150" @tap="hanldeAdvisory">
+                        <i class="iconfont iconkefu2"></i>
+                        <view class="tui-operation-text tui-scale-small">咨询</view>
+                    </view> -->
+                </view>
 			<view class="apply-action-btn" style="flex:1">
                     <button
 						class="action-btn"
@@ -287,13 +294,23 @@ export default {
 		    this.$mRouter.back();
 		},
         applySubmit(){
-            if (!this.hasLogin) {
+           /*  if (!this.hasLogin) {
                 this.$mHelper.backToLogin();
                 return;
-            }
+            } */
+            this.navTo('/pages/user/appointment/application');
+            
         },
+        navTo(route) {
+			if (!route) return;
+            /* if (!this.hasLogin) {
+                this.$mHelper.backToLogin();
+                return;
+            } */
+			this.$mRouter.push({ route });
+		},
         hanldeAdvisory(){
-             if (!this.hasLogin) {
+            if (!this.hasLogin) {
                 this.$mHelper.backToLogin();
                 return;
             }
@@ -666,4 +683,8 @@ export default {
 .spec-color {
 				color: $font-color-spec;
 			}
+
+            .tui-scale-small{
+		font-size:24rpx;
+	}
 </style>
