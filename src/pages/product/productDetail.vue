@@ -7,12 +7,14 @@
         <view class="zui-header-box" :style="{ height: height + 'px', background: 'rgba(255,255,255,' + opcity + ')' }">
 			<view class="zui-header" :style="{ paddingTop: top + 'px', opacity: opcity }">商品详情</view>
 			<view class="zui-header-icon" :style="{ marginTop: top + 'px' }">
+                <!--#ifdef MP-WEIXIN-->
 				<view v-if="!isshare" class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="navBack">
                     <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
 				</view>
 				<view v-else class="zui-icon-box" :style="{ backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')' }" @tap="backHome">
                     <zui-icon name="arrowleft" :size="30" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
 				</view>
+                <!--#endif-->
 
 				<!-- <view class="zui-icon-box zui-icon-ml" :style="{backgroundColor: 'rgba(0, 0, 0,' + iconOpcity + ')'}" @tap.stop="openMenu">
 					<zui-icon name="more-fill" :size="20" :color="opcity >= 1 ? '#000' : '#fff'"></zui-icon>
@@ -20,7 +22,7 @@
 				</view>  -->
 
 			</view>
-           
+
 		</view>
         <!-- header -->
 
@@ -44,13 +46,13 @@
         <view class="p-progress">
             <view class="p-status-info">
                 <view class="p-about" >即将开始</view>
-                <view class="p-start-time">开拍时间: 2020-08-25</view>
+                <view class="p-start-time">开拍时间: {{proDetail.start}}</view>
             </view>
         </view>
         <view class="z-p-detail zui-border-radius">
              <view>
-                 <view class="p-flex introduce-line">
-                      <view class="z-title">柘城县未来大道盛华佳苑小区2幢2-1102号</view>
+                 <view class="p-flex introduce-line" style="align-items: flex-start;">
+                      <view class="z-title">{{proDetail.title}}</view>
                     <view class="z-share">
                     <button open-type="share" class="zui-share-btn" :class="'text-' + themeColor.name" @tap.stop="share()">
                         <text class="iconfont iconfenxiang"></text>
@@ -60,21 +62,21 @@
                  </view>
                   <view class="p-flex">
                       <view class="gray-title">起&nbsp;&nbsp;拍&nbsp;&nbsp;价</view>
-                      <view class="price1 text-red"> {{ moneySymbol }} 15000</view>
+                      <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.initialPrice || 0}}</view>
                   </view>
                   <view class="p-flex">
                       <view class="gray-title">评&nbsp;&nbsp;估&nbsp;&nbsp;价</view>
-                    <view class="price1 text-red"> {{ moneySymbol }} 20000</view>
+                    <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.consultPrice || 0}}</view>
                   </view>
 
                    <view class="p-flex flex-col">
                       <view class="p-flex2">
                        <view class="gray-title ">保&nbsp;&nbsp;证&nbsp;&nbsp;金</view>
-                       <view class="price2 "> {{ moneySymbol }} 20000</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.bail || 0}}</view>
                       </view>
                       <view class="p-flex2">
                        <view class="gray-title ">加价幅度</view>
-                       <view class="price2 "> {{ moneySymbol }} 5000</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.markUp || 0}}</view>
                       </view>
                    </view>
                    <view class="p-flex flex-col">
@@ -83,15 +85,15 @@
                        <view class="price2 ">24小时</view>
                       </view>
                       <view class="p-flex2">
-                       <view class="gray-title ">竞价周期</view>
+                       <view class="gray-title ">标的物编号</view>
                        <view class="price2 ">123123</view>
                       </view>
                    </view>
                     <view class="p-flex">
                         <view class="gray-title">开拍时间</view>
-                        <view class="price1">2020-08-25</view>
+                        <view class="price1">{{proDetail.start}}</view>
                   </view>
-                
+
                 <view></view>
              </view>
         </view>
@@ -151,33 +153,81 @@
             <block>
                 <view style="margin-bottom:10px;font-size:16px;">重要提示</view>
             </block>
-            <view v-html="htmlCode"></view>
+            <!-- <view v-html="htmlCode"></view> -->
+						<rich-text :nodes="htmlCode"></rich-text>
         </view>
 
+        <view class="zui-nomore-box" v-if="proDetail.introductionOfItem">
+            <view class="zui-nomore-class">
+                <view class="zui-nomore">
+                    <view class="zui-txt">标的物介绍</view>
+                </view>
+            </view>
+            <block>
+                 <!-- <view v-html="proDetail.introductionOfItem"></view> -->
+								 <rich-text :nodes="proDetail.introductionOfItem"></rich-text>
+            </block>
+        </view>
         <view class="zui-nomore-box">
             <view class="zui-nomore-class">
                 <view class="zui-nomore">
-                    <view class="zui-txt">商品详情</view>
+                    <view class="zui-txt">拍卖公告</view>
                 </view>
             </view>
+            <block>
+                 <!-- <view v-html="proDetail.saleAnnouncement"></view> -->
+								 <rich-text :nodes="proDetail.saleAnnouncement"></rich-text>
+            </block>
+        </view>
+        <view class="zui-nomore-box">
+            <view class="zui-nomore-class">
+                <view class="zui-nomore">
+                    <view class="zui-txt">拍卖须知</view>
+                </view>
+            </view>
+            <block>
+                 <!-- <view v-html="proDetail.saleNotice"></view> -->
+								 <rich-text :nodes="proDetail.saleNotice"></rich-text>
+            </block>
         </view>
 
+
+    <view v-if="!proDetail.id && !loading">
+        <rf-no-data class="rf-no-data" :custom="true">
+            <view class="title" @tap="getOrderDetail">
+                {{ errInfo || '商品不存在' }}
+            </view>
+            <view @tap="getOrderDetail" slot="refresh" class="spec-color"
+                >重新加载</view
+            >
+        </rf-no-data>
+    </view>
+
+    <!--页面加载动画-->
+    <rfLoading isFullScreen :active="loading"></rfLoading>
     </view>
 </template>
 
 <script>
+import {productDetailUrl} from '@/api/product';
+import rfNoData from '@/components/rf-no-data';
+
 export default {
     props: {
 
     },
+    components: {
+		rfNoData
+	},
     data() {
         return {
             hasLogin: this.$mStore.getters.hasLogin,
             moneySymbol:this.moneySymbol,
+            productId:'', // 商品id
             isshare: false,
-            productDetail: {},
+            proDetail: {},
             loading: true,
-            errorInfo: '',
+            errInfo: '',
             userInfo: {},
             scrollTop: 0,
             currentUrl: '',
@@ -202,7 +252,7 @@ export default {
                 "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/5f204ba3f7924960989cf6b11dc0fa0f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"
             ],
             htmlCode:`<div class="container detail-important-warming-text color-grey"><p>来拍法服平台受
-            	<span class="color-red">柘城县人民法院</span> 
+            	<span class="color-red">柘城县人民法院</span>
             	委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`
             //
 
@@ -210,8 +260,8 @@ export default {
     },
     onShareAppMessage() {
 		return {
-			title: `分享标题Test`,
-			path: `pages/product/productDetail?id=123123&isshare=1`
+			title: `${this.proDetail.title}`,
+            path: `pages/product/productDetail?id=${this.productId}&isshare=1`
 		};
 	},
     computed: {
@@ -262,18 +312,35 @@ export default {
         // 分享
          share() {
             // #ifdef H5
-                this.$mHelper.h5Copy(`${this.$mConfig.hostUrl}/pages/product/productDetail?id=${this.productId}`);
+                this.$mHelper.h5Copy(`${this.$mConfig.hostUrl}/pages/product/proDetail?id=${this.productId}`);
             // #endif
             // #ifdef APP-PLUS
-            
+
             // this.$mHelper.handleAppShare(this.url, this.appName, this.product.name, this.product.picture); // url,引用名,商品名,图片
                 this.$mHelper.handleAppShare(this.url+'&isshare=1', this.appName, "分享示例", "https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"); // url,引用名,商品名,图片
             // #endif
         },
+        initData(){
+            this.getOrderDetail();
+        },
+        async getOrderDetail() {
+            debugger;
+			await this.$http
+				.get(`${productDetailUrl}${this.productId}`)
+				.then(r => {
+					this.loading = false;
+                    this.proDetail = r.data;
+                    debugger;
+				})
+				.catch(err => {
+					this.loading = false;
+					this.errInfo = err;
+				});
+		},
 
     },
-    components: {
-
+    onShow() {
+		this.initData();
     },
     async onLoad(options) {
         console.log('detail-onload-options',options)
@@ -283,10 +350,11 @@ export default {
             this.isshare = true
         }
 
-		this.productId = options.id;
+        this.productId = options.id;
+
 		this.userInfo = uni.getStorageSync('userInfo') || {};
         // await this.initData();
-        
+
         let obj = {};
         // #ifdef MP-WEIXIN
         obj = wx.getMenuButtonBoundingClientRect();
@@ -364,7 +432,7 @@ export default {
             align-items: center;
             justify-content: center;
         }
-        
+
     }
     // banner
     .zui-banner-swiper{
@@ -398,7 +466,7 @@ export default {
                 padding: 0 10px;
                 color:#fff;
                 font-size:$font-sm;
-            
+
                     background: green;
             }
             .p-start-time{
@@ -417,6 +485,7 @@ export default {
             width: 104rpx;
             margin-left: 18rpx;
             font-size: 22rpx;
+            flex: 0 0 104rpx;
             .zui-share-btn{
                 border-radius: 24px 0 0 24px;
                 padding: 4px 7px;
@@ -440,6 +509,7 @@ export default {
         display: flex;
         align-items: center;
          flex:1 1 auto;
+         width:50%;
     }
     .flex1{
         flex:1 1 auto;
@@ -449,12 +519,12 @@ export default {
     }
         .gray-title{
             color: #a0a0a0;
-           &:after { 
+           &:after {
                     content: ":";
                     position: relative;
                     top: -.5px;
                     margin: 0 8px 0 2px;
-                    
+
                 }
         }
         .price1{
@@ -540,6 +610,7 @@ export default {
     }
 
     .zui-nomore-box{
+			padding:20rpx 30rpx;
         .zui-nomore-class{
             width: 50%;
             margin: 1.5em auto;
@@ -574,9 +645,9 @@ export default {
                 left: 0;
             }
                 .zui-txt{
-                    background-color: #f1f1f1;
+                    background-color: #fff;
                     color: #999;
-                    font-size: 12px;
+                    font-size: 48rpx;
                     text-align: center;
                     padding: 0 9px;
                     height: 18px;
@@ -587,4 +658,12 @@ export default {
             }
         }
     }
+
+
+.rf-no-data {
+	height: calc(100vh - 90upx);
+}
+.spec-color {
+				color: $font-color-spec;
+			}
 </style>
