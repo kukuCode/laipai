@@ -150,11 +150,20 @@
         </view>
 
         <view class="z-box">
-            <block>
+            <!-- <block>
                 <view style="margin-bottom:10px;font-size:16px;">重要提示</view>
-            </block>
+            </block> -->
             <!-- <view v-html="htmlCode"></view> -->
-						<rich-text :nodes="htmlCode"></rich-text>
+
+						<view class="detail-wrapper" :class="{'detail-warming-readall':isExpand}" >
+							<view style="margin-bottom:10px;font-size:16px;">重要提示</view>
+							<view class="detail-warming-cover">
+								<view class="detail-cover-btn"><text class="more-txt" @click="isExpand = !isExpand">{{isExpand ? '点击收起': '点击展开'}}</text></view>
+							</view>
+							<view class="detail-desc">
+								<rich-text :nodes="htmlCode"></rich-text>
+							</view>
+						</view>
         </view>
 
         <view class="zui-nomore-box" v-if="proDetail.introductionOfItem">
@@ -225,6 +234,7 @@ export default {
             moneySymbol:this.moneySymbol,
             productId:'', // 商品id
             isshare: false,
+						isExpand:false,// 展开收齐
             proDetail: {},
             loading: true,
             errInfo: '',
@@ -666,4 +676,42 @@ export default {
 .spec-color {
 				color: $font-color-spec;
 			}
+
+// 重要提示
+.detail-wrapper{
+	position: relative;
+	position: relative;
+	height: 500rpx;
+	overflow: hidden;
+	transition: all .3s;
+
+	&.detail-warming-readall {
+		.detail-warming-cover{
+				background: transparent;
+		}
+		height: 920rpx ;
+	}
+
+	.detail-warming-cover {
+			font-size: 24rpx;
+			position: absolute;
+			bottom: 0px;
+			height: 200rpx;
+			width: 100%;
+			background: linear-gradient(to top, white, rgba(255, 255, 255, 0));
+		.detail-cover-btn{
+			text-align: center;
+			position: absolute;
+			bottom: 20rpx;
+			width: 100%;
+			font-size: 14px;
+			color: #b52e25;
+			.more-txt{
+				    border-bottom: 4rpx solid #b52e25;
+				    color: #b52e25;
+				    padding-bottom: 10rpx;
+			}
+		}
+	}
+}
 </style>
