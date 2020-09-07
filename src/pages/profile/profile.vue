@@ -222,6 +222,7 @@ export default {
 			} else {
 				this.$mRouter.push({ route });
 			} */
+			debugger;
 			this.$mRouter.push({ route });
 		},
 		weixinLogin(provider = 'weixin'){

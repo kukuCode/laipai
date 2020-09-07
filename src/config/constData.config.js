@@ -37,7 +37,7 @@ export default {
 	settingList: [
 		{ icon: 'iconshoucang3', url: '/pages/user/userinfo/userinfo', title: '个人信息', color: '#ff6b81' },
 		{ icon: 'iconshoucang3', url: '/pages/user/service/myservice', title: '我的服务', color: '#ff6b81' },
-		{ icon: 'iconshoucang3', url: '/pages/user/appointment/list', title: '预约记录', color: '#ff6b81' },
+		{ icon: 'iconshoucang3', url: '/pages/appointment/appointmentlist', title: '预约记录', color: '#ff6b81' },
 		{ icon: 'iconshoucang3', url: '/pages/user/bind/unbind', title: '解除绑定', color: '#ff6b81' }
 	],
 

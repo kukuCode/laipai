@@ -72,6 +72,17 @@
 	],
 	"subPackages": [
 		{
+			"root": "pages/icon",
+			"pages": [
+				{
+					"path": "icon",
+					"style": {
+						"navigationBarTitleText": "图标"
+					}
+				}
+			]
+		},
+		{
 			"root": "pages/public",
 			"pages": [
 				{
@@ -110,15 +121,27 @@
 					"style": {
 						"navigationBarTitleText": "个人信息"
 					}
-				},
+				}
+			]
+		},
+		{
+			"root": "pages/appointment",
+			"pages": [
 				{
-					"path": "appointment/application",
+					"path": "application",
 					"style": {
 						"navigationBarTitleText": "申请预约"
+					}
+				},
+				{
+					"path": "appointmentlist",
+					"style": {
+						"navigationBarTitleText": "我的预约"
 					}
 				}
 			]
 		}
+
 	],
 	"easycom": {
 		"autoscan": true,

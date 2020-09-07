@@ -1,9 +1,15 @@
 /**
  *@des 个人中心相关接口
- *@author stav stavyan@qq.com
- *@blog https://stavtop.club
- *@date 2019/11/16 11:04:16
  */
+// 预约申请
+const appointment  = '/wx/auctionItem/appointment';
+
+// 取消预约申请 参数：id（预约id）
+const cancelAppointment = '/wx/auctionItem/cancelappointment/';
+// 获取预约记录
+const appointmentList =  '/wx/auctionItem/appointmentList/';
+
+
 // 个人信息
 const memberInfo = '/tiny-shop/v1/member/member/index';
 // 个人信息修改
@@ -142,10 +148,12 @@ const orderProductVirtualView =
 const productVirtualVerificationVerify =
 	'/tiny-shop/v1/order/product-virtual-verification/verify';
 
-// 会员等级
-const memberLevelIndex = '/tiny-shop/v1/member/member-level/index';
 
 export {
+	appointment,
+	cancelAppointment,
+	appointmentList,
+
 	memberInfo,
 	memberUpdate,
 	addressList,
@@ -202,6 +210,5 @@ export {
 	notifySubscriptionConfigIndex,
 	orderProductVirtualIndex,
 	orderProductVirtualView,
-	productVirtualVerificationVerify,
-	memberLevelIndex
+	productVirtualVerificationVerify
 };
