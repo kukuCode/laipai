@@ -30,7 +30,7 @@
 		<view class="zui-banner-swiper">
 			<swiper indicator-dots :autoplay="true" :interval="5000" :duration="150" :circular="true" touchable :style="{ height: scrollH + 'px' }"
 			 @change="bannerChange">
-				<block v-for="(item, index) in banner" :key="index">
+				<block v-for="(item, index) in bannerList" :key="index">
 					<swiper-item :data-index="index" @tap.stop="previewImage">
 						<image :src="item" class="zui-slide-image" :style="{ height: scrollH + 'px' }" />
 					</swiper-item>
@@ -45,7 +45,7 @@
         <!-- detail -->
         <view class="p-progress">
             <view class="p-status-info">
-                <view class="p-about" >即将开始</view>
+                <view class="p-about">{{statusTxt}}</view>
                 <view class="p-start-time">开拍时间: {{proDetail.start}}</view>
             </view>
         </view>
@@ -82,11 +82,11 @@
                    <view class="p-flex flex-col">
                       <view class="p-flex2">
                        <view class="gray-title ">竞价周期</view>
-                       <view class="price2 ">24小时</view>
+                       <view class="price2 ">{{proDetail.saleCycle}}</view>
                       </view>
                       <view class="p-flex2">
                        <view class="gray-title ">标的物编号</view>
-                       <view class="price2 ">123123</view>
+                       <view class="price2 ">{{proDetail.idOfAuction}}</view>
                       </view>
                    </view>
                     <view class="p-flex">
@@ -111,7 +111,7 @@
                     <button
 						class="action-btn"
 						:class="'bg-' + themeColor.name"
-						:disabled="disabledApplyBtn"
+						:disabled="proDetail.isLook != 1 "
 						@tap="applySubmit"
 					>
                     申请预约
@@ -275,7 +275,36 @@ export default {
 		};
 	},
     computed: {
+        bannerList(){
+            let {infoPics} = this.proDetail
+            if(Array.isArray(infoPics) && infoPics.length){
+                return infoPics
+            } else {
+                return []
+            }
+        },
+        status(){
+            return this.proDetail.status
+        },
+        statusTxt(){
+            //  todo:即将开始 doing:正在进行  done:已结束
+            let _status = ''
+         switch (this.status) {
+             case 'todo':
+                 _status = '即将开始'
+                 break;
+             case 'doing':
+                 _status = '正在进行'
+                 break;
+             case 'done':
+                 _status = '已结束'
+                 break;
+             default:
+                 break;
+         }
+         return _status
 
+        }
     },
     created() {
 
