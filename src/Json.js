@@ -223,7 +223,7 @@ export const commodityList = [{
 }
 ]
 
-export const addressList = [{"address_code":"101270101","name":"成都市","id":1},{"address_code":"101270401","name":"绵阳市","id":2},{"address_code":"101270301","name":"自贡市","id":3},{"address_code":"101270201","name":"攀枝花市","id":4},{"address_code":"101271001","name":"泸州市","id":5},{"address_code":"101272001","name":"德阳市","id":6},{"address_code":"101272101","name":"广元市","id":7},{"address_code":"101270701","name":"遂宁市","id":8},{"address_code":"101271201","name":"内江市","id":9},{"address_code":"101271401","name":"乐山市","id":10},{"address_code":"101271301","name":"资阳市","id":11},{"address_code":"101270501","name":"南充市","id":32},{"address_code":"101270601","name":"达州市","id":33},{"address_code":"101271701","name":"雅安市","id":34},{"address_code":"101270801","name":"广安市","id":35},{"address_code":"101270901","name":"巴中市","id":36},{"address_code":"101271501","name":"眉山市","id":37},{"address_code":"101271101","name":"宜宾市","id":38},{"address_code":"101271901","name":"阿坝藏族羌族自治州","id":39},{"address_code":"101271801","name":"甘孜藏族自治州","id":40},{"address_code":"101271601","name":"凉山彝族自治州","id":41}]
+export const addressList = [{ "address_code": "101270101", "name": "成都市", "id": 1 }, { "address_code": "101270401", "name": "绵阳市", "id": 2 }, { "address_code": "101270301", "name": "自贡市", "id": 3 }, { "address_code": "101270201", "name": "攀枝花市", "id": 4 }, { "address_code": "101271001", "name": "泸州市", "id": 5 }, { "address_code": "101272001", "name": "德阳市", "id": 6 }, { "address_code": "101272101", "name": "广元市", "id": 7 }, { "address_code": "101270701", "name": "遂宁市", "id": 8 }, { "address_code": "101271201", "name": "内江市", "id": 9 }, { "address_code": "101271401", "name": "乐山市", "id": 10 }, { "address_code": "101271301", "name": "资阳市", "id": 11 }, { "address_code": "101270501", "name": "南充市", "id": 32 }, { "address_code": "101270601", "name": "达州市", "id": 33 }, { "address_code": "101271701", "name": "雅安市", "id": 34 }, { "address_code": "101270801", "name": "广安市", "id": 35 }, { "address_code": "101270901", "name": "巴中市", "id": 36 }, { "address_code": "101271501", "name": "眉山市", "id": 37 }, { "address_code": "101271101", "name": "宜宾市", "id": 38 }, { "address_code": "101271901", "name": "阿坝藏族羌族自治州", "id": 39 }, { "address_code": "101271801", "name": "甘孜藏族自治州", "id": 40 }, { "address_code": "101271601", "name": "凉山彝族自治州", "id": 41 }]
 
 
 export const menuList = [{
@@ -232,29 +232,29 @@ export const menuList = [{
     'isMutiple': true,
     'key': 'jobType',
     'detailList': [{
-            'title': '不限',
-            'value': ''
-        },
-        {
-            'title': 'uni-app',
-            'value': 'uni-app'
-        },
-        {
-            'title': 'java开发',
-            'value': 'java'
-        },
-        {
-            'title': 'web开发',
-            'value': 'web'
-        },
-        {
-            'title': 'Android开发',
-            'value': 'Android'
-        },
-        {
-            'title': 'iOS开发',
-            'value': 'iOS'
-        }
+        'title': '不限',
+        'value': ''
+    },
+    {
+        'title': 'uni-app',
+        'value': 'uni-app'
+    },
+    {
+        'title': 'java开发',
+        'value': 'java'
+    },
+    {
+        'title': 'web开发',
+        'value': 'web'
+    },
+    {
+        'title': 'Android开发',
+        'value': 'Android'
+    },
+    {
+        'title': 'iOS开发',
+        'value': 'iOS'
+    }
     ]
 
 },
@@ -264,25 +264,25 @@ export const menuList = [{
     'isMutiple': true,
     'detailTitle': '请选择月薪范围（可多选）',
     'detailList': [{
-            'title': '不限',
-            'value': ''
-        },
-        {
-            'title': '7000~8000',
-            'value': '7000~8000'
-        },
-        {
-            'title': '8000~9000',
-            'value': '8000~9000'
-        },
-        {
-            'title': '9000~10000',
-            'value': '9000~10000'
-        },
-        {
-            'title': '10000以上',
-            'value': '10000~1000000'
-        }
+        'title': '不限',
+        'value': ''
+    },
+    {
+        'title': '7000~8000',
+        'value': '7000~8000'
+    },
+    {
+        'title': '8000~9000',
+        'value': '8000~9000'
+    },
+    {
+        'title': '9000~10000',
+        'value': '9000~10000'
+    },
+    {
+        'title': '10000以上',
+        'value': '10000~1000000'
+    }
     ]
 
 },
@@ -292,29 +292,29 @@ export const menuList = [{
     'isMutiple': false,
     'detailTitle': '请选择（单选）',
     'detailList': [{
-            'title': '不限',
-            'value': ''
-        },
-        {
-            'title': '条件1',
-            'value': 'test_1'
-        },
-        {
-            'title': '条件2',
-            'value': 'test_2'
-        },
-        {
-            'title': '条件3',
-            'value': 'test_3'
-        },
-        {
-            'title': '条件4',
-            'value': 'test_4'
-        },
-        {
-            'title': '条件5',
-            'value': 'test_5'
-        }
+        'title': '不限',
+        'value': ''
+    },
+    {
+        'title': '条件1',
+        'value': 'test_1'
+    },
+    {
+        'title': '条件2',
+        'value': 'test_2'
+    },
+    {
+        'title': '条件3',
+        'value': 'test_3'
+    },
+    {
+        'title': '条件4',
+        'value': 'test_4'
+    },
+    {
+        'title': '条件5',
+        'value': 'test_5'
+    }
     ]
 },
 {
@@ -322,130 +322,130 @@ export const menuList = [{
     'key': 'sort',
     'isSort': true,
     'detailList': [{
-            'title': '默认排序',
-            'value': ''
-        },
-        {
-            'title': '发布时间',
-            'value': 'add_time'
-        },
-        {
-            'title': '薪资最高',
-            'value': 'wages_up'
-        },
-        {
-            'title': '离我最近',
-            'value': 'location'
-        }
+        'title': '默认排序',
+        'value': ''
+    },
+    {
+        'title': '发布时间',
+        'value': 'add_time'
+    },
+    {
+        'title': '薪资最高',
+        'value': 'wages_up'
+    },
+    {
+        'title': '离我最近',
+        'value': 'location'
+    }
     ]
 }
 ]
 
 
 export const filterDataList = [{
-    "name":'价格',
+    "name": '价格',
     "type": 'hierarchy',
     "submenu": [{
-            "name": '综合',
-            "value": "综合",
-        },
-				{
-				        "name": '价格升序',
-				        "value": "价格升序",
-				    },{
-            "name": '价格降序',
-            "value": "价格降序",
-        },
+        "name": '综合',
+        "value": "综合",
+    },
+    {
+        "name": '价格升序',
+        "value": "价格升序",
+    }, {
+        "name": '价格降序',
+        "value": "价格降序",
+    },
 
     ]
 },
 {
-    "name":'区域',
+    "name": '区域',
     "type": 'hierarchy',
     "submenu": []
 },
 {
-    "name":'状态',
+    "name": '状态',
     "type": 'hierarchy',
     "submenu": [
         {
             "name": "即将开始",
             "value": "即将开始"
         },
-				{
-				    "name": "正在进行",
-				    "value": "正在进行"
-				},
-				{
-				    "name": "已成交",
-				    "value": "已成交"
-				}
+        {
+            "name": "正在进行",
+            "value": "正在进行"
+        },
+        {
+            "name": "已成交",
+            "value": "已成交"
+        }
     ]
 },
 {
-    "name":'类型',
+    "name": '类型',
     "type": 'hierarchy',
     "submenu": []
 },
 {
-	"type": 'filter'
+    "type": 'filter'
 }
-/* 
-{
-    "name":'筛选',
-    "type": 'radio',
-    "submenu": [{
-            "name": "拍卖轮次",
-            "submenu": [{
-                    "name": "一拍",
-                    "value": "一拍"
-                },
-                {
-                    "name": "二拍",
-                    "value": "一拍"
-                },
-                {
-                    "name": "变卖",
-                    "value": "变卖"
-                }
-            ]
-        },
-        {
-            "name": "拍卖状态",
-            "submenu": [{
-                    "name": "即将开始",
-                    "value": "即将开始"
-                },
-                {
-                    "name": "正在进行",
-                    "value": "正在进行"
-                },
-                {
-                    "name": "已成交",
-                    "value": "已成交"
-                },
-                {
-                    "name": "暂缓",
-                    "value": "暂缓"
-                },
-                {
-                    "name": "流拍",
-                    "value": "流拍"
-                },
-                {
-                    "name": "中止",
-                    "value": "中止"
-                },
-                {
-                    "name": "撤回",
-                    "value": "撤回"
-                },
-                {
-                    "name": "以物抵债",
-                    "value": "以物抵债"
-                }
-            ]
-        }
-    ]
-} */
+    /* 
+    {
+        "name":'筛选',
+        "type": 'radio',
+        "submenu": [{
+                "name": "拍卖轮次",
+                "submenu": [{
+                        "name": "一拍",
+                        "value": "一拍"
+                    },
+                    {
+                        "name": "二拍",
+                        "value": "一拍"
+                    },
+                    {
+                        "name": "变卖",
+                        "value": "变卖"
+                    }
+                ]
+            },
+            {
+                "name": "拍卖状态",
+                "submenu": [{
+                        "name": "即将开始",
+                        "value": "即将开始"
+                    },
+                    {
+                        "name": "正在进行",
+                        "value": "正在进行"
+                    },
+                    {
+                        "name": "已成交",
+                        "value": "已成交"
+                    },
+                    {
+                        "name": "暂缓",
+                        "value": "暂缓"
+                    },
+                    {
+                        "name": "流拍",
+                        "value": "流拍"
+                    },
+                    {
+                        "name": "中止",
+                        "value": "中止"
+                    },
+                    {
+                        "name": "撤回",
+                        "value": "撤回"
+                    },
+                    {
+                        "name": "以物抵债",
+                        "value": "以物抵债"
+                    }
+                ]
+            }
+        ]
+    } */
 ]

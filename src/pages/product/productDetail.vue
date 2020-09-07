@@ -42,64 +42,67 @@
 		</view>
 		<!--banner-->
 
-		<!-- detail -->
-		<view class="p-progress">
-			<view class="p-status-info">
-				<view class="p-about">即将开始</view>
-				<view class="p-start-time">开拍时间: {{proDetail.start}}</view>
-			</view>
-		</view>
-		<view class="z-p-detail zui-border-radius">
-			<view>
-				<view class="p-flex introduce-line" style="align-items: flex-start;">
-					<view class="z-title">{{proDetail.title}}</view>
-					<view class="z-share">
-						<button open-type="share" class="zui-share-btn" :class="'text-' + themeColor.name" @tap.stop="share()">
-							<text class="iconfont iconfenxiang"></text>
-							<text class="tui-share-text tui-gray">分享</text>
-						</button>
-					</view>
+        <!-- detail -->
+        <view class="p-progress">
+            <view class="p-status-info" :class="proDetail.status">
+                <!-- <view class="p-about">{{statusTxt}}</view> -->
+                <view class="p-about" :class="proDetail.status">
+					{{statusTxt}}
 				</view>
-				<view class="p-flex">
-					<view class="gray-title">起&nbsp;&nbsp;拍&nbsp;&nbsp;价</view>
-					<view class="price1 text-red"> {{ moneySymbol }}{{proDetail.initialPrice || 0}}</view>
-				</view>
-				<view class="p-flex">
-					<view class="gray-title">评&nbsp;&nbsp;估&nbsp;&nbsp;价</view>
-					<view class="price1 text-red"> {{ moneySymbol }}{{proDetail.consultPrice || 0}}</view>
-				</view>
+                <view class="p-start-time">开拍时间: {{proDetail.start}}</view>
+            </view>
+        </view>
+        <view class="z-p-detail zui-border-radius">
+             <view>
+                 <view class="p-flex introduce-line" style="align-items: flex-start;">
+                      <view class="z-title">{{proDetail.title}}</view>
+                    <view class="z-share">
+                    <button open-type="share" class="zui-share-btn" :class="'text-' + themeColor.name" @tap.stop="share()">
+                        <text class="iconfont iconfenxiang"></text>
+                        <text class="tui-share-text tui-gray">分享</text>
+                    </button>
+                </view>
+                 </view>
+                  <view class="p-flex">
+                      <view class="gray-title">起&nbsp;&nbsp;拍&nbsp;&nbsp;价</view>
+                      <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.initialPrice || 0}}</view>
+                  </view>
+                  <view class="p-flex">
+                      <view class="gray-title">评&nbsp;&nbsp;估&nbsp;&nbsp;价</view>
+                    <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.consultPrice || 0}}</view>
+                  </view>
 
-				<view class="p-flex flex-col">
-					<view class="p-flex2">
-						<view class="gray-title ">保&nbsp;&nbsp;证&nbsp;&nbsp;金</view>
-						<view class="price2 "> {{ moneySymbol }}{{proDetail.bail || 0}}</view>
-					</view>
-					<view class="p-flex2">
-						<view class="gray-title ">加价幅度</view>
-						<view class="price2 "> {{ moneySymbol }}{{proDetail.markUp || 0}}</view>
-					</view>
-				</view>
-				<view class="p-flex flex-col">
-					<view class="p-flex2">
-						<view class="gray-title ">竞价周期</view>
-						<view class="price2 ">24小时</view>
-					</view>
-					<view class="p-flex2">
-						<view class="gray-title ">标的物编号</view>
-						<view class="price2 ">123123</view>
-					</view>
-				</view>
-				<view class="p-flex">
-					<view class="gray-title">开拍时间</view>
-					<view class="price1">{{proDetail.start}}</view>
-				</view>
+                   <view class="p-flex flex-col">
+                      <view class="p-flex2">
+                       <view class="gray-title ">保&nbsp;&nbsp;证&nbsp;&nbsp;金</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.bail || 0}}</view>
+                      </view>
+                      <view class="p-flex2">
+                       <view class="gray-title ">加价幅度</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.markUp || 0}}</view>
+                      </view>
+                   </view>
+                   <view class="p-flex flex-col">
+                      <view class="p-flex2">
+                       <view class="gray-title ">竞价周期</view>
+                       <view class="price2 ">{{proDetail.saleCycle}}</view>
+                      </view>
+                      <view class="p-flex2">
+                       <view class="gray-title ">标的物编号</view>
+                       <view class="price2 ">{{proDetail.idOfAuction}}</view>
+                      </view>
+                   </view>
+                    <view class="p-flex">
+                        <view class="gray-title">开拍时间</view>
+                        <view class="price1">{{proDetail.start}}</view>
+                  </view>
 
-				<view></view>
-			</view>
-		</view>
-		<!-- detail -->
+                <view></view>
+             </view>
+        </view>
+        <!-- detail -->
 
-		<!--底部操作栏-->
+        <!--底部操作栏-->
 		<view class="page-bottom">
 			<view class="page-bottom-bth-wrapper" style="width:">
 				<button open-type="contact" class="action-btn">
@@ -115,9 +118,14 @@
                     </view> -->
 			</view>
 			<view class="apply-action-btn" style="flex:1">
-				<button class="action-btn" :class="'bg-' + themeColor.name" :disabled="disabledApplyBtn" @tap="applySubmit">
-					申请预约
-				</button>
+                    <button
+						class="action-btn"
+						:class="'bg-' + themeColor.name"
+						:disabled="proDetail.isLook != 1 "
+						@tap="applySubmit"
+					>
+                    申请预约
+                    </button>
 			</view>
 		</view>
 
@@ -276,16 +284,35 @@
 		},
 		computed: {
 			bannerList(){
-				let {infoPics} = this.proDetail;
-				if(infoPics && infoPics.indexOf(',[') == 0){
-
-					let str2 = infoPics.substr(2)
-					let str3 = str2.substr(0,str2.length-1)
-					console.log('------>',str3)
-					return str3.split(', ')
+				let {infoPics} = this.proDetail
+				if(Array.isArray(infoPics) && infoPics.length){
+					return infoPics
+				} else {
+					return []
 				}
-				return []
+			},
+			status(){
+				return this.proDetail.status
+			},
+			statusTxt(){
+				//  todo:即将开始 doing:正在进行  done:已结束
+				let _status = ''
+			switch (this.status) {
+				case 'todo':
+					_status = '即将开始'
+					break;
+				case 'doing':
+					_status = '正在进行'
+					break;
+				case 'done':
+					_status = '已结束'
+					break;
+				default:
+					break;
 			}
+			return _status
+			}
+    
 		},
 		created() {
 
@@ -501,7 +528,22 @@
 				height: 60rpx;
 				display: flex;
 				align-items: center;
-				background-color: #c3dcd2;
+				background-color: #e7e7e7;
+				&.todo{
+					background-color: #c3dcd2;
+				}
+				&.doing{
+					background-color: #f7d3d0;
+				}
+				&.orderenable{
+					background-color: #2B8651;
+				}
+				&.done{
+					background-color: #e7e7e7;
+				}
+				&.booking{
+					background-color: #f5dec8;
+				}
 
 				.p-about {
 					height: 60rpx;
@@ -511,8 +553,22 @@
 					padding: 0 10px;
 					color: #fff;
 					font-size: $font-sm;
-
 					background: green;
+					&.todo{
+						background-color: #2b8651;
+					}
+					&.doing{
+						background-color: #d74b4b;
+					}
+					&.orderenable{
+						background-color: #2B8651;
+					}
+					&.done{
+						background-color: #bbbbbb;
+					}
+					&.booking{
+						background-color: #FF9933;
+					}
 				}
 
 				.p-start-time {

@@ -13,9 +13,10 @@
 				>
 					<view class="rf-pro-content">
 						<view class="rf-pro-tit">
-							<text class="sublist-mark orderenable">即将开始</text>
-							<text class="sublist-mark special">可预约</text>
-							<!-- <text class="sublist-mark booking">看样排期中</text> -->
+							<text class="sublist-mark todo" v-if="item.status == 'todo'">即将开始</text>
+							<text class="sublist-mark doing " v-else-if="item.status == 'doing'">正在进行</text>
+							<text class="sublist-mark done" v-else-if="item.status == 'done'">已结束</text>
+							<!-- <text class="sublist-mark booking" v-else>失效</text> -->
 						 	{{ item.title }}</view>
 						<view v-if="item">
 							<view class="rf-pro-price">
@@ -30,7 +31,7 @@
 					</view>
 					<view class="rf-product-image-wrapper">
 						<!-- <image :src="item.picUrl" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image> -->
-						<image src="http://47.108.156.173:8089/img/TB1mk.Xcvb2gK0jSZK9rxCEgFXa_460x460.jpg" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image>
+						<image :src="item.picUrl" mode="widthFix" :preview="false" :class="[isList?'rf-product-list-img':'rf-product-img']" ></image>
 						<text class="sketch in1line" v-if="item.sketch">{{ item.sketch }}</text>
 					<!-- 	<view class="triangle-wrapper">
 							<image class="triangle-tag" :src="item | filterTagName"></image>
@@ -162,7 +163,25 @@ export default {
 		}
 	},
 	methods: {
-    ...mapMutations(['setCartNum']),
+	...mapMutations(['setCartNum']),
+		statusTxt(status){
+			//  todo:即将开始 doing:正在进行  done:已结束
+			let _status = ''
+			switch (status) {
+				case 'todo':
+					_status = '即将开始'
+					break;
+				case 'doing':
+					_status = '正在进行'
+					break;
+				case 'done':
+					_status = '已结束'
+					break;
+				default:
+					break;
+			}
+			return _status
+		},
 		// 跳转详情
 		navTo(route) {
 			this.$mRouter.push({ route });
@@ -251,11 +270,17 @@ export default {
 		padding: 4upx 14upx;
 		vertical-align: top;
 		font-size:24upx;
-		&.special{
+		&.todo{
+			 background-color: #2b8651;
+		}
+		&.doing{
 			background-color: #d74b4b;
 		}
 		&.orderenable{
 			background-color: #2B8651;
+		}
+		&.done{
+			background-color: #bbbbbb;
 		}
 		&.booking{
 			background-color: #FF9933;
