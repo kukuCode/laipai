@@ -65,21 +65,21 @@
                  </view>
                   <view class="p-flex">
                       <view class="gray-title">起&nbsp;&nbsp;拍&nbsp;&nbsp;价</view>
-                      <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.initialPrice || 0}}</view>
+                      <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.initialPrice | filterAmount}}</view>
                   </view>
                   <view class="p-flex">
                       <view class="gray-title">评&nbsp;&nbsp;估&nbsp;&nbsp;价</view>
-                    <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.consultPrice || 0}}</view>
+                    <view class="price1 text-red"> {{ moneySymbol }}{{proDetail.consultPrice | filterAmount}}</view>
                   </view>
 
                    <view class="p-flex flex-col">
                       <view class="p-flex2">
                        <view class="gray-title ">保&nbsp;&nbsp;证&nbsp;&nbsp;金</view>
-                       <view class="price2 "> {{ moneySymbol }}{{proDetail.bail || 0}}</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.bail | filterAmount}}</view>
                       </view>
                       <view class="p-flex2">
                        <view class="gray-title ">加价幅度</view>
-                       <view class="price2 "> {{ moneySymbol }}{{proDetail.markUp || 0}}</view>
+                       <view class="price2 "> {{ moneySymbol }}{{proDetail.markUp | filterAmount}}</view>
                       </view>
                    </view>
                    <view class="p-flex flex-col">
@@ -103,15 +103,15 @@
         <!-- detail -->
 
         <!--底部操作栏-->
+		
 		<view class="page-bottom">
 			<view class="page-bottom-bth-wrapper" style="width:">
 				<button open-type="contact" class="action-btn">
 					<view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150">
-						<i class="iconfont iconkefu2"></i>
+						<i class="iconfont iconkefu2 text-red"></i>
 						<view class="tui-operation-text tui-scale-small">咨询</view>
 					</view>
 				</button>
-
 				<!-- <view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150" @tap="hanldeAdvisory">
                         <i class="iconfont iconkefu2"></i>
                         <view class="tui-operation-text tui-scale-small">咨询</view>
@@ -128,6 +128,8 @@
                     </button>
 			</view>
 		</view>
+
+		
 
 		<view class="z-box">
 			<block>
@@ -214,7 +216,7 @@
 		<view v-if="!proDetail.id && !loading">
 			<rf-no-data class="rf-no-data" :custom="true">
 				<view class="title" @tap="getOrderDetail">
-					{{ errInfo || '商品不存在' }}
+					{{ '商品不存在' }}
 				</view>
 				<view @tap="getOrderDetail" slot="refresh" class="spec-color">重新加载</view>
 			</rf-no-data>
@@ -260,17 +262,6 @@
 				opcity: 0,
 				iconOpcity: 0.5,
 				disabledApplyBtn: false,
-				// 测试数据
-				banner: [
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/4bb64672cad06ee89ae585f4d33e988f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/f047401736cb00f9d700b092bc1b0c9b.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/0e51c3304c3418e4d9e94c813ec3897f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d2dab4908be164506c0939ad151fea81.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/1a8214722a4177e4342b4a4c56baaffe.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d162ffee7353475b4a2e7845f5d79b0f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800",
-					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/5f204ba3f7924960989cf6b11dc0fa0f.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"
-				],
 				htmlCode: `<div class="container detail-important-warming-text color-grey"><p>来拍法服平台受<span class="color-red">柘城县人民法院</span>委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`,
 
 
@@ -281,6 +272,12 @@
 				title: `${this.proDetail.title}`,
 				path: `pages/product/productDetail?id=${this.productId}&isshare=1`
 			};
+		},
+		filters: {
+			filterAmount(val) {
+				if(!val) return 0
+				return (''+val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+			}
 		},
 		computed: {
 			bannerList(){
@@ -361,11 +358,14 @@
 					return;
 				}
 			},
+			/**
+			 * 预览
+			 */
 			previewImage: function(e) {
 				let index = e.currentTarget.dataset.index;
 				uni.previewImage({
-					current: this.banner[index],
-					urls: this.banner
+					current: this.bannerList[index],
+					urls: this.bannerList
 				});
 			},
 			bannerChange: function(e) {
@@ -377,12 +377,13 @@
 				// #ifdef H5
 				this.$mHelper.h5Copy(`${this.$mConfig.hostUrl}/pages/product/proDetail?id=${this.productId}`);
 				// #endif
+				
 				// #ifdef APP-PLUS
-
 				// this.$mHelper.handleAppShare(this.url, this.appName, this.product.name, this.product.picture); // url,引用名,商品名,图片
-				this.$mHelper.handleAppShare(this.url + '&isshare=1', this.appName, "分享示例",
+				// url,引用名,商品名,图片
+				/* this.$mHelper.handleAppShare(this.url + '&isshare=1', this.appName, "分享示例",
 					"https://laipai-img.oss-cn-hangzhou.aliyuncs.com/upload/d0bdb07e71fb3612ff14c9fd8078fb95.jpeg?x-oss-process=image/resize,m_lfit,h_600,w_800"
-				); // url,引用名,商品名,图片
+				);  */
 				// #endif
 			},
 			initData() {
@@ -667,24 +668,41 @@
 			height: 90rpx;
 			box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.3);
 
+			.action-btn{
+				height: 90rpx;
+				line-height: 90rpx;
+				text-align: center;
+				padding: 0;
+				display: block;
+				line-height: 1;
+    			margin: 0;
+    			overflow: initial;
+				width: 100%;
+				border-radius:0;
+			}
+
 			.page-bottom-bth-wrapper {
-				width: 90px;
+				height: 100%;
+				width: 180rpx;
 				justify-content: center;
+				margin:0;
 
 				.zui-operation-item {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
 					justify-content: center;
+					.iconkefu2{
+						font-size: 34rpx;
+					}
 				}
 			}
 
 			.apply-action-btn {
-				height: 100%;
 				flex: 1;
-
 				button {
 					height: 100%;
+					line-height: 90rpx;;
 					border-radius: 0 !important;
 				}
 			}

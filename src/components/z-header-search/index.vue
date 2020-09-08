@@ -1,6 +1,10 @@
 <template>
 	<view class="serach"  v-if="headerShow" >
 		<view class="header">
+			<view class="addr bg-white">
+				<text>成都</text>
+				<text class="downIcon cuIcon-triangledownfill"></text>
+			</view>
 			<view class="content" :style="{ 'border-radius': radius + 'px' }">
 				<!-- HM修改 增加进入输入状态的点击范围 -->
 				<view class="content-box" :class="{ center: mode === 2 }">
@@ -182,6 +186,18 @@ export default {
 		/*  #ifdef  APP-PLUS  */
 		top: var(--status-bar-height);
 		/*  #endif  */
+
+		.addr {
+			height: 60rpx;
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			margin-right: 20rpx;
+			.downIcon{
+				font-size:36rpx
+			}
+
+		}
 
 	}
 	.content {
