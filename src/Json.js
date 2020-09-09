@@ -360,11 +360,6 @@ export const filterDataList = [{
     ]
 },
 {
-    "name": '区域',
-    "type": 'hierarchy',
-    "submenu": []
-},
-{
     "name": '状态',
     "type": 'hierarchy',
     "submenu": [

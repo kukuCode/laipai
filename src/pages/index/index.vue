@@ -9,9 +9,9 @@
 			@confirm="doSearch(false)"
 			v-model="keyword">
 			<template slot="headerLeft">
-				<view style="display:flex;align-items: center;">
+				<view style="display:flex;align-items: center;    max-width: 120px;    white-space: nowrap;" class="left-region">
 					<!-- <text>成都</text> -->
-					<z-pick-regions :defaultLevel="2" customItem="不限"/>
+					<z-pick-regions :defaultLevel="2" customFirstName="不限" @selecteRegion="handleSelecteRegion" />
 					<text class="downIcon cuIcon-triangledownfill"></text>
 				</view>
 			</template>
@@ -286,8 +286,8 @@ export default {
 		this.initData();
 		// 填充区域模拟数据
 		this.filterData[0].submenu = this.priceDropdownList
-		this.filterData[1].submenu = addressList
-		this.filterData[3].submenu = this.appCenterList
+		// this.filterData[1].submenu = addressList
+		this.filterData[2].submenu = this.appCenterList
 
 		let obj = {};
 		// #ifdef MP-WEIXIN
@@ -380,6 +380,15 @@ export default {
 		this.getCommodityList()
 	},
 	methods: {
+		/**
+		 * 选择市区后
+		 */
+		handleSelecteRegion(regionArr, str){
+			uni.showToast({
+				title: "市/区:" + str,
+			});
+			console.log('选择的市区是:',JSON.stringify(regionArr));
+		},
 		handleConfirm(e){
 			// debugger;
 			// this.indexArr = e.index;
@@ -690,15 +699,21 @@ page {
 
 .head-Search-input-box{
 	.addr {
-			height: 60rpx;
-			flex-shrink: 0;
-			display: flex;
-			align-items: center;
-			margin-right: 20rpx;
-			.downIcon{
-				font-size:36rpx
-			}
+		height: 60rpx;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		margin-right: 20rpx;
+		.downIcon{
+			font-size:36rpx
 		}
+	}
+	.left-region{
+		display:flex;
+		align-items: center;
+		max-width: 220rpx;
+		white-space: nowrap;
+	}
 }
 
 .rf-index {
