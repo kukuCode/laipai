@@ -189,7 +189,7 @@
 				<rich-text :nodes="proDetail.introductionOfItem"></rich-text>
 			</block>
 		</view>
-		<view class="zui-nomore-box">
+		<view class="zui-nomore-box" v-if="proDetail.saleAnnouncement">
 			<view class="zui-nomore-class">
 				<view class="zui-nomore">
 					<view class="zui-txt">拍卖公告</view>
@@ -200,7 +200,7 @@
 				<rich-text :nodes="proDetail.saleAnnouncement"></rich-text>
 			</block>
 		</view>
-		<view class="zui-nomore-box">
+		<view class="zui-nomore-box"  v-if="proDetail.saleNotice">
 			<view class="zui-nomore-class">
 				<view class="zui-nomore">
 					<view class="zui-txt">拍卖须知</view>
@@ -756,6 +756,7 @@
 
 	.zui-nomore-box {
 		padding: 20rpx 30rpx;
+		background-color: #fff;
 
 		.zui-nomore-class {
 			width: 50%;
