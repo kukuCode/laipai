@@ -7,7 +7,15 @@
 			:placeholder="hotSearchDefault || '请输入关键字'"
 			@search="doSearch(false)"
 			@confirm="doSearch(false)"
-			v-model="keyword" />
+			v-model="keyword">
+			<template slot="headerLeft">
+				<view style="display:flex;align-items: center;">
+					<!-- <text>成都</text> -->
+					<z-pick-regions :defaultLevel="2" customItem="不限"/>
+					<text class="downIcon cuIcon-triangledownfill"></text>
+				</view>
+			</template>
+		</z-header-search>
 
 		<!-- 推荐分类 -->
 		<block>
@@ -145,7 +153,6 @@
 
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
-		<!-- <rf-back-home></rf-back-home> -->
 		<rf-back-top :scrollTop="scrollTop"></rf-back-top>
 	</view>
 </template>
@@ -171,6 +178,7 @@ import zProductList from '@/components/z-product-list';
 import {commodityList, addressList, menuList, filterDataList} from "@/Json.js"
 import zFilterDropdown from '@/components/z-filter-dropdown';
 import zSticky from '@/components/z-sticky/z-sticky';
+import zPickRegions from '@/components/z-pick-regions';
 
 import { mapMutations } from 'vuex';
 export default {
@@ -184,7 +192,8 @@ export default {
 		zFloorIndex,
 		zProductList,
 		zFilterDropdown,
-		zSticky
+		zSticky,
+		zPickRegions
 	},
 	data() {
 		return {
@@ -678,6 +687,20 @@ export default {
 page {
 	background-color: $page-color-base;
 }
+
+.head-Search-input-box{
+	.addr {
+			height: 60rpx;
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			margin-right: 20rpx;
+			.downIcon{
+				font-size:36rpx
+			}
+		}
+}
+
 .rf-index {
 	background-color: $color-white;
 	/*分类列表*/

@@ -1,9 +1,6 @@
 /* eslint-disable */
 /**
- *@des 表单验证
- *@author stav stavyan@qq.com
- *@blog https://stavtop.club
- *@date 2019/11/15 10:55:56
+ * 表单验证
  */
 module.exports = {
 	error: '',

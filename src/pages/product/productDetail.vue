@@ -224,6 +224,7 @@
 
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
+		<rf-back-top :scrollTop="scrollTop"></rf-back-top>
 	</view>
 </template>
 
@@ -444,6 +445,7 @@
 			}, 0);
 		},
 		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
 			let scroll = e.scrollTop <= 0 ? 0 : e.scrollTop;
 			let opcity = scroll / this.scrollH;
 			if (this.opcity >= 1 && opcity >= 1) {

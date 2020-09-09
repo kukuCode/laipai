@@ -3,7 +3,7 @@
  * @Author: regan
  * @Date: 2020-08-13 22:20:01 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-08-13 22:21:11
+ * @Last Modified time: 2020-09-09 16:23:51
  */
 
 // 密码注册
@@ -16,7 +16,7 @@ const loginByPass = '/tiny-shop/v1/site/login';
 const wechatH5Login = '/tiny-shop/v1/third-party/wechat';
 
 // 微信小程序授权登录
-const mpWechatLogin = '/tiny-shop/v1/third-party/wechat-mp';
+// const mpWechatLogin = '/tiny-shop/v1/third-party/wechat-mp';
 
 // App微信授权登录
 const thirdPartyWechatOpenPlatform = '/tiny-shop/v1/third-party/wechat-open-platform';
@@ -47,14 +47,17 @@ const verifyAccessToken = '/tiny-shop/v1/site/verify-access-token';
 
 
 // 获取手机号
-const getPhone = '/tiny-shop/v1/site/getphone'
+const getPhoneAction = '/wx/getphone';
+
+// 微信小程序授权登录
+const mpWechatLogin = '/wx/login';
 
 export {
 	registerByPass,
 	loginByPass,
 	isBindingCheck,
 	wechatH5Login,
-	mpWechatLogin,
+	
 	thirdPartyWechatOpenPlatform,
 	authLogin,
 	updatePassword,
@@ -63,5 +66,6 @@ export {
 	logout,
 	refreshToken,
 	verifyAccessToken,
-	getPhone
+	getPhoneAction,
+	mpWechatLogin
 };

@@ -8,17 +8,9 @@ export default {
 	// 金额符号
 	moneySymbol: '￥',
 
-	// 单商品替代词
-	singleSkuText: '基础款',
 
 	// 顶部导航菜单
 	menuTop: [
-		{
-			icon: 'iconxiaoxi1',
-			text: '消息',
-			urlType: 'tab',
-			url: '/pages/notify/notify'
-		},
 		{
 			icon: 'iconzhuyedefuben',
 			text: '首页',

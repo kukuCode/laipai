@@ -2,8 +2,7 @@
 	<view class="serach"  v-if="headerShow" >
 		<view class="header">
 			<view class="addr bg-white">
-				<text>成都</text>
-				<text class="downIcon cuIcon-triangledownfill"></text>
+				<slot name="headerLeft" />
 			</view>
 			<view class="content" :style="{ 'border-radius': radius + 'px' }">
 				<!-- HM修改 增加进入输入状态的点击范围 -->

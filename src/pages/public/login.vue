@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import { mpWechatLogin, getPhone } from '@/api/login';
+	import { mpWechatLogin, getPhoneAction } from '@/api/login';
 	import { wxlogin, wxUserInfo} from "./wxlogin.js"
 	export default {
 		data() {
@@ -75,7 +75,8 @@
 				// 获取sessionkey
 				debugger;
 				var key = await this.getSessionKey(this.appid,this.secret,code)
-				this.phoneParams.sessionkey = key.data.session_key;
+				console.log('key=',key);
+				this.phoneParams.sessionkey = key;
 			},
 
 		/*
@@ -89,7 +90,7 @@
 		 * */
 			getphone (obj){
 				return new Promise((resolve, reject)=>{
-					getPhone(obj).then(res=>{
+					getPhoneAction(obj).then(res=>{
 						resolve(JSON.parse(res.data.data.phone))
 					},err=>{
 						reject(err)
@@ -101,9 +102,9 @@
 				return new Promise((resolve, reject)=>{
 					// !! 注意 !!
 					// 这里需要后端调用: https://api.weixin.qq.com无法加入白名单
-					let url = "https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+code+"&grant_type=authorization_code"
-					this.$http.post(url).then(res=>{
-						resolve(res)
+					// let url = "https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+code+"&grant_type=authorization_code"
+					this.$http.post(mpWechatLogin,{code}).then(res=>{
+						resolve(res.data)
 					},err=>{
 						reject(err)
 					})
@@ -111,11 +112,15 @@
 				},
 
 			async getPhoneNumber(e){
+				debugger
 				try{
 					this.phoneParams.encrypdata = e.detail.encryptedData
 					this.phoneParams.ivdata = e.detail.iv
 					debugger;
 					var phone = await getphone(this.phoneParams)
+
+					await this.$mStore.commit('login', r.data.user_info);
+					
 					this.phone = phone.purePhoneNumber
 					console.log("phone:",this.phone)
 

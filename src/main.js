@@ -14,7 +14,7 @@ import { http } from '@/utils/request';
 import $mGraceChecker from '@/utils/graceChecker';
 import $mHelper from '@/utils/helper';
 import $mRouter from '@/utils/router';
-import $mPayment from '@/utils/payment';
+// import $mPayment from '@/utils/payment';
 // 全局组件
 import rfImage from '@/components/rf-image/rf-image';
 import rfEmpty from '@/components/rf-empty';
@@ -25,7 +25,6 @@ import rfBackTop from '@/components/rf-back-top';
 import rfTag from '@/components/rf-tag';
 import rfNavDetail from '@/components/rf-nav-detail';
 import cuCustom from '@/components/cu-custom';
-import rfBackHome from '@/components/rf-back-home';
 
 // 挂载全局自定义方法
 Vue.prototype.$mStore = store;
@@ -41,7 +40,7 @@ Vue.prototype.$mSettingConfig = $mSettingConfig;
 Vue.prototype.$mGraceChecker = $mGraceChecker;
 Vue.prototype.$mHelper = $mHelper;
 Vue.prototype.$mRouter = $mRouter;
-Vue.prototype.$mPayment = $mPayment;
+// Vue.prototype.$mPayment = $mPayment;
 
 Vue.component('rfImage', rfImage);
 Vue.component('rfEmpty', rfEmpty);
@@ -52,7 +51,6 @@ Vue.component('rfBackTop', rfBackTop);
 Vue.component('rfTag', rfTag);
 Vue.component('rfNavDetail', rfNavDetail);
 Vue.component('cuCustom', cuCustom);
-Vue.component('rfBackHome', rfBackHome);
 
 if (process.env.NODE_ENV === 'production') {
 	Vue.config.productionTip = false;
@@ -102,6 +100,7 @@ $mRouter.beforeEach((navType, to) => {
 
 App.mpType = 'app';
 
+/* 全局混入 */
 Vue.mixin({
 	computed: {
 		themeColor: {
@@ -115,8 +114,8 @@ Vue.mixin({
 	}
 });
 
+// 金额符号￥
 Vue.prototype.moneySymbol = $mConstDataConfig.moneySymbol;
-Vue.prototype.singleSkuText = $mConstDataConfig.singleSkuText;
 
 // 保留小数点后两位
 Vue.filter('keepTwoDecimal', value => {

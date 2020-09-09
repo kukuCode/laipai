@@ -7,8 +7,9 @@
 			<view class="user-info-box">
 				<view
 					class="portrait-box"
-					@tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')"
+					@tap="navTo('login')"
 				>
+					<!-- @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')" -->
 					<image
 						class="portrait"
 						:src="userInfo.head_portrait || headImg"
@@ -215,15 +216,15 @@ export default {
 		// 统一跳转接口,拦截未登录路由
 		navTo(route) {
 			if (!route) return;
-			/* if (!this.hasLogin) {
+			if (!this.hasLogin) {
 				// uni.removeStorageSync('backToPage');
 				this.$mRouter.push({ route: '/pages/public/login' });
 				// this.weixinLogin('weixin')
 			} else {
 				this.$mRouter.push({ route });
-			} */
+			}
 			debugger;
-			this.$mRouter.push({ route });
+			// this.$mRouter.push({ route });
 		},
 		weixinLogin(provider = 'weixin'){
 			/*  #ifdef MP-WEIXIN */
