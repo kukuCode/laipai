@@ -3,9 +3,19 @@
 import Vue from 'vue';
 import { verifyAccessToken } from '@/api/login';
 import { mapMutations } from 'vuex';
+ import {checkLoginStatus} from '@/api/common/login/checkLoginStatus.js' //检查登录状态
+
+
+
 export default {
   async onLaunch() {
     await this.initData();
+  },
+  onShow(){
+    // #ifdef MP
+    //检查登录状态
+    checkLoginStatus()
+    // #endif
   },
   methods: {
     ...mapMutations(['setNotifyNum']),
