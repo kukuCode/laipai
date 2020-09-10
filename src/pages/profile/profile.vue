@@ -199,6 +199,7 @@ export default {
 			await this.$http
 				.get(memberInfo)
 				.then(async r => {
+					debugger;
 					this.loading = false;
 					this.userInfo = r.data;
 				})

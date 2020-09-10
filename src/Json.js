@@ -347,14 +347,14 @@ export const filterDataList = [{
     "type": 'hierarchy',
     "submenu": [{
         "name": '综合',
-        "value": "综合",
+        "value": "",
     },
     {
         "name": '价格升序',
-        "value": "价格升序",
+        "value": "asc",
     }, {
         "name": '价格降序',
-        "value": "价格降序",
+        "value": "desc",
     },
 
     ]
@@ -365,15 +365,15 @@ export const filterDataList = [{
     "submenu": [
         {
             "name": "即将开始",
-            "value": "即将开始"
+            "value": "todo"
         },
         {
             "name": "正在进行",
-            "value": "正在进行"
+            "value": "doing"
         },
         {
             "name": "已成交",
-            "value": "已成交"
+            "value": "done"
         }
     ]
 },

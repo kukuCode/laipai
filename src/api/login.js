@@ -3,7 +3,7 @@
  * @Author: regan
  * @Date: 2020-08-13 22:20:01 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-09-09 16:23:51
+ * @Last Modified time: 2020-09-10 22:48:12
  */
 
 // 密码注册
@@ -52,6 +52,9 @@ const getPhoneAction = '/wx/getphone';
 // 微信小程序授权登录
 const mpWechatLogin = '/wx/login';
 
+// 根据code获取token
+const getTokenUrl = '/wx/openid';
+
 export {
 	registerByPass,
 	loginByPass,
@@ -67,5 +70,6 @@ export {
 	refreshToken,
 	verifyAccessToken,
 	getPhoneAction,
-	mpWechatLogin
+	mpWechatLogin,
+	getTokenUrl
 };

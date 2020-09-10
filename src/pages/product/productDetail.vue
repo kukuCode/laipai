@@ -105,8 +105,8 @@
         <!--底部操作栏-->
 		
 		<view class="page-bottom">
-			<view class="page-bottom-bth-wrapper" style="width:">
-				<button open-type="contact" class="action-btn">
+			<view class="page-bottom-bth-wrapper">
+				<button open-type="contact" class="action-btn" style="background-color: #fff;">
 					<view class="zui-operation-item" hover-class="tui-opcity" :hover-stay-time="150">
 						<i class="iconfont iconkefu2 text-red"></i>
 						<view class="tui-operation-text tui-scale-small">咨询</view>
@@ -694,6 +694,7 @@
 					flex-direction: column;
 					align-items: center;
 					justify-content: center;
+					height: 100%;
 					.iconkefu2{
 						font-size: 34rpx;
 					}

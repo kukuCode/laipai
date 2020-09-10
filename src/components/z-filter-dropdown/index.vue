@@ -528,18 +528,18 @@
 	}
 	.region {
 		flex: 1;
-		height: 44px;
+		height: 88rpx;
 	}
 	.nav {
 		width: 100%;
-		height: 44px;
+		height: 88rpx;
 		border-bottom: solid 1rpx #eee;
 		z-index: 12;
 		background-color: #ffffff;
 		flex-direction: row;
 		.first-menu {
 			width: 100%;
-			font-size: 13px;
+			font-size: 28rpx;
 			color: #757575;
 			flex-direction: row;
 			align-items: center;
@@ -593,7 +593,7 @@
 		&.show {
 			    opacity: 1;
 			// visibility: visible;
-			// transform: translate3d(0, calc(44px + 1rpx), 0);
+			// transform: translate3d(0, calc(88rpx + 1rpx), 0);
 		}
 	}
 	.sub-menu-list {
@@ -601,12 +601,12 @@
 		height: 345px;
 		flex-direction: column;
 		.sub-menu {
-			min-height: 44px;
-			font-size: 13px;
+			min-height: 88rpx;
+			font-size: 28rpx;
 			flex-direction: column;
 			padding-right: 15px;
 			>.menu-name {
-				height: 44px;
+				height: 88rpx;
 				flex-direction: row;
 				align-items: center;
 				justify-content: space-between;
@@ -634,7 +634,7 @@
 			min-height: 170px;
 			height: auto;
 			.sub-menu {
-				min-height: calc(44px - 1rpx);
+				min-height: calc(88rpx - 1rpx);
 				margin-left: 15px;
 				border-bottom: solid 1rpx #e5e5e5;
 
@@ -651,11 +651,11 @@
 		}
 		&.not-first {
 			.sub-menu {
-				min-height: calc(44px - 1rpx);
+				min-height: calc(88rpx - 1rpx);
 				margin-left: 15px;
 				border-bottom: solid 1rpx #e5e5e5;
 				>.menu-name {
-					height: calc(44px - 1rpx);
+					height: calc(88rpx - 1rpx);
 					>.iconfont {
 						display: none;
 						font-size: 18px;
@@ -675,14 +675,14 @@
 					flex-wrap: wrap;
 					padding-bottom: 9px;
 					>text {
-						height: 30px;
+						height: 60rpx;
 						border-radius: 3px;
 						background-color: #f5f5f5;
 						color: #9b9b9b;
 						margin-bottom: 6px;
 						margin-right: 6px;
 						text-align: center;
-						line-height: 30px;
+						line-height: 60rpx;
 						border: solid #f5f5f5 1rpx;
 						flex: 0 0 calc(33.33% - 6px);
 						overflow: hidden;
@@ -719,7 +719,7 @@
 				flex-direction: column;
 				.title {
 					width: 100%;
-					font-size: 13px;
+					font-size: 28rpx;
 					color: #888;
 				}
 				.labels {
@@ -732,9 +732,9 @@
 					}
 					>view {
 						width: 148rpx;
-						height: 30px;
+						height: 60rpx;
 						border: solid 1rpx #adadad;
-						border-radius: 30px;
+						border-radius: 60rpx;
 						margin-right: 15px;
 						margin-top: 8px;
 						font-size: 12px;

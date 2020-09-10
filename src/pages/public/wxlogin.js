@@ -33,7 +33,12 @@ export const wxlogin = ()=> {
 				uni.hideLoading();
 			}
 		})
-
+	}).catch(res => {
+		uni.showToast({
+			icon: 'none',
+			title: res.errMsg || '获取code失败',
+			duration: 2000
+		});
 	})
 }
 
