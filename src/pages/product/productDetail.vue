@@ -234,7 +234,7 @@
       <view v-if="!proDetail.id && !loading">
         <rf-no-data class="rf-no-data" :custom="true">
           <view class="title" @tap="getOrderDetail">{{ '商品不存在' }}</view>
-          <view @tap="getOrderDetail" slot="refresh" class="spec-color">重新加载</view>
+          <!-- <view @tap="getOrderDetail" slot="refresh" class="spec-color">重新加载</view> -->
         </rf-no-data>
       </view>
     </view>
