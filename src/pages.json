@@ -190,7 +190,7 @@
 		},{
 			"name": "detail",
 			"path": "pages/product/productDetail",
-			"query": "id='111222333'&isshare=1"
+			"query": "id=111222333&isshare=1"
 		},{
 			"name": "login",
 			"path": "pages/public/login",
