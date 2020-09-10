@@ -6,7 +6,7 @@
           <rf-image :preview="false" :src="logo"></rf-image>
         </view>
         <!-- #ifdef MP-WEIXIN -->
-        <view class="content" v-if="!loginStatus">
+        <view class="content" v-if="status!=1">
           <view>申请获取以下权限</view>
           <text>获得你的公开信息(昵称，头像、地区等)</text>
           <!-- <text>获得你微信绑定的手机号</text> -->
@@ -212,7 +212,6 @@ export default {
         //用户拒绝授权
         this.status = 0;
       }
-      console.log('info=', info);
       debugger;
       // this.reLaunch()
     },
