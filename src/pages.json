@@ -163,20 +163,20 @@
 		"list": [
 			{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/tab-home.png",
-				"selectedIconPath": "static/tab-home-rf.png",
+				"iconPath": "static/tabbar/tab-home.png",
+				"selectedIconPath": "static/tabbar/tab-home-selected.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/services/services",
-				"iconPath": "static/tab-notify.png",
-				"selectedIconPath": "static/tab-notify-rf.png",
+				"iconPath": "static/tabbar/tab-service.png",
+				"selectedIconPath": "static/tabbar/tab-service-selected.png",
 				"text": "服务"
 			},
 			{
 				"pagePath": "pages/profile/profile",
-				"iconPath": "static/tab-my.png",
-				"selectedIconPath": "static/tab-my-rf.png",
+				"iconPath": "static/tabbar/tab-my.png",
+				"selectedIconPath": "static/tabbar/tab-my-selected.png",
 				"text": "我的"
 			}
 		]

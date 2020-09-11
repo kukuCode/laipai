@@ -1,7 +1,9 @@
 <template>
 	<view class="user">
 		<!--头部-->
-		<view class="user-section" :class="'bg-' + themeColor.name">
+		<!-- <view class="user-section" :class="'bg-' + themeColor.name"> -->
+		<view class="user-section" :class="'bg-def'">
+
 			<image class="bg" :src="userBg"></image>
 			<!--用户信息-->
 			<view class="user-info-box">
@@ -124,12 +126,15 @@ export default {
 			footPrintList: [], // 足迹列表
 			loading: true,
 			appName: this.$mSettingConfig.appName,
-			hasLogin: false
+			// hasLogin: false
 		};
 	},
 	filters: {
 	},
   computed: {
+		hasLogin(){
+			return this.$mStore.getters.hasLogin
+		},
   },
 	// 小程序分享
 	onShareAppMessage() {
@@ -175,7 +180,7 @@ export default {
 			// #endif
 		},
 		// 数据初始化
-		async initData() {
+		initData() {
 			this.hasLogin = this.$mStore.getters.hasLogin;
 			uni.setTabBarStyle({
 				selectedColor: this.themeColor.color,
@@ -187,12 +192,13 @@ export default {
 					selectedIconPath
 				});
 			}); */
-			if (this.hasLogin) {
+			/* if (this.hasLogin) {
 				await this.getMemberInfo();
 			} else {
 				this.loading = false;
 				this.resetSectionData();
-			}
+			} */
+			this.loading = false;
 		},
 		// 获取用户信息
 		async getMemberInfo() {
@@ -204,7 +210,7 @@ export default {
 					this.userInfo = r.data;
 				})
 				.catch(() => {
-					this.hasLogin = false;
+					// this.hasLogin = false;
 					this.userInfo = {};
 					this.resetSectionData();
 					this.loading = false;
@@ -241,7 +247,7 @@ export default {
 						provider: provider,
 						success: (infoRes)=>{
 							debugger;
-							
+
 							console.log('用户信息：' + JSON.stringify(infoRes.userInfo));
 							let userInfo = {
 									nickname: infoRes.userInfo.nickName,
@@ -316,7 +322,7 @@ export default {
 						if (backToPage) {
 							if (
 								backToPage.indexOf('/pages/profile/profile') !== -1 ||
-								backToPage.indexOf('/pages/index/index') !== -1 
+								backToPage.indexOf('/pages/index/index') !== -1
 							) {
 								_this.$mRouter.reLaunch(JSON.parse(backToPage));
 							} else {
@@ -350,7 +356,7 @@ export default {
 				}
 			});
 		},
-		
+
 		/**
 		 *  会员卡下拉和回弹
 		 *  1.关闭bounce避免ios端下拉冲突
@@ -408,6 +414,10 @@ page {
 			width: 100vw;
 			height: 60vw;
 			opacity: 0.84;
+		}
+		.bg-def{
+			background-color:#b52e25;
+			color: #ffffff;
 		}
 		.user-info-box {
 			height: 180upx;
@@ -542,11 +552,11 @@ page {
 .log-out-btn{
 	text-align: center;
 	margin-top: 40upx;
-	background: #fff;    
+	background: #fff;
 	align-items: baseline;
     padding: 10px 15px;
     // line-height: 30px;
-	
+
 }
 %flex-center {
 	display: flex;

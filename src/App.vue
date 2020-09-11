@@ -100,6 +100,7 @@ export default {
 /*#endif*/
 /*#ifndef MP*/
 @import url('https://at.alicdn.com/t/font_1681579_dwilkcq6mvg.css');
+// @import url('https://at.alicdn.com/t/font_2050515_kpfw1l46yw.css');
 /*#endif*/
 @import './static/css/reset.scss';
 @import './static/css/uni.scss';

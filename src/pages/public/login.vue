@@ -86,7 +86,7 @@ export default {
 
       /*  //获取服务商信息
                 let provider = await getProvider();
-                                
+
                 //获取code
 				this.code = await getCode(provider[0]) */
     })();
@@ -109,19 +109,20 @@ export default {
   methods: {
     async init() {
       this.code = await wxlogin();
+			console.log('code=',this.code)
       // 获取sessionkey
       debugger;
 
       // !!!-----设置token ----!!!
       // 获取token
-      let token = await this.getToken(this.appid, this.secret, this.code);
+      let token = await this.getToken(this.code);
       uni.setStorageSync('accessToken', token);
       // !!!
 
-      /* 
+      /*
 		// 获取sessionKey
 		var key = await this.getSessionKey(this.appid, this.secret, this.code)
-		console.log('key=',key); 
+		console.log('key=',key);
 		this.phoneParams.sessionkey = key;
 		*/
     },

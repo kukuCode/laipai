@@ -49,7 +49,7 @@ Vue.component('rfLoadProgress', rfLoadProgress);
 Vue.component('rfParser', rfParser);
 Vue.component('rfBackTop', rfBackTop);
 Vue.component('rfTag', rfTag);
-Vue.component('rfNavDetail', rfNavDetail);
+// Vue.component('rfNavDetail', rfNavDetail);
 Vue.component('cuCustom', cuCustom);
 
 if (process.env.NODE_ENV === 'production') {

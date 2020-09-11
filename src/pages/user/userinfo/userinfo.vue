@@ -180,9 +180,8 @@ export default {
 
 <style lang="scss" scoped>
 page {
-	background-color: $color-white;
-}
-
+		background: $page-color-base;
+	}
 .userinfo {
 	.user-section {
 		display: flex;
