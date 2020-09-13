@@ -468,8 +468,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+	
 .container {
   padding-bottom: 110rpx;
+	background-color: #fff;
 
   // header
   .zui-header-box {

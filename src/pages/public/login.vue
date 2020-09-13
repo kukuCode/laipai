@@ -208,7 +208,14 @@ export default {
       }
 
       if (e.detail && e.detail.errMsg == 'getUserInfo:ok') {
+        
+        // 待优化,手机号获取完成后才算登录成功,并存store
         this.userInfo = await wxUserInfo();
+
+        this.$mStore.commit('login', this.userInfo);
+        this.$mRouter.switchTab({ route: '/pages/profile/profile' });
+
+
       } else {
         //用户拒绝授权
         this.status = 0;

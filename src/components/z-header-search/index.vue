@@ -23,7 +23,8 @@
 					/>
 					<!-- <view v-if="!active && mode === 2" class="input sub" @tap="getFocus">请输入搜索内容</view> -->
 					<!-- HM修改 @tap换成@tap.stop阻止冒泡 -->
-					<text v-if="isDelShow" class="icon icon-del" @tap.stop="clear"></text>
+					<!-- <text v-if="isDelShow" class="icon icon-del" @tap.stop="clear"></text> -->
+					<text v-if="isDelShow" class="iconfont iconguanbi" @tap.stop="clear"></text>
 				</view>
 				<view
 					v-if="
@@ -121,6 +122,7 @@ export default {
 			}
 		},
 		clear() {
+			debugger;
 			// HM修改 收起键盘
 			uni.hideKeyboard();
 			this.isFocus = false;
@@ -128,7 +130,7 @@ export default {
 			this.active = false;
 			// HM修改 清空内容时候触发组件input
 			this.$emit('input', '');
-			// this.$emit('search', '');// HM修改 清空内容时候不进行搜索
+			this.$emit('search', '');
 		},
 		getFocus() {
 			this.isFocus = true;

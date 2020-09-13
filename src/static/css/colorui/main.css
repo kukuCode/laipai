@@ -2,7 +2,7 @@
         初始化
  ==================== */
 body {
-	background-color: #fff;
+	background-color: #f8f8f8;
 	font-size: 28upx;
 	color: #333333;
 	font-family: Helvetica Neue, Helvetica, sans-serif;
@@ -3827,7 +3827,7 @@ scroll-view.cu-steps .cu-item {
 .text-red,
 .line-red,
 .lines-red {
-	color: #e54d42;
+	color: #b52e25;
 }
 
 .text-orange,

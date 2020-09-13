@@ -183,6 +183,7 @@ page {
 		background: $page-color-base;
 	}
 .userinfo {
+	background:#fff;
 	.user-section {
 		display: flex;
 		align-items: center;

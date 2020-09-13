@@ -7,7 +7,7 @@
 			:placeholder="hotSearchDefault || '请输入关键字'"
 			@search="doSearch(false)"
 			@confirm="doSearch(false)"
-			v-model="keyword">
+			v-model="queryParam.title">
 			<template slot="headerLeft">
 				<view style="display:flex;align-items: center;    max-width: 120px;    white-space: nowrap;" class="left-region">
 					<!-- <text>成都</text> -->
@@ -219,7 +219,8 @@ export default {
 			isOpenIndexCate: this.$mSettingConfig.isOpenIndexCate,
 			moneySymbol: this.moneySymbol, // 金额符号
 			keyword:'',
-			appCenterList: [{ name: "住宅用房", second_class: "residence" }, { name: "车辆", second_class: "vehicle" }, { name: "建筑用地", second_class: "buildland" }, { name: "一般动产", second_class: "property" }, { name: "股权", second_class: "equity" }, { name: "商业用房", second_class: "commercial" }, { name: "工业用房", second_class: "industrial" }, { name: "其他用房", second_class: "otherhouse" }, { name: "其他交通运输工具", second_class: "traffic" }, { name: "其他用地", second_class: "otherland" }, { name: "土地承包经营权", second_class: "contractland" }, { name: "宅基地使用权", second_class: "homestead" }, { name: "海域使用权", second_class: "sea" }, { name: "船舶", second_class: "ship" }, { name: "渔船", second_class: "fishboat" }, { name: "航空器", second_class: "aircraft" }, { name: "其他财产", second_class: "otherassets" }, { name: "股票", second_class: "stock" }, { name: "基金", second_class: "fund" }, { name: "债券", second_class: "bond" }, { name: "债权", second_class: "debt" }, { name: "机器设备", second_class: "equipment" }, { name: "产品原材料", second_class: "material" }, { name: "知识产权", second_class: "knowledge" }, { name: "古玩字画", second_class: "artwork" }, { name: "森林、林木所有权", second_class: "forest" }, { name: "集体土地所有权", second_class: "collective" }, { name: "珠宝玉石首饰", second_class: "gems" }, { name: "探矿/采矿权", second_class: "mine" }],
+			queryParam: {},
+			appCenterList: [],
 			recommendCenterList:[],
 			commodityList:[], // 商品列表
 			isFixed:false, // 筛选栏是否固定
@@ -287,7 +288,7 @@ export default {
 		// 填充区域模拟数据
 		this.filterData[0].submenu = this.priceDropdownList
 		// this.filterData[1].submenu = addressList
-		this.filterData[2].submenu = this.appCenterList
+		// this.filterData[2].submenu = this.appCenterList
 
 		let obj = {};
 		// #ifdef MP-WEIXIN
@@ -532,13 +533,20 @@ export default {
 			// this.tabIndex = 0;
 		},
 		doSearch(){
-			if(this.keyword){
+			// if(this.queryParam.title){
 				this.loading = true;
-				console.log("keyword=",this.keyword);
-				setTimeout(() => {
+				console.log("keyword=", this.queryParam.title);
+			/* 	setTimeout(() => {
 					this.loading = false;
-				}, 2e3);
-			}
+				}, 2e3); */
+				this.page = 1;
+				this.getProductList('query', this.queryParam)
+
+				uni.pageScrollTo({
+					scrollTop: 176,
+					duration: 300
+				});
+			// }
 		},
 		getCommodityList(){
 			// 请求服务加载更多
@@ -551,14 +559,19 @@ export default {
 			this.getProductList()
 
 		},
-		async getProductList(id) {
+		async getProductList(loadType='more', queryParam={}) {
+			let params = Object.assign({page:this.page, limit:this.pageSize}, queryParam)
 			await this.$http
-				.get(`${productList}`, {page:this.page, limit:this.pageSize})
+				.get(`${productList}`, params)
 				.then(async r => {
 					this.loading = false;
 					this.productLoading = false;
 					this.loadingType = r.data.length >= 20 ? 'more' : 'nomore';
-					this.commodityList = [...this.commodityList, ...r.data];
+					if(loadType == 'more'){
+						this.commodityList = [...this.commodityList, ...r.data];
+					} else {
+						this.commodityList = [...r.data]
+					}
 				}).catch(() => {
 					this.loading = false;
 					this.productLoading = false;
@@ -622,6 +635,9 @@ export default {
 				.then(async r => {
 					console.log('getRecommendCenter---->',r)
 					this.appCenterList = r.data
+
+					this.filterData[2].submenu = this.appCenterList
+
 					this.recommendCenterList = r.data.slice(0,10)
 				})
 				.catch(() => {
@@ -635,6 +651,7 @@ export default {
 			if(type === 'refresh'){
 				this.page = 1;
 				this.loadingType = 'more';
+				this.queryParam = {}
 			}
 			let params={page:this.page,limit:this.pageSize}
 			await this.$http

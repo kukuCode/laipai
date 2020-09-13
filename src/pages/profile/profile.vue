@@ -1,8 +1,8 @@
 <template>
 	<view class="user">
 		<!--头部-->
-		<!-- <view class="user-section" :class="'bg-' + themeColor.name"> -->
-		<view class="user-section" :class="'bg-def'">
+		<view class="user-section" :class="'bg-' + themeColor.name">
+		<!-- <view class="user-section" :class="'bg-def'"> -->
 
 			<image class="bg" :src="userBg"></image>
 			<!--用户信息-->
@@ -133,7 +133,7 @@ export default {
 	},
   computed: {
 		hasLogin(){
-			return this.$mStore.getters.hasLogin
+			return this.$mStore.getters.hasLogin || false
 		},
   },
 	// 小程序分享
@@ -399,7 +399,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 page {
-	background-color: $page-color-base;
+	background-color: $page-color-base !important;
 }
 .user {
 	.user-section {

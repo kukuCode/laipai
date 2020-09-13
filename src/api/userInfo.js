@@ -12,11 +12,13 @@ const appointmentList =  '/wx/auctionItem/appointmentList/';
 
 // 个人信息
 const memberInfo = '/wx/auctionItem/minfo';
-
 // const memberInfo = '/tiny-shop/v1/member/member/index';
 
 // 个人信息修改
-const memberUpdate = '/tiny-shop/v1/member/member/update';
+const memberUpdate = '/wx/auctionItem/updatem';
+
+// 个人信息修改
+// const memberUpdate = '/tiny-shop/v1/member/member/update';
 
 // 收货地址列表
 const addressList = '/tiny-shop/v1/member/address/index';
