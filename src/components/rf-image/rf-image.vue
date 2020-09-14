@@ -22,11 +22,7 @@
 
 <script>
 /**
- * @des 图片标签的建议封装
- *
- * @author stav stavyan@qq.com
- * @date 2020-03-10 15:33
- * @copyright 2020
+ * 图片
  */
 import $mAssetsPath from '@/config/assets.config';
 

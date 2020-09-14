@@ -26,10 +26,7 @@
 
 <script>
 /**
- * @des 点击item 显示popup
- *
- * @author stav stavyan@qq.com
- * @date 2020-04-16 11:15
+ * 点击item 显示popup
  */
 export default {
 	name: 'rfItemPopup',

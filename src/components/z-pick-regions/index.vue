@@ -63,6 +63,8 @@ export default {
 				if(selectedCol.code !== '00') {
 					arr.push(selectedCol.code)
 					showName.push(selectedCol.name)
+				}else{
+					arr.push('')
 				}
 			}
 debugger;

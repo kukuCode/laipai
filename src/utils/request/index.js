@@ -31,8 +31,8 @@ let requests = [];
 http.interceptor.request(
 	config => {
 		/* 请求之前拦截器 */
-		// config.header['Authorization'] = uni.getStorageSync('accessToken');
-		config.header['Authorization'] = 'BearereyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJNVEl6TkRVMiIsInNlc3Npb25fa2V5IjoiYkdsaGJ3PT0iLCJzdWIiOiJNVEl6TkRVMiIsImlzcyI6ImxpYW9pdXNlciIsImlhdCI6MTU5OTgxNTUwMCwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYiLCJleHAiOjE2MDA0MjAyOTksIm5iZiI6MTU5OTgxNTQ5OX0.b0bE1_0f0Lg0HgYT9gAx6wMb5i2O14coZ_ykzJvXIH0';
+		let token = uni.getStorageSync('accessToken')
+		if(token) config.header['Authorization'] = uni.getStorageSync('accessToken');
 		// 单商户
 		// config.header['merchant-id'] = uni.getStorageSync('merchantId') || 1;
 		return config;
