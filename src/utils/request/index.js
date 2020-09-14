@@ -32,7 +32,8 @@ http.interceptor.request(
 	config => {
 		/* 请求之前拦截器 */
 		let token = uni.getStorageSync('accessToken')
-		if(token) config.header['Authorization'] = uni.getStorageSync('accessToken');
+		// if(token) config.header['Authorization'] = uni.getStorageSync('accessToken');
+		if(token) config.header['mptoken'] = uni.getStorageSync('accessToken');
 		// 单商户
 		// config.header['merchant-id'] = uni.getStorageSync('merchantId') || 1;
 		return config;
