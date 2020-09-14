@@ -163,7 +163,7 @@ export default {
 					birthday: this.date
 				}
 			await this.$http
-				.put(`${memberUpdate}?id=${this.profileInfo.id}`, paramsData)
+				.post(`${memberUpdate}?id=${this.profileInfo.id}`, paramsData)
 				.then(() => {
 					clearInterval(timer);
 					this.loadProgress = 0;
