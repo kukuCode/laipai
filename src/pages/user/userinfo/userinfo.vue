@@ -5,7 +5,7 @@
 				<text class="tit">姓　名</text>
 				<input
 					type="text"
-					v-model="profileInfo.realname"
+					v-model="profileInfo.tname"
 					placeholder="请输入您的姓名"
 				/>
 			</view>
@@ -13,7 +13,7 @@
 				<text class="tit">手机号</text>
 				<input
 					type="number"
-					v-model="profileInfo.mobile"
+					v-model="profileInfo.phonenum"
 					disabled
 					placeholder="请输入手机号码"
 				/>
@@ -83,7 +83,7 @@ export default {
 		return {
 			loadProgress: 0,
 			CustomBar: this.CustomBar,
-			profileInfo: {mobile:13598989898,gender:'0'},
+			profileInfo: {phonenum:'',gender:'0'},
 			genders: [
 				{
 					value: '0',
@@ -142,11 +142,11 @@ export default {
 		// 更新用户信息
 		async handleUpdateInfo() {
 			let data = this.profileInfo;
-			if (!data.realname) {
+			if (!data.tname) {
 				this.$mHelper.toast('请填写姓名');
 				return;
 			}
-			if (!/^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(data.mobile)) {
+			if (!/^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(data.phonenum)) {
 				this.$mHelper.toast('请输入正确的手机号码');
 				return;
 			}
@@ -157,11 +157,13 @@ export default {
 			const timer = setInterval(() => {
 				this.loadProgress = this.loadProgress + 6;
 			}, 50);
-			await this.$http
-				.put(`${memberUpdate}?id=${this.profileInfo.id}`, {
+
+			let paramsData = {
 					...this.profileInfo,
 					birthday: this.date
-				})
+				}
+			await this.$http
+				.put(`${memberUpdate}?id=${this.profileInfo.id}`, paramsData)
 				.then(() => {
 					clearInterval(timer);
 					this.loadProgress = 0;
