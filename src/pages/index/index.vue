@@ -540,7 +540,7 @@ export default {
 					this.loading = false;
 				}, 2e3); */
 				this.page = 1;
-				this.getProductList('query', this.queryParam)
+				this.getProductList('query')
 
 				uni.pageScrollTo({
 					scrollTop: 176,
@@ -559,8 +559,8 @@ export default {
 			this.getProductList()
 
 		},
-		async getProductList(loadType='more', queryParam={}) {
-			let params = Object.assign({page:this.page, limit:this.pageSize}, queryParam)
+		async getProductList(loadType='more') {
+			let params = Object.assign({page:this.page, limit:this.pageSize}, this.queryParam)
 			await this.$http
 				.get(`${productList}`, params)
 				.then(async r => {
