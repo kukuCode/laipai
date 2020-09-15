@@ -85,23 +85,6 @@
 				<!--商品列表-->
 			</block>
 		</view>
-		<!-- 规格-模态层弹窗 -->
-		<view
-			class="popup spec show"
-			v-if="specClass === 'show'"
-			@touchmove.stop.prevent="stopPrevent"
-			@tap="hideSpec"
-		>
-			<!-- 遮罩层 -->
-			<view class="mask" @tap="hideSpec"></view>
-			<view class="layer" :style="{bottom: bottom ? `${bottom}upx` : 0}" @tap.stop="stopPrevent">
-				<rf-attr-content
-					:product="productDetail"
-					@toggle="toggleSpec"
-					:showBuyBtn="true"
-				></rf-attr-content>
-			</view>
-		</view>
 	</view>
 </template>
 <script>
@@ -109,7 +92,6 @@
  *  商品列表
  */
 import { productDetail, cartItemCount, cartItemCreate } from '@/api/product';
-import rfAttrContent from '@/components/rf-attr-content';
 import $mAssetsPath from '@/config/assets.config';
 import { mapMutations } from 'vuex';
 export default {
@@ -133,7 +115,6 @@ export default {
 		}
 	},
 	components: {
-		rfAttrContent
 	},
 	data() {
 		return {

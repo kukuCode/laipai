@@ -104,7 +104,7 @@ export default {
 		{
 			title: '嫣红',
 			name: 'red',
-			color: '#e54d42',
+			color: '#b52e25',
 			tabList: [
 				'/static/tab-home-red.png',
 				'/static/tab-cate-red.png',

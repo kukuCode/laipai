@@ -23,7 +23,7 @@
 				<view class="category-list-wrapper" style="height:324rpx" ref='refCategory'>
 					<view class="category-list">
 					<view class="category" v-for="(nav, ii) in recommendCenterList" :key="ii"
-					@tap="navToCategory(nav.name, nav.name)">
+					@tap="handleTapCategory(nav.code)">
 							<view class="img">
 								<!-- <image :src="sItem.cover || errorImage" mode="aspectFill"></image> -->
 								<image lazy-load='true' fade-show='true' :src="nav.icon" mode="widthFix" style="height: 90upx;width: 90upx" ></image>
@@ -39,52 +39,68 @@
 
 		<!-- 商品栏目 -->
 		<block>
-			<view v-if="commodityList.length>0" class="commodity-wrapper">
+			<view  v-if="recommendCenterList.length>0"  class="commodity-wrapper">
 				<!-- 过滤条件 -->
 				<!-- <view class="rf-header-screen" :style="{top:height+'px'}" :class="{isFixed:isFixed}"> -->
 					<view v-if="false">
-						<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
-							<view class="rf-screen-top">
-								<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
-									<text>{{selectedName}}</text>
-									<text class="iconfont" :class="tabIndex==0 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
-								</view>
-								<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
-									区域
-									<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#444'}"></text>
-								</view>
-								<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
-									状态
-									<text class="iconfont" :class="tabIndex ==2 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==2? themeColor.color:'#444'}"></text>
-								</view>
-								<view class="rf-top-item" :class="[tabIndex == 3?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
-									类型
-									<text class="iconfont" :class="tabIndex ==3 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==3? themeColor.color:'#444'}"></text>
-								</view>
-								<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="4">
-									<text>筛选</text>
-									<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
-								</view>
-								<!--下拉选择列表--综合-->
-								<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'px'}">
-									<scroll-view scroll-y @touchmove.stop.prevent style="height: 90%;position: absolute;left: 0px;overflow: hidden;">
-									<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
-										<text class="rf-ml rf-middle">{{item.name}}</text>
-										<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+						<z-sticky :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="true">
+							<template v-slot:header>
+								<view class="rf-header-screen solid-bottom" :class="{'is-fixed':isFixed}">
+									<view class="rf-screen-top">
+										<!-- <view class="rf-top-item" :class="[tabIndex == 0?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="0">
+											价格
+										</view> -->
+										
+										<!-- <view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
+											<text>价格</text>
+											<text class="iconfont" :class="selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#b52e25'}"></text>
+										</view> -->
+
+										<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
+											<text>{{selectedName}}</text>
+											<text class="iconfont" :class="tabIndex==0 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#b52e25'}"></text>
+										</view>
+										<!-- <view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+											区域
+											<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#b52e25'}"></text>
+										</view> -->
+										<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+											状态
+											<text class="iconfont" :class="tabIndex ==1 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==1? themeColor.color:'#b52e25'}"></text>
+										</view>
+										<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
+											类型
+											<text class="iconfont" :class="tabIndex ==2 && selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==2? themeColor.color:'#b52e25'}"></text>
+										</view>
+										<view class="rf-top-item rf-icon-ml" @tap="filterMenuClick" data-index="3">
+											<text>筛选</text>
+											<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
+										</view>
+										<!--下拉选择列表--综合-->
+										<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'px'}">
+											<scroll-view scroll-y @touchmove.stop.prevent style="height: 90%;position: absolute;left: 0px;overflow: hidden;">
+											<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
+												<text class="rf-ml rf-middle">{{item.name}}</text>
+												<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+											</view>
+											</scroll-view>
+										</view>
+										<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
+										<!--下拉选择列表--综合-->
 									</view>
-									</scroll-view>
 								</view>
-								<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
-								<!--下拉选择列表--综合-->
-							</view>
-						</view>
-					<view :class="{'fixed-show':isFixed}"></view>
+							</template>
+				</z-sticky>
+					<!-- <view :class="{'fixed-show':isFixed}"></view> -->
 				</view>
 				<!-- 商品列表 -->
 				<!-- <z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown> -->
-				<z-sticky :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="true">
+				<!-- <view v-if="true"> -->
+				<z-sticky v-if="true" :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="true">
 					<template v-slot:header>
-						<z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="menuClick"></z-filter-dropdown>
+						<view style="height:88rpx">
+						<z-filter-dropdown v-if="isReload" class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="filterMenuClick"></z-filter-dropdown>
+						</view>
 					</template>
 				</z-sticky>
 
@@ -92,19 +108,20 @@
 				<view :class="{'fixed-show':isFixed}"></view>
 
 				<z-product-list v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
-			</view>
-			<view v-else class="index-cate-product-list">
-				<rf-empty
-					:bottom="bottom"
-					:info="'暂无相关的物~'"
-					:isRecommendShow="false"
-					v-if="recommendCenterList.length === 0"
-				></rf-empty>
+				<view v-else class="index-cate-product-list">
+					<rf-empty
+						:bottom="bottom"
+						class="empty-container"
+						:info="'暂无相关的物~'"
+						:isRecommendShow="true"
+						v-if="commodityList.length === 0"
+					></rf-empty>
+				</view>
 			</view>
 			<!-- 加载更多 -->
 			<rf-load-more
 				:status="loadingType"
-				v-if="recommendCenterList.length > 0"
+				v-if="commodityList.length > 0"
 			></rf-load-more>
 		</block>
 
@@ -118,7 +135,7 @@
 			<view class="z-drawer-box" :style="{paddingTop:drawerTop+'px'}">
 				<scroll-view class="rf-drawer-scroll" scroll-y :style="{height:drawerH+'px'}">
 					<view class="rf-drawer-title">
-						<text class="rf-title-bold">价格区间</text>
+						<text class="rf-title-bold">价格区间（元）</text>
 						<view class="rf-attr-right" :class="'text-' + themeColor.name">
 							<text>请输入价格区间</text>
 						</view>
@@ -128,12 +145,12 @@
 						<text>-</text>
 						<input placeholder-class="rf-phcolor" v-model="maxPrice"  class="rf-input" placeholder="最高价" maxlength="11" type='number' />
 					</view>
-					<view class="rf-drawer-title">
+					<!-- <view class="rf-drawer-title">
 						<text class="rf-title-bold">全部分类</text>
 						<view class="rf-all-box rf-icon-ml">
 							<view class="rf-attr-right" :class="'text-' + themeColor.name">{{ currentCateStr }}</view>
 						</view>
-					</view>
+					</view> -->
 					<view class="rf-drawer-content rf-flex-attr">
 						<view class="rf-attr-item" :class="[item.isActive ? `bg-${themeColor.name} rf-btmItem-active` : 'rf-btmItem-normal']" v-for="(item, index) in productCateList" :key="item.id" @tap.stop="cateBtnSelected(index)">
 							<view class="rf-attr-ellipsis">{{ item.title }}</view>
@@ -235,6 +252,8 @@ export default {
 			maxPrice:null,
 			// 筛选END
 
+			isReload: true,
+
 			selectedName:'价格',
 			selectH: 0,
 			tabIndex: 0,
@@ -286,7 +305,7 @@ export default {
 		// 初始化数据
 		this.initData();
 		// 填充区域模拟数据
-		this.filterData[0].submenu = this.priceDropdownList
+		// this.filterData[0].submenu = this.priceDropdownList
 		// this.filterData[1].submenu = addressList
 		// this.filterData[2].submenu = this.appCenterList
 
@@ -371,8 +390,11 @@ export default {
 	},
 	// 下拉刷新
 	onPullDownRefresh() {
-		this.getIndexList('refresh');
-
+		this.isReload = false;
+		this.$nextTick(() => {
+			this.isReload = true
+			this.getIndexList('refresh');
+		})
 	},
 	// 加载更多
 	onReachBottom() {
@@ -385,92 +407,140 @@ export default {
 		 * 选择市区后
 		 */
 		handleSelecteRegion(regionArr, str){
-			uni.showToast({
-				title: "市/区:" + str,
-			});
-			console.log('选择的市区是:',JSON.stringify(regionArr));
+			// this.queryParam.addressCityCode = null
+			// this.queryParam.addressDistrictCode = null
+			let len = regionArr.length
+			let params = {addressCityCode:null, addressDistrictCode:null}
+			if(regionArr[0] === '-1'){
+				params.addressCityCode=null;
+				params.addressDistrictCode=null;
+			} else if (regionArr[len-1] === '') {
+				params.addressCityCode = regionArr[0]
+			} else {
+				params.addressDistrictCode = regionArr[1]
+			}
+			this.region = params;
+			this.queryParam = {...this.queryParam, ...params}
+			this.page = 1;
+			this.getProductList('query')
+			this.handleScrollTop(0)
 		},
 		handleConfirm(e){
-			// debugger;
 			// this.indexArr = e.index;
 			// this.valueArr = e.value;
+			let params = {sortvalue:null, status:null, typeCode:null,fieldsort:null, sortvalue:null}
+
+			let sort = e.value[0]
+			if(sort.length && sort[0]) {
+				params.sortvalue = sort[0] || null
+				params.fieldsort = 'initial_price'
+			}
+
+			let status = e.value[1]
+			if(status.length) params.status = status[0] || null
+
+			let typeCode = e.value[2]
+			if(typeCode.length) params.typeCode = typeCode[0] || null
+
+			this.queryParam = {...this.queryParam,...params}
+			debugger;
+			this.loading = true;
+			setTimeout(() => {
+				this.page = 1;
+				this.getProductList('query')
+			}, 300);
 
 		},
-		menuClick(){
+	
+		filterMenuClick(){
 			this.drawer = true;
 		},
+		reset() {
+			
+			this.minPrice = '';
+			this.maxPrice = '';
+
+			// this.queryParam = {}
+			// this.page = 1;
+			// this.getProductList('query')
+		},
 		closeDrawer(){
+			debugger;
 			this.drawer = false;
 			const params = {};
-			if (this.maxPrice) {
-				params.max_price = this.maxPrice;
-			}
-			if (this.minPrice) {
-				params.min_price = this.minPrice;
-			}
-			const cateArr = [];
+
+			// if (this.maxPrice) {
+				params.initialpricee = this.maxPrice;
+			// }
+			// if (this.minPrice) {
+				params.initialprices = this.minPrice;
+			// }
+			/* const cateArr = [];
 			this.productCateList.forEach(item => {
 				if (item.isActive) {
 					cateArr.push(item.id);
 				}
 			});
 			if (cateArr.join(',')) {
-			params.cate_id = cateArr.join(',');
-			}
+				params.cate_id = cateArr.join(',');
+			} */
+
 			this.page = 1;
 			this.productList = [];
 			this.loading = true;
-			this.productParams = params;
-			setTimeout(() => {
+			this.queryParam = {...this.queryParam, ...params};
+			/* setTimeout(() => {
 				this.loading = false;
-			}, 1500);
+			}, 1500); */
 			// this.getProductList();
+			this.getProductList('query')
+			// this.handleScrollTop()
 		},
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
 
 			if (index === 0) {
 
-				if(this.tabIndex==0 && this.selectH != 0){
+				let params = {}
+				if (this.tabIndex === 0) {
+					this.tabIndex = null;
+					params.total_sales = 'asc';
+				} else {
+					this.tabIndex = 0;
+					params.total_sales = 'desc';
+				}
+				/* this.page = 1;
+				this.productList = [];
+				this.loading = true; */
+
+			/* 	if(this.tabIndex==0 && this.selectH != 0){
 					this.selectH = 0;
 					this.tabIndex = null;
 				} else {
 					this.tabIndex = index
 					this.selectH = 123;
 					this.dropdownList = this.priceDropdownList;
-				}
+				} */
 			} else if (index === 1) {
-				// this.tabIndex = index
-				this.selectH = 200
-				let params = {}
-				if (this.tabIndex == 1) {
+				if (this.tabIndex === 1) {
 					this.tabIndex = null;
-					this.selectH = 0;
-					// this.showDropdownList()
+					this.selectH = 0
 				} else {
-					this.dropdownList = addressList;
-					this.tabIndex = index
+					this.tabIndex = 1;
+					this.selectH = 150
+					this.dropdownList = this.paimaiState;
 				}
+				// this.isList = !this.isList
 			} else if (index === 2) {
 				if (this.tabIndex === 2) {
 					this.tabIndex = null;
 					this.selectH = 0
 				} else {
 					this.tabIndex = 2;
-					this.selectH = 150
-					this.dropdownList = this.paimaiState;
-				}
-				// this.isList = !this.isList
-			} else if (index === 3) {
-				if (this.tabIndex === 3) {
-					this.tabIndex = null;
-					this.selectH = 0
-				} else {
-					this.tabIndex = 3;
 					this.selectH = 240
 					this.dropdownList = this.appCenterList;
 				}
-			} else if(index === 4){
+			} else if(index === 3){
 				// 这里不是下拉选择了,,待优化
 			}
 		},
@@ -514,10 +584,11 @@ export default {
 			// this.productList = [];
 			this.loading = true;
 			// this.productParams = this.dropdownList[index].param;
-			setTimeout(() => {
+			/* setTimeout(() => {
 				this.loading = false
-			}, 2e3);
+			}, 2e3); */
 			// this.getProductList();
+			this.getProductList('query')
 		},
 		toggleDropdownShow(e){
 			let index = parseInt(e.currentTarget.dataset.index, 10);
@@ -542,11 +613,18 @@ export default {
 				this.page = 1;
 				this.getProductList('query')
 
-				uni.pageScrollTo({
-					scrollTop: 176,
-					duration: 300
-				});
+				this.handleScrollTop()
+				
 			// }
+		},
+		/**
+		 * 滚动到指定位置
+		 */
+		handleScrollTop (top=176) {
+			uni.pageScrollTo({
+				scrollTop: top,
+				duration: 300
+			});
 		},
 		getCommodityList(){
 			// 请求服务加载更多
@@ -559,8 +637,11 @@ export default {
 			this.getProductList()
 
 		},
-		async getProductList(loadType='more') {
-			let params = Object.assign({page:this.page, limit:this.pageSize}, this.queryParam)
+		async getProductList(loadType='more',) {
+			this.loading  = true;
+			
+
+			let params = Object.assign({page:this.page, limit:this.pageSize}, this.$mHelper.filterObj(this.queryParam))
 			await this.$http
 				.get(`${productList}`, params)
 				.then(async r => {
@@ -611,14 +692,11 @@ export default {
 		navTo(route) {
 			this.$mRouter.push({ route });
 		},
-		// 跳转至分类模块
-		navToCategory(id) {
-			if (this.$mSettingConfig.appCateType === '2') {
-				uni.setStorageSync('indexToCateId', id);
-				this.$mRouter.reLaunch({ route: '/pages/category/category' });
-					} else {
-				this.navTo(`/pages/product/list?cate_id=${id}`);
-			}
+		// 类模块
+		handleTapCategory(code) {
+			this.queryParam.typeCode = code
+			this.page = 1;
+			this.getProductList('query')
 		},
 		// 通用跳转
 		navToSearch() {
@@ -634,11 +712,15 @@ export default {
 				.get(`${recommendCateList}`, params)
 				.then(async r => {
 					console.log('getRecommendCenter---->',r)
-					this.appCenterList = r.data
-
-					this.filterData[2].submenu = this.appCenterList
-
-					this.recommendCenterList = r.data.slice(0,10)
+					if( r.data.length) {
+						this.appCenterList = r.data.map(item=>{
+							return {...item,value:item.code}
+						})
+	
+						this.filterData[2].submenu = this.appCenterList
+	
+						this.recommendCenterList = r.data.slice(0,10)
+					}
 				})
 				.catch(() => {
 				});
@@ -832,7 +914,7 @@ page {
 				line-height: 88upx;
 				position: relative;
 				// background: $color-white;
-				background: #f5f5f5;
+				background: #fff;
 
 				.rf-dropdownlist {
 						width: 100%;
@@ -895,7 +977,7 @@ page {
 				font-size: $font-base;
 				.iconfont {
 					font-size: $font-lg + 4upx;
-					font-weight: 600;
+					font-weight: 500;
 				}
 			}
 			.rf-screen-bottom {
@@ -928,7 +1010,7 @@ page {
 				margin-right: 0;
 			}
 			.rf-bold {
-				font-weight: bold;
+				font-weight: 700;
 			}
 			.rf-active {
 				color: $base-color;
@@ -1122,5 +1204,12 @@ page {
 	.rf-drawerbtn-black {
 		border: 1upx solid;
 	}
+}
+
+.empty-container{
+	.emptyOnly{
+
+	}
+
 }
 </style>

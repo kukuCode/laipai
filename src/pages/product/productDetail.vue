@@ -87,21 +87,21 @@
           </view>
           <view class="p-flex">
             <view class="gray-title">起&nbsp;&nbsp;拍&nbsp;&nbsp;价</view>
-            <view class="price1 text-red">{{ moneySymbol }}{{proDetail.initialPrice | filterAmount}}</view>
+            <view class="price1 text-red text-price">{{proDetail.initialPrice | filterAmount}}</view>
           </view>
           <view class="p-flex">
             <view class="gray-title">评&nbsp;&nbsp;估&nbsp;&nbsp;价</view>
-            <view class="price1 text-red">{{ moneySymbol }}{{proDetail.consultPrice | filterAmount}}</view>
+            <view class="price1 text-red text-price">{{proDetail.consultPrice | filterAmount}}</view>
           </view>
 
           <view class="p-flex flex-col">
             <view class="p-flex2">
               <view class="gray-title">保&nbsp;&nbsp;证&nbsp;&nbsp;金</view>
-              <view class="price2">{{ moneySymbol }}{{proDetail.bail | filterAmount}}</view>
+              <view class="price2 text-price">{{proDetail.bail | filterAmount}}</view>
             </view>
             <view class="p-flex2">
               <view class="gray-title">加价幅度</view>
-              <view class="price2">{{ moneySymbol }}{{proDetail.markUp | filterAmount}}</view>
+              <view class="price2 text-price">{{proDetail.markUp | filterAmount}}</view>
             </view>
           </view>
           <view class="p-flex flex-col">
@@ -143,7 +143,7 @@
           <button
             class="action-btn"
             :class="'bg-' + themeColor.name"
-            :disabled="proDetail.isLook != 1 "
+            :disabled="proDetail.islook != 1 "
             @tap="applySubmit"
           >申请预约</button>
         </view>
@@ -183,7 +183,7 @@
         </block>-->
         <!-- <view v-html="htmlCode"></view> -->
 
-        <view class="detail-wrapper" :class="{'detail-warming-readall':isExpand}">
+        <view class="detail-wrapper" :class="{'detail-warming-readall':isExpand}" v-if="detailImportantWarming">
           <view style="margin-bottom:10px;font-size:16px;">重要提示</view>
           <view class="detail-warming-cover">
             <view class="detail-cover-btn">
@@ -191,7 +191,7 @@
             </view>
           </view>
           <view class="detail-desc">
-            <rich-text :nodes="htmlCode"></rich-text>
+            <rich-text :nodes="detailImportantWarming"></rich-text>
           </view>
         </view>
       </view>
@@ -276,7 +276,7 @@ export default {
       opcity: 0,
       iconOpcity: 0.5,
       disabledApplyBtn: false,
-      htmlCode: `<div class="container detail-important-warming-text color-grey"><p>来拍法服平台受<span class="color-red">柘城县人民法院</span>委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`,
+      // detailImportantWarming: `<div class="container detail-important-warming-text color-grey"><p>来拍法服平台受<span class="color-red">柘城县人民法院</span>委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`,
     };
   },
   onShareAppMessage() {
@@ -292,6 +292,13 @@ export default {
     },
   },
   computed: {
+    detailImportantWarming(){
+      let {disposalUnit} = this.proDetail
+      if(disposalUnit){
+        return  `<div class="container detail-important-warming-text color-grey text-gray"><p>来拍法服平台受<span class="text-red"> ${disposalUnit} </span>委托，承担本标的物情况调查、看样管理等工作，并提供标的物相关信息咨询服务。现将相关事务告知如下：</p> <p>一、竞买人在参拍前，须仔细阅读法院发布的《竞买公告》、《竞买须知》和《标的物情况》。</p> <p>二、本平台向您提供的一切增值信息均不代表处置法院的意见，与处置法院无关，处置法院提供的信息均以法院发布的公告为准。</p> <p>三、本平台所提供的增值信息均系本平台从公开渠道收集并整理所得，本平台将尽力维护信息的准确性和及时性，但本平台仅能确保本平台未对所收集的信息作过任何的伪造或变造，而并不能保证其为完全准确和最新的信息，本平台不对信息内容作任何形式的担保。</p> <p>四、竞买人在预约及看样过程中，请认准本平台及工作人员的工作证件，在看样现场服从带看样人员管理，在服务过程中遇各种情况，都可向4001-571-060建议或投诉。</p></div>`
+      }
+      return null
+    },
     bannerList() {
       let { infoPics } = this.proDetail;
       if (Array.isArray(infoPics) && infoPics.length) {
@@ -343,9 +350,9 @@ export default {
 				     return;
 				 } */
       debugger;
-      const { title = '' } = this.proDetail;
+      const { title = '', start } = this.proDetail;
       this.navTo(
-        `/pages/appointment/application?title=${title}&pid=${this.productId}`
+        `/pages/appointment/application?title=${title}&pid=${this.productId}&date=${start}`
       );
     },
     navTo(route) {
@@ -751,6 +758,12 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+   .iconfont{
+      color:#b52e25;
+      font-size:34rpx;
+      font-weight: 600;
+
+   }
   }
 }
 

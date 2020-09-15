@@ -181,7 +181,7 @@ export default {
 		},
 		// 数据初始化
 		initData() {
-			this.hasLogin = this.$mStore.getters.hasLogin;
+			// this.hasLogin = this.$mStore.getters.hasLogin;
 			uni.setTabBarStyle({
 				selectedColor: this.themeColor.color,
 				borderStyle: 'white'

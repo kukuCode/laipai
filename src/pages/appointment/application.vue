@@ -16,6 +16,31 @@
 			/>
 		</view>
 		<view class="row b-b">
+			<text class="tit">统一看样时间</text>
+			<text class="text-grey">{{model.date||''}}</text>
+			<!-- <input
+				class="input"
+				type="number"
+				disabled
+				:value="model.date"
+				@blur="handleMobileChange"
+				placeholder="请填写你的联系方式"
+				placeholder-class="placeholder"
+			/> -->
+		</view>
+		<view class="row b-b">
+			<text class="tit">希望看样时间</text>
+			<input
+				class="input"
+				type="number"
+				@click="onShowDatePicker('datetime')"
+				v-model="appointmenData.xwdate"
+				@blur="handleMobileChange"
+				placeholder="请选择看样时间"
+				placeholder-class="placeholder"
+			/>
+		</view>
+		<view class="row b-b">
 			<text class="tit">联系方式</text>
 			<input
 				class="input"
@@ -34,7 +59,6 @@
 				auto-height
 				maxlength="100"
 				v-model="appointmenData.remarks"
-				placeholder="备注"
 				placeholder-class="placeholder"
 			/>
 
@@ -52,6 +76,9 @@
 
 		<!--加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
+
+		<mx-date-picker :show="showPicker" :type="type" :value="dateVal"  :show-tips="false" format="yyyy-mm-dd hh:ii" :show-holiday="false" :show-seconds="false" @confirm="onDateSelected" @cancel="onCancel" />
+
 	</view>
 </template>
 
@@ -60,16 +87,20 @@
  * 预约确认
  */
 import { appointment } from '@/api/appointmentAPI';
+import moment from '@/common/moment';
+import MxDatePicker from "@/components/mx-datepicker/mx-datepicker.vue";
 
 export default {
 	components: {
+		MxDatePicker
 	},
 	data() {
 		return {
 			appointmenData: {
 				name: '',
 				phonenum: '',
-				remarks: ''
+				remarks: '',
+				xwdate:null,
 			},
 			model:{
 				title:'',
@@ -77,13 +108,38 @@ export default {
 			},
 			timer: 0,
 			btnLoading: false,
-			loading: false
+			loading: false,
+
+			//日期
+			 showPicker: false,
+			datetime: moment().format('YYYY-MM-DD'),
+			type: 'datetime',
+			dateVal: ''
 		};
 	},
 	onLoad(options) {
 		this.initData(options);
 	},
 	methods: {
+		onShowDatePicker(type){//显示
+			this.type = type;
+			this.showPicker = true;
+		},
+		onDateSelected(e) {//选择
+			debugger;
+			this.showPicker = false;
+			if(e) {
+				//选择的值
+				console.log('value => '+ e.value);
+				//原始的Date对象
+				console.log('date => ' + e.date);
+				this.$set(this.appointmenData, 'xwdate', e.value)
+				// this.appointmenData.xwdate = e.value
+			}
+		},
+		onCancel(){
+			this.showPicker = false;
+		},
 		handleRealNameChange(){
 
 		},
@@ -93,8 +149,13 @@ export default {
 		// 数据初始化
 		async initData(options) {
 			debugger;
-			let {title, pid}  = options
+			let {title, pid, date}  = options
 			this.model = {title, pid}
+			if(date){
+				this.dateVal = moment(date).format('YYYY-MM-DD HH:mm')
+				this.model.date = moment(date).format('YYYY-MM-DD HH:mm')
+				this.appointmenData.xwdate = moment(date).format('YYYY-MM-DD HH:mm')
+			}
 			// this.manageType = options.type;
 			/* uni.setNavigationBarTitle({
 				title
@@ -130,16 +191,16 @@ export default {
 			希望看样时间：xwdate
 			备注： remarks */
 			let params = {
-					mid:'1548123922204mWy',
+					mid:'1599638335305a13',
 					sid: this.model.pid,
 					...data
 				}
-				params.fzperson='Test_fzperson'
-				params.name = 'Test_name'
-				params.nickname='Test_nickname'
-				params.title = this.model.title
-				params.xwdate = 1593945183000
-				params.yystate = false
+				// params.fzperson='Test_fzperson'
+				// params.name = 'Test_name'
+				// params.nickname='Test_nickname'
+				// params.title = this.model.title
+				// params.xwdate = 1593945183000
+				// params.yystate = false
 
 			await this.$http
 				.post(`${appointment}`, params)

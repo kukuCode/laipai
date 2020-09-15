@@ -165,6 +165,19 @@ export default {
 		url += paramsStr;
 		return url;
 	},
+	filterObj(obj) {
+		if (!(typeof obj == 'object')) {
+			return;
+		}
+		
+		for ( let key in obj) {
+			if (obj.hasOwnProperty(key)
+			&& (obj[key] == null || obj[key] == undefined || obj[key] === '')) {
+			delete obj[key];
+			}
+		}
+		return obj;
+	},
 	/*
 	 * 获取url字符串参数
 	 */
