@@ -99,7 +99,7 @@
 			async handleCancelAppo(id) {
 				this.loading = true;
 				await this.$http
-					.post(`${cancelAppointment}${id}`)
+					.get(`${cancelAppointment}${id}`)
 					.then(r => {
 						// this.$mHelper.toast('取消预约成功！');
 						this.$mHelper.toast('取消成功！', 2000, false,'success');
