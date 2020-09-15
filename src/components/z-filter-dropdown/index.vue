@@ -279,7 +279,6 @@
 			},
 			//菜单开关
 			togglePage(index,type) {
-				debugger;
 				if(type&&type == "filter"){
 					this.$emit('menuClick', index)
 					return;

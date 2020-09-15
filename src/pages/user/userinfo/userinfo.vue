@@ -14,7 +14,6 @@
 				<input
 					type="number"
 					v-model="profileInfo.phonenum"
-					disabled
 					placeholder="请输入手机号码"
 				/>
 			</view>
@@ -163,7 +162,7 @@ export default {
 					birthday: this.date
 				}
 			await this.$http
-				.post(`${memberUpdate}?id=${this.profileInfo.id}`, paramsData)
+				.post(`${memberUpdate}`, paramsData)
 				.then(() => {
 					clearInterval(timer);
 					this.loadProgress = 0;
