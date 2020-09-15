@@ -26,7 +26,7 @@
 					@tap="handleTapCategory(nav.code)">
 							<view class="img">
 								<!-- <image :src="sItem.cover || errorImage" mode="aspectFill"></image> -->
-								<image lazy-load='true' fade-show='true' :src="nav.icon" mode="widthFix" style="height: 90upx;width: 90upx" ></image>
+								<image lazy-load='true' fade-show='true' :src="nav.icon" mode="widthFix" style="height: 80upx;width: 80upx" ></image>
 							</view>
 							<view class="text in1line">{{ nav['name'] }}</view>
 					</view>
@@ -400,7 +400,7 @@ export default {
 	onReachBottom() {
 		if (this.loadingType === 'nomore') return;
 		this.page++;
-		this.getCommodityList()
+		this.getProductList('more')
 	},
 	methods: {
 		/**
@@ -626,21 +626,11 @@ export default {
 				duration: 300
 			});
 		},
-		getCommodityList(){
-			// 请求服务加载更多
-			// !!目前是模拟的数据!!
-			/* setTimeout(() => {
-				this.commodityList = [...this.commodityList, ...commodityList];
-				this.loading = false;
-				this.loadingType =this.page != 5 ? 'more' : 'nomore';
-			}, 1500); */
-			this.getProductList()
-
-		},
+		/* getCommodityList(){
+			this.getProductList('more')
+		}, */
 		async getProductList(loadType='more',) {
-			this.loading  = true;
-			
-
+			if(loadType !== 'more') this.loading  = true;
 			let params = Object.assign({page:this.page, limit:this.pageSize}, this.$mHelper.filterObj(this.queryParam))
 			await this.$http
 				.get(`${productList}`, params)
@@ -717,7 +707,7 @@ export default {
 							return {...item,value:item.code}
 						})
 	
-						this.filterData[2].submenu = this.appCenterList
+						this.filterData[2].submenu = [{name:'不限',value:''}, ...this.appCenterList]
 	
 						this.recommendCenterList = r.data.slice(0,10)
 					}

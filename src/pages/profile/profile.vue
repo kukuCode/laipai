@@ -100,13 +100,13 @@ import { mpWechatLogin} from '@/api/login';
 
 // import listCell from '@/components/rf-list-cell';
 // import { mapMutations } from 'vuex';
-import rfBadge from '@/components/rf-badge/rf-badge';
+// import rfBadge from '@/components/rf-badge/rf-badge';
 import $mAssetsPath from '@/config/assets.config';
 let startY = 0, moveY = 0, pageAtTop = true;
 export default {
 	components: {
 		// listCell,
-		rfBadge
+		// rfBadge
 	},
 	data() {
 		return {
@@ -399,8 +399,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 page {
-	background-color: $page-color-base !important;
+	background-color: $page-color-base;
 }
+
 .user {
 	.user-section {
 		height: 520upx;

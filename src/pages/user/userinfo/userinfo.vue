@@ -19,7 +19,7 @@
 			</view>
 			<view class="input-item">
 				<text class="tit">性　别</text>
-				<radio-group @change="handleGenderChange">
+				<radio-group @change="handleGenderChange" v-model="profileInfo.gender">
 					<label
 						class="gender-item"
 						v-for="(item, index) in genders"
@@ -29,7 +29,7 @@
 							class="gender-item-radio"
 							:color="themeColor.color"
 							:value="item.value"
-							:checked="item.value === profileInfo.gender"
+							:checked="item.value == profileInfo.gender"
 						/>
 						<text class="gender-item-text">{{ item.name }}</text>
 					</label>

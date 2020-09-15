@@ -350,10 +350,10 @@ export const filterDataList = [{
         "value": "",
     },
     {
-        "name": '价格升序',
+        "name": '起拍价格升序',
         "value": "asc",
     }, {
-        "name": '价格降序',
+        "name": '起拍价格降序',
         "value": "desc",
     },
 
@@ -363,6 +363,10 @@ export const filterDataList = [{
     "name": '状态',
     "type": 'hierarchy',
     "submenu": [
+        {
+            "name": "不限",
+            "value": ""
+        },
         {
             "name": "即将开始",
             "value": "todo"
