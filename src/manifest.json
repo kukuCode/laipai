@@ -177,12 +177,12 @@
     "mp-weixin" : {
         /* 小程序特有相关 */
         "usingComponents" : true,
-        "appid" : "wxeff8e2f58174efa0",
+        "appid" : "wx2fcbcf5a4b93f8ae",
         // 这里添加微信小程序appid
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
             "minified" : true,
-            "postcss" : true,
+            "postcss" : false,
             "es6" : true
         },
         "permission" : {},

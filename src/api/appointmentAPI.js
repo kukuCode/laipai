@@ -7,7 +7,7 @@ const appointment  = '/wx/auctionItem/appointment';
 // 取消预约申请 参数：id（预约id）
 const cancelAppointment = '/wx/auctionItem/cancelappointment/';
 // 获取预约记录
-const appointmentList =  '/wx/auctionItem/appointmentList/';
+const appointmentList =  '/wx/auctionItem/appointmentList';
 
 
 

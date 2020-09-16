@@ -63,6 +63,7 @@ http.interceptor.response(
 				mHelper.toast('错误的请求');
 				return Promise.reject(response.data.message);
 				break;
+			case 70004:
 			case 401:
 				isRefreshing = false;
 				// refreshToken 的返回状态为401

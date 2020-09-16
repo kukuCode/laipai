@@ -1,7 +1,7 @@
 <template>
 	<view class="empty">
 		<view class="empty-content" :class="{ emptyOnly: !isRecommendShow }">
-			<text class="iconfont iconnodata-search" :class="'text-'+themeColor.name"></text>
+			<text class="iconfont iconempty" :class="'text-'+themeColor.name"></text>
 			<text class="empty-content-info">{{ info }}</text>
 		</view>
 	</view>

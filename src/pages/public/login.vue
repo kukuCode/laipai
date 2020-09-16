@@ -64,6 +64,7 @@ export default {
       btnLoading: false,
       status: 0, //2未操作 1已经授权  0拒绝授权
       code: '',
+			token:'',
       userInfo: null,
       type: 0,
       phone: '',
@@ -83,6 +84,10 @@ export default {
       this.status = await getSetting();
       console.log('status:', this.status);
       debugger;
+			if(this.status ==1){
+				debugger;
+				this.userInfo = await wxUserInfo();
+			}
 
       /*  //获取服务商信息
                 let provider = await getProvider();
@@ -115,8 +120,11 @@ export default {
 
       // !!!-----设置token ----!!!
       // 获取token
-      let token = await this.getToken(this.code);
-      uni.setStorageSync('accessToken', token);
+      // let res = await this.getToken(this.code);
+			// console.log('res--->',res)
+			// this.token = res.token
+			debugger;
+      // uni.setStorageSync('accessToken', token);
       // !!!
 
       /*
@@ -137,16 +145,27 @@ export default {
      *  }
      * */
     getphone(obj) {
-      return new Promise((resolve, reject) => {
+     /* return new Promise((resolve, reject) => {
+				debugger;
         getPhoneAction(obj).then(
           (res) => {
+						debugger;
             resolve(JSON.parse(res.data.data.phone));
           },
           (err) => {
             reject(err);
           }
         );
-      });
+      }); */
+
+			return this.$http.post(getPhoneAction, obj).then(
+			  (res) => {
+			    resolve(res.data);
+			  },
+			  (err) => {
+			    reject(err);
+			  }
+			);
     },
     getToken(code) {
       return new Promise((resolve, reject) => {
@@ -160,6 +179,19 @@ export default {
         );
       });
     },
+
+		login4PhoneNum(obj){
+			return new Promise((resolve, reject) => {
+			  this.$http.post(getTokenUrl, obj).then(
+			    (res) => {
+			      resolve(res.data);
+			    },
+			    (err) => {
+			      reject(err);
+			    }
+			  );
+			});
+		},
     /* 获取sessionkey */
     getSessionKey(appid, secret, code) {
       return new Promise((resolve, reject) => {
@@ -177,21 +209,35 @@ export default {
     async getPhoneNumber(e) {
       debugger;
       try {
-        this.phoneParams.encrypdata = e.detail.encryptedData;
-        this.phoneParams.ivdata = e.detail.iv;
-        debugger;
-        var phone = await getphone(this.phoneParams);
+				if (e.detail.errMsg == "getPhoneNumber:ok") {
+					let param = {code:this.code, encrypdata:e.detail.encryptedData, ivdata:e.detail.iv}
+					let result = await this.login4PhoneNum(param)
+					console.log('---->>>>>',result)
 
-        // 获取手机号成功--->登录成功
-        await this.$mStore.commit('login', r.data.user_info);
+					// this.phoneParams.encrypdata = e.detail.encryptedData;
+					// this.phoneParams.ivdata = e.detail.iv;
+					// var res = await this.getphone(this.phoneParams);
+					debugger;
+					let {userInfo} = this.userInfo
+					let member = {...userInfo, ...result.obj}
+					let provider = {
+						member: member,
+						access_token: result.token,
+						phonenum: member.phonenum
+					}
 
-        this.phone = phone.purePhoneNumber;
-        console.log('phone:', this.phone);
+					await this.$mStore.commit('login', provider);
 
-        if (this.phone) {
-          this.phoneStatus = true;
-          this.reLaunch();
-        }
+
+					// 获取手机号成功--->登录成功
+					// await this.$mStore.commit('login', res.data.user_info);
+
+					// this.phone = phone.purePhoneNumber;
+					console.log('phone:', this.phone);
+					this.reLaunch();
+				} else {
+					this.$mHelper.toast('获取手机号失败!');
+				}
       } catch (e) {
         this.$mHelper.toast('发生了点小错误,请重试!');
       }
@@ -208,12 +254,14 @@ export default {
       }
 
       if (e.detail && e.detail.errMsg == 'getUserInfo:ok') {
-        
+
         // 待优化,手机号获取完成后才算登录成功,并存store
         this.userInfo = await wxUserInfo();
+				console.log('this.userInfo=',this.userInfo)
 
-        this.$mStore.commit('login', this.userInfo);
-        this.$mRouter.switchTab({ route: '/pages/profile/profile' });
+        // this.$mStore.commit('login', this.userInfo);
+        // this.$mRouter.switchTab({ route: '/pages/profile/profile' });
+				this.status = 1
 
 
       } else {
@@ -228,14 +276,12 @@ export default {
       this.$mRouter.back();
     },
     reLaunch() {
-      if (this.phoneStatus) {
         uni.setStorageSync('tongfang-phone', this.phone);
         // 后续业务代码
         this.$mRouter.reLaunch({ route: '/pages/profile/profile' });
         /* uni.reLaunch({//信息更新成功后跳转到小程序首页
 						url: '/pages/index/index'
 					}); */
-      }
     },
     /**
      * 打开设置开启授权
@@ -248,7 +294,9 @@ export default {
         success: function (res) {
           if (res.confirm) {
             uni.openSetting({
-              success(res) {},
+              success(res) {
+                debugger;
+              },
             });
           } else if (res.cancel) {
           }

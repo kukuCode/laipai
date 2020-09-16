@@ -33,8 +33,6 @@
 					</view>
 				</view>
 			</view>
-
-
 		</block>
 
 		<!-- 商品栏目 -->
@@ -50,7 +48,7 @@
 										<!-- <view class="rf-top-item" :class="[tabIndex == 0?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="0">
 											价格
 										</view> -->
-										
+
 										<!-- <view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
 											<text>价格</text>
 											<text class="iconfont" :class="selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#b52e25'}"></text>
@@ -183,11 +181,6 @@ import {
 	productList,
 	recommendCateList
 } from '@/api/product';
-// import rfSwipeDot from '@/components/rf-swipe-dot';
-// import rfFloorIndex from '@/components/rf-floor-index';
-// import rfSearchBar from '@/components/rf-search-bar';
-// import rfSwiperSlide from '@/components/rf-swiper-slide';
-// import rfProductList from '@/components/rf-product-list';
 
 import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
@@ -200,11 +193,6 @@ import zPickRegions from '@/components/z-pick-regions';
 import { mapMutations } from 'vuex';
 export default {
 	components: {
-		// rfFloorIndex,
-		// rfSwipeDot,
-		// rfProductList,
-		// rfSearchBar,
-		// rfSwiperSlide,
 		zHeaderSearch,
 		zFloorIndex,
 		zProductList,
@@ -451,12 +439,12 @@ export default {
 			}, 300);
 
 		},
-	
+
 		filterMenuClick(){
 			this.drawer = true;
 		},
 		reset() {
-			
+
 			this.minPrice = '';
 			this.maxPrice = '';
 
@@ -614,7 +602,7 @@ export default {
 				this.getProductList('query')
 
 				this.handleScrollTop()
-				
+
 			// }
 		},
 		/**
@@ -676,7 +664,7 @@ export default {
 			this.getRecommendCenter()
 			// 首页商品
 			this.getIndexList();
-			
+
 		},
 		// 通用跳转
 		navTo(route) {
@@ -706,9 +694,9 @@ export default {
 						this.appCenterList = r.data.map(item=>{
 							return {...item,value:item.code}
 						})
-	
+
 						this.filterData[2].submenu = [{name:'不限',value:''}, ...this.appCenterList]
-	
+
 						this.recommendCenterList = r.data.slice(0,10)
 					}
 				})
@@ -717,9 +705,6 @@ export default {
 		},
 		// 获取主页数据
 		async getIndexList(type) {
-			// !待联调服务!
-			// let p = '?page=1&limit=15&title=&status=&typeCode=&addressDistrictCode=&addressCityCode=&disposalUnit=&initialprices=&initialpricee=&startdate=&enddate='
-			// let p = `?page=${this.currPage}&limit=${this.pageSize}`
 			if(type === 'refresh'){
 				this.page = 1;
 				this.loadingType = 'more';
@@ -733,10 +718,6 @@ export default {
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
-					console.log('rrr---->',r)
-					debugger;
-					// 首页参数赋值
-					// this.initIndexData(r.data);
 					this.commodityList = r.data
 					this.loading = false;
 				})
@@ -746,19 +727,6 @@ export default {
 						uni.stopPullDownRefresh();
 					}
 				});
-
-				/* setTimeout(() => {
-					if (type === 'refresh') {
-						this.page = 1;
-						this.loadingType = 'more';
-						uni.stopPullDownRefresh();
-					}
-					this.commodityList = commodityList
-					// 假数据
-					// this.initIndexData(r.data);
-					this.loading = false;
-				}, 2000); */
-
 		},
 		// 首页参数赋值
 		initIndexData(data) {

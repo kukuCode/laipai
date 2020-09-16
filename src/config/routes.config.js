@@ -28,10 +28,6 @@ export default {
 		name: '分类',
 		path: '/pages/category/category'
 	},
-	cart: {
-		name: '购物车',
-		path: '/pages/cart/cart'
-	},
 	login: {
 		name: '登录',
 		path: '/pages/public/login'

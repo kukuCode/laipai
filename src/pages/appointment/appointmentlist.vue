@@ -1,21 +1,32 @@
 <template>
 	<view class="appointmentlist rf-row-wrapper">
-
-		<template v-for="(record,i) in appointmenList">
-			<view class="apt-wrapper" :key="i">
-				<view class="apt-content">
-					<view class="apt-title">
-						{{record.title}}
+		<view class="" v-if="appointmenList.length">
+			<template v-for="(record,i) in appointmenList">
+				<view class="apt-wrapper" :key="i">
+					<view class="apt-content">
+						<view class="apt-title">
+							{{record.title || ''}}
+						</view>
+						<view class="apt-date">
+							{{record.xwdate || ''}}
+						</view>
 					</view>
-					<view class="apt-date">
-						2020-09-05
+					<view class="apt-oper-wrapper">
+						<button size="mini" class="action-btn" :class="'bg-' + themeColor.name" @tap="handleCancelAppo(record.id)">取消预约</button>
 					</view>
 				</view>
-				<view class="apt-oper-wrapper">
-					<button size="mini" class="action-btn" :class="'bg-' + themeColor.name" @tap="handleCancelAppo(record.id)">取消预约</button>
+			</template>
 				</view>
-			</view>
-		</template>
+				<view v-else>
+				<rf-empty
+					:bottom="bottom"
+					class="empty-container"
+					:info="'您还预约哟~'"
+					:isRecommendShow="true"
+					v-if="!loading && appointmenList.length === 0"
+				></rf-empty>
+					
+				</view>
 
 		<!--加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -79,11 +90,11 @@
 			},
 			async getAppointmentlist() {
 					await this.$http
-						.get(`${appointmentList}${this.userId}`)
+						.get(`${appointmentList}`)
 						.then(r => {
 							debugger;
 							this.loading = false;
-							// this.appointmenList = r.data;
+							this.appointmenList = r.data;
 						})
 						.catch(err => {
 							this.loading = false;

@@ -1,7 +1,7 @@
 <script>
 /* eslint-disable */
 import Vue from 'vue';
-import { verifyAccessToken } from '@/api/login';
+// import { verifyAccessToken } from '@/api/login';
 import { mapMutations } from 'vuex';
  import {checkLoginStatus} from '@/api/common/login/checkLoginStatus.js' //检查登录状态
 
@@ -36,9 +36,11 @@ export default {
       const token = uni.getStorageSync('accessToken');
       // 获取系统title高度
       await this.initSystemInfo();
-      if (token) {
+
+      /* if (token) {
         await this.handleVerifyAccessToken(token);
-      }
+      } */
+
       if (this.$mStore.getters.hasLogin) {
         this.setNotifyNum(uni.getStorageSync('notifyNum') || 0);
         // #ifdef APP-PLUS
@@ -76,13 +78,13 @@ export default {
       });
     },
     // 检验token是否有效
-    async handleVerifyAccessToken(token) {
+   /* async handleVerifyAccessToken(token) {
       await this.$http.post(verifyAccessToken, { token }).then((r) => {
         if (!r.data.token) {
           this.$mStore.commit('logout');
         }
       });
-    },
+    }, */
   },
 };
 </script>

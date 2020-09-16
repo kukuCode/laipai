@@ -55,8 +55,10 @@ const store = new Vuex.Store({
 		logout(state) {
 			state.accessToken = '';
 			state.userInfo = {};
+			state.user = {}
 			uni.removeStorageSync('accessToken');
 			uni.removeStorageSync('userInfo');
+			uni.removeStorageSync('user');
 		},
 		setOpenId(state, openId) {
 			state.openId = openId;

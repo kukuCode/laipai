@@ -9,17 +9,17 @@
 			<view class="user-info-box">
 				<view
 					class="portrait-box"
-					@tap="navTo('login')"
+					@tap="navTo(hasLogin ? '/pages/user/userinfo/userinfo' : 'login')"
 				>
-					<!-- @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')" -->
+					<!-- @tap="navTo('login')" -->
 					<image
 						class="portrait"
-						:src="userInfo.head_portrait || headImg"
+						:src="userInfo.avatarUrl || headImg"
 					></image>
 					<text class="username">
 						{{
-							userInfo.nickname ||
-							userInfo.realname ||
+							userInfo.nickName ||
+							userInfo.realName ||
 								'登录/注册'
 						}}
 					</text>
@@ -198,6 +198,15 @@ export default {
 				this.loading = false;
 				this.resetSectionData();
 			} */
+
+			if (this.$mStore.getters.hasLogin) {
+				// await this.getMemberInfo();
+				debugger;
+				this.userInfo = uni.getStorageSync('userInfo');
+			} else {
+				this.loading = false;
+				this.resetSectionData();
+			}
 			this.loading = false;
 		},
 		// 获取用户信息
