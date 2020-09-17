@@ -41,8 +41,7 @@ export default {
 		return {
 			multiArray: [],
 			multiIndex: [0, 0, 0],
-			multiIndex: [0, 0, 0],
-      		multiIndexClone: [0, 0, 0],
+      multiIndexClone: [0, 0, 0],
 			multiStr: '全省',
 			customRecord: [{code: "00",id: "00", name: this.customFirstName}]
 		};
@@ -52,8 +51,13 @@ export default {
 		this.getProvinceList();
 	},
 	methods: {
+		// 重置
+		resetData(){
+			this.multiIndex= [0, 0, 0];
+			this.multiIndexClone= [0, 0, 0];
+			this.multiStr= '全省';
+		},
 		bindMultiChange(e){
-			debugger;
 			this.multiIndexClone = e.detail.value;
 			this.multiArrayClone = JSON.parse(JSON.stringify(this.multiArray));
 			const arr = [];
@@ -67,7 +71,6 @@ export default {
 					arr.push('')
 				}
 			}
-debugger;
 			// this.multiStr = `$this.multiArrayClone[this.defaultLevel-1][this.multiIndexClone[this.defaultLevel-1]].name}`
 			this.multiStr = showName[showName.length-1]
 			this.$emit("selecteRegion", arr, this.multiStr);
@@ -127,7 +130,7 @@ debugger;
 
 			this.$emit('columnChange', JSON.parse(JSON.stringify(this.multiArray)));
 		}
-		
+
 	}
 };
 </script>

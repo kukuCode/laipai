@@ -346,7 +346,7 @@ export const filterDataList = [{
     "name": '价格',
     "type": 'hierarchy',
     "submenu": [{
-        "name": '综合',
+        "name": '不限',
         "value": "",
     },
     {

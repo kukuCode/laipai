@@ -4,7 +4,7 @@
 				<i class="cuIcon cuIcon-activity" />
 				<text class="cell-tit clamp">{{ model.title }}</text>
 		</view>
-		<view class="row b-b">
+		<view class="row b-b ">
 			<text class="tit">您的姓名</text>
 			<input
 				class="input"
@@ -15,20 +15,18 @@
 				placeholder-class="placeholder"
 			/>
 		</view>
-		<view class="row b-b">
+		<view class="row b-b ">
 			<text class="tit">统一看样时间</text>
-			<text class="text-grey">{{model.date||''}}</text>
+			<text class="input text-grey">{{model.date||''}}</text>
 			<!-- <input
-				class="input"
+				class="input text-grey"
 				type="number"
 				disabled
 				:value="model.date"
-				@blur="handleMobileChange"
-				placeholder="请填写你的联系方式"
 				placeholder-class="placeholder"
 			/> -->
 		</view>
-		<view class="row b-b">
+		<view class="row b-b ">
 			<text class="tit">希望看样时间</text>
 			<input
 				class="input"
@@ -40,7 +38,7 @@
 				placeholder-class="placeholder"
 			/>
 		</view>
-		<view class="row b-b">
+		<view class="row b-b ">
 			<text class="tit">联系方式</text>
 			<input
 				class="input"
@@ -51,9 +49,8 @@
 				placeholder-class="placeholder"
 			/>
 		</view>
-		<view class="row b-b">
+		<view class="row b-b ">
 			<text class="tit">备注信息</text>
-			<view class="">
 			<input
 				class="input"
 				auto-height
@@ -61,8 +58,6 @@
 				v-model="appointmenData.remarks"
 				placeholder-class="placeholder"
 			/>
-
-			</view>
 		</view>
 		<button
             class="confirm-btn"
@@ -149,12 +144,12 @@ export default {
 		// 数据初始化
 		async initData(options) {
 			debugger;
-			let {title, pid, date}  = options
+			let {title, pid, sampledate}  = options
 			this.model = {title, pid}
-			if(date){
-				this.dateVal = moment(date).format('YYYY-MM-DD HH:mm')
-				this.model.date = moment(date).format('YYYY-MM-DD HH:mm')
-				this.appointmenData.xwdate = moment(date).format('YYYY-MM-DD HH:mm')
+			if(sampledate){
+				this.dateVal = moment(sampledate).format('YYYY-MM-DD HH:mm')
+				this.model.date = moment(sampledate).format('YYYY-MM-DD HH:mm')
+				this.appointmenData.xwdate = moment(sampledate).format('YYYY-MM-DD HH:mm')
 			}
 			// this.manageType = options.type;
 			/* uni.setNavigationBarTitle({
@@ -258,5 +253,14 @@ page {
     right: 0;
     bottom: 140rpx;
     margin: auto;
+}
+.rf-row-wrapper .row .input {
+	flex:2;
+}
+.rf-row-wrapper .row  .text-grey{
+	color: #8799a3 !important;
+}
+.rf-row-wrapper .row .tit {
+	flex:1;
 }
 </style>

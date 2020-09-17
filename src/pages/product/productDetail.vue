@@ -350,9 +350,9 @@ export default {
 				     return;
 				 } */
       debugger;
-      const { title = '', start } = this.proDetail;
+      const { title = '', sampledate='' } = this.proDetail;
       this.navTo(
-        `/pages/appointment/application?title=${title}&pid=${this.productId}&date=${start}`
+        `/pages/appointment/application?title=${title}&pid=${this.productId}&sampledate=${sampledate}`
       );
     },
     navTo(route) {
@@ -475,7 +475,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-	
+
 .container {
   padding-bottom: 110rpx;
 	background-color: #fff;

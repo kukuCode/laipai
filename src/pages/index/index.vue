@@ -11,7 +11,7 @@
 			<template slot="headerLeft">
 				<view style="display:flex;align-items: center;    max-width: 120px;    white-space: nowrap;" class="left-region">
 					<!-- <text>成都</text> -->
-					<z-pick-regions :defaultLevel="2" customFirstName="不限" @selecteRegion="handleSelecteRegion" />
+					<z-pick-regions :defaultLevel="2" customFirstName="不限" @selecteRegion="handleSelecteRegion" ref="refRegion" />
 					<text class="downIcon cuIcon-triangledownfill"></text>
 				</view>
 			</template>
@@ -379,6 +379,7 @@ export default {
 	// 下拉刷新
 	onPullDownRefresh() {
 		this.isReload = false;
+		this.$refs.refRegion && this.$refs.refRegion.resetData();
 		this.$nextTick(() => {
 			this.isReload = true
 			this.getIndexList('refresh');
