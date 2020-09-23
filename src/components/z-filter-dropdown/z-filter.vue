@@ -232,6 +232,10 @@
 						list[i].isSelected = false;
 					}
 				}
+
+				// #ifdef H5
+				this.$forceUpdate();
+				// #endif
 			},
 
 
@@ -302,7 +306,12 @@
                 // 收集第一级菜单信息
                 let {key, name, type, submenu, isSort=false} = this.menuList[i]
                 if(key){
-                    r[key] = name
+					r[key] = name
+					/* if(Array.isArray(submenu) && submenu.length){
+						submenu.forEach(item=>{
+							item.isSelected = false
+						})
+					} */
                     titleArr.push({
                         'title': name,
                         'key': key,
