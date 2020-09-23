@@ -21,7 +21,7 @@
 						<view v-if="item">
 							<view class="rf-pro-price">
 								<view>
-								<text class="rf-sub-title" style="font-size:30upx">起 拍 价: </text><text class="rf-sale-price" :class="'text-'+themeColor.name" v-if="item.consultPrice"> {{ moneySymbol }} <text class="rf-price-txt">{{ item.consultPrice | filterTotalSales }}</text></text>
+								<text class="rf-sub-title" style="font-size:30upx">起 拍 价: </text><text class="rf-sale-price" :class="'text-'+themeColor.name" v-if="item.initialPrice"> {{ moneySymbol }} <text class="rf-price-txt">{{ item.initialPrice | filterTotalSales }}</text></text>
 								</view>
 								<view>
 								<text class="rf-sub-title">开拍时间:</text><text class="rf-fatory-date" v-if="item.start" >{{ item.start }}</text>

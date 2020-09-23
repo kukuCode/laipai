@@ -64,6 +64,7 @@ http.interceptor.response(
 				return Promise.reject(response.data.message);
 				break;
 			case 70004:
+			case 20001:
 			case 401:
 				isRefreshing = false;
 				// refreshToken 的返回状态为401

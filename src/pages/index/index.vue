@@ -133,7 +133,7 @@
 			<view class="z-drawer-box" :style="{paddingTop:drawerTop+'px'}">
 				<scroll-view class="rf-drawer-scroll" scroll-y :style="{height:drawerH+'px'}">
 					<view class="rf-drawer-title">
-						<text class="rf-title-bold">价格区间（元）</text>
+						<text class="rf-title-bold">价格区间（万元）</text>
 						<view class="rf-attr-right" :class="'text-' + themeColor.name">
 							<text>请输入价格区间</text>
 						</view>
@@ -185,7 +185,7 @@ import {
 import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
-import {commodityList, addressList, menuList, filterDataList} from "@/Json.js"
+import { filterDataList} from "@/Json.js"
 import zFilterDropdown from '@/components/z-filter-dropdown';
 import zSticky from '@/components/z-sticky/z-sticky';
 import zPickRegions from '@/components/z-pick-regions';
@@ -204,7 +204,6 @@ export default {
 		return {
 			page:1,
 			pageSize:20,
-			menuList:menuList,
 			hotProductList: [], // 热门商品列表
 			newProductList: [], // 新品上市商品列表
 			productCateList: [], // 商品栏目

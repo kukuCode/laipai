@@ -180,7 +180,7 @@
         "appid" : "wx2fcbcf5a4b93f8ae",
         // 这里添加微信小程序appid
         "setting" : {
-            "urlCheck" : true,
+            "urlCheck" : false,
             "minified" : true,
             "postcss" : false,
             "es6" : true

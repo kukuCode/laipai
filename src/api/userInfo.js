@@ -17,11 +17,15 @@ const memberInfo = '/wx/auctionItem/minfo';
 // 个人信息修改
 const memberUpdate = '/wx/auctionItem/updatem';
 
+// 我的服务
+const myService = '/wx/auctionItem/servicelist';
+
+
+
+
 // 个人信息修改
 // const memberUpdate = '/tiny-shop/v1/member/member/update';
 
-// 收货地址列表
-const addressList = '/tiny-shop/v1/member/address/index';
 // 默认收货地址
 const addressDefault = '/tiny-shop/v1/member/address/default';
 // 默认收货地址
@@ -158,10 +162,10 @@ export {
 	appointment,
 	cancelAppointment,
 	appointmentList,
+	myService,
 
 	memberInfo,
 	memberUpdate,
-	addressList,
 	addressCreate,
 	addressDefault,
 	addressDetail,

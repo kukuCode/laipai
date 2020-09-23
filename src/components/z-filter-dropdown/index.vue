@@ -2,7 +2,7 @@
 	<view class="z-filter-dowpdown" :class="{'setDropdownBottom':maskVisibility,'is-fixed': isFixed}" :style="{'top': isFixed ? menuTop+'rpx':''}" @touchmove.stop.prevent="discard" @tap.stop="discard">
 		<view class="nav">
 			<block v-for="(item,index) in menu" :key="index">
-				<view class="first-menu" :class="{'on':showPage==index}" @tap="togglePage(index, item.type)">
+				<view class="first-menu" :class="{'on':showPage==index}" @tap="choosePage(index, item.type)">
 					<text class="name">{{item.name}}</text>
 					<text class="iconfont iconxia" v-show="item.type !=='filter'" :style="'transform:rotate('+triangleDeg[index]+'deg);'"></text>
 				</view>
@@ -208,6 +208,7 @@
 			},
 			//选中
 			selectHierarchyMenu(page_index, level1_index, level2_index, level3_index) {
+				debugger;
 				//读取记录
 				if (level1_index != null && level2_index == null && level3_index == null && this.shadowActiveMenuArr[page_index][0] ==
 					level1_index) {
@@ -262,7 +263,7 @@
 			},
 			//选中单选类label-UI状态
 			selectRadioLabel(page_index, box_index, label_index) {
-
+				debugger;
 				let activeIndex = this.activeMenuArr[page_index][box_index][0];
 				if(activeIndex == label_index){
 					this.subData[page_index].submenu[box_index].submenu[activeIndex].selected = false;
@@ -277,8 +278,34 @@
 				}
 				this.$forceUpdate();
 			},
+			choosePage(index, type) {
+				/* if (index == this.showPage) {
+					this.hidePageLayer(false);
+					this.hideMask();
+					return;
+				} else {
+					this.showPage = -1;
+				} */
+
+				if(type&&type == "filter"){
+					this.$emit('menuClick', index)
+					return;
+				}
+				if (index == this.showPage) {
+					this.hidePageLayer(false);
+					this.hideMask();
+					this.showPage = -1;
+				} else {
+					if (this.showPage > -1) {
+						this.hidePageLayer(false);
+					}
+					this.showPageLayer(index);
+					this.showMask();
+				}
+			},
 			//菜单开关
 			togglePage(index,type) {
+				debugger;
 				if(type&&type == "filter"){
 					this.$emit('menuClick', index)
 					return;

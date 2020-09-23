@@ -237,6 +237,7 @@ export default {
 				this.$mRouter.push({ route: '/pages/public/login' });
 				// this.weixinLogin('weixin')
 			} else {
+				debugger;
 				this.$mRouter.push({ route });
 			}
 			debugger;
