@@ -229,6 +229,7 @@ export const addressList = [{ "address_code": "101270101", "name": "成都市", 
 export const filterDataList = [{
     "name": '价格',
     "type": 'hierarchy',
+    "key":"price",
     "submenu": [{
         "name": '不限',
         "value": "",
@@ -245,6 +246,7 @@ export const filterDataList = [{
 {
     "name": '状态',
     "type": 'hierarchy',
+    "key":"status",
     "submenu": [
         {
             "name": "不限",
@@ -267,10 +269,13 @@ export const filterDataList = [{
 {
     "name": '类型',
     "type": 'hierarchy',
-    "submenu": []
+    "submenu": [],
+    "key":"typeCode"
 },
 {
-    "type": 'filter'
+    "type": 'filter',
+    "name":'筛选',
+    "key":"filter"
 }
     /* 
     {

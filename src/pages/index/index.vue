@@ -94,16 +94,17 @@
 				<!-- 商品列表 -->
 				<!-- <z-filter-dropdown class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm"></z-filter-dropdown> -->
 				<!-- <view v-if="true"> -->
-				<z-sticky v-if="true" :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="true">
+				<z-sticky v-if="true" :scrollTop="scrollTop" stickyHeight="88rpx" :stickyTop="44" :isNativeHeader="false" @sticky="handleSticky">
 					<template v-slot:header>
-						<view style="height:88rpx">
-						<z-filter-dropdown v-if="isReload" class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="filterMenuClick"></z-filter-dropdown>
-						</view>
+						<!-- <view style="height:88rpx"> -->
+						<!-- <z-filter-dropdown v-if="isReload" class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="filterMenuClick"></z-filter-dropdown> -->
+						<z-filter :menuList="filterData" :menuTop="100" :isFixed ="isFixed"   @menuClick="filterMenuClick" />
+						<!-- </view> -->
 					</template>
 				</z-sticky>
 
 
-				<view :class="{'fixed-show':isFixed}"></view>
+				<!-- <view :class="{'fixed-show':isFixed}"></view> -->
 
 				<z-product-list v-if="commodityList.length>0" :isList="true" :bottom="bottom" :list="commodityList.length > 0 ? commodityList : [0, 0]"></z-product-list>
 				<view v-else class="index-cate-product-list">
@@ -186,7 +187,8 @@ import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
 import { filterDataList} from "@/Json.js"
-import zFilterDropdown from '@/components/z-filter-dropdown';
+// import zFilterDropdown from '@/components/z-filter-dropdown';
+import zFilter from '@/components/z-filter-dropdown/z-filter';
 import zSticky from '@/components/z-sticky/z-sticky';
 import zPickRegions from '@/components/z-pick-regions';
 
@@ -196,7 +198,8 @@ export default {
 		zHeaderSearch,
 		zFloorIndex,
 		zProductList,
-		zFilterDropdown,
+		// zFilterDropdown,
+		zFilter,
 		zSticky,
 		zPickRegions
 	},
@@ -391,6 +394,10 @@ export default {
 		this.getProductList('more')
 	},
 	methods: {
+		handleSticky(e){
+			this.isFixed = e.isFixed
+
+		},
 		/**
 		 * 选择市区后
 		 */
