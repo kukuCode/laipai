@@ -455,6 +455,7 @@
 					this.$nextTick(() => {
 						setTimeout(() => {
 							//滚动到选中项
+							debugger;
 							this.firstScrollInto = parseInt(this.activeMenuArr[index][0]);
 							this.secondScrollInto = parseInt(this.activeMenuArr[index][1]);
 						}, 0);

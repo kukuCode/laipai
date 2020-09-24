@@ -229,7 +229,7 @@ export const addressList = [{ "address_code": "101270101", "name": "成都市", 
 export const filterDataList = [{
     "name": '价格',
     "type": 'redio',
-    "key":"price",
+    "key":"sortvalue",
     "submenu": [{
         "name": '不限',
         "value": "",
@@ -276,7 +276,8 @@ export const filterDataList = [{
 {
     "type": 'filter',
     "name":'筛选',
-    "key":"filter"
+    "key":"filter",
+    "submenu": []
 }
     /* 
     {

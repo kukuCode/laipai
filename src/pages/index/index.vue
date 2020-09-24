@@ -98,7 +98,7 @@
 					<template v-slot:header>
 						<!-- <view style="height:88rpx"> -->
 						<!-- <z-filter-dropdown v-if="isReload" class="zd-filter-wrapper"   :menuTop="100" :isFixed ="isFixed"  :filterData="filterData" :defaultSelected ="defaultSelected"  :updateMenuName="true" @confirm="handleConfirm" @menuClick="filterMenuClick"></z-filter-dropdown> -->
-						<z-filter :menuList="filterData" :menuTop="100" :isFixed ="isFixed"   @menuClick="filterMenuClick" />
+						<z-filter ref="refFilter" :menuList="filterData" :menuTop="100" :isFixed ="isFixed"   @menuClick="filterMenuClick" @result="handleConfirm2" />
 						<!-- </view> -->
 					</template>
 				</z-sticky>
@@ -187,7 +187,7 @@ import zHeaderSearch from '@/components/z-header-search';
 import zFloorIndex from '@/components/z-floor-index';
 import zProductList from '@/components/z-product-list';
 import { filterDataList} from "@/Json.js"
-// import zFilterDropdown from '@/components/z-filter-dropdown';
+// import zFilterDropdown from '@/components/z-filter-dropdownBak';
 import zFilter from '@/components/z-filter-dropdown/z-filter';
 import zSticky from '@/components/z-sticky/z-sticky';
 import zPickRegions from '@/components/z-pick-regions';
@@ -380,12 +380,15 @@ export default {
 	},
 	// 下拉刷新
 	onPullDownRefresh() {
-		this.isReload = false;
-		this.$refs.refRegion && this.$refs.refRegion.resetData();
-		this.$nextTick(() => {
-			this.isReload = true
+		// this.isReload = false;
+		// this.$refs.refRegion && this.$refs.refRegion.resetData();
+		this.$refs.refFilter && this.$refs.refFilter.resetAllSelect(()=>{
 			this.getIndexList('refresh');
 		})
+		/* this.$nextTick(() => {
+			this.isReload = true
+			this.getIndexList('refresh');
+		}) */
 	},
 	// 加载更多
 	onReachBottom() {
@@ -419,6 +422,23 @@ export default {
 			this.page = 1;
 			this.getProductList('query')
 			this.handleScrollTop(0)
+		},
+		handleConfirm2(res) {
+			console.log('handleConfirm2===****');
+			debugger;
+			let params = {sortvalue:null, status:null, typeCode:null,fieldsort:null}
+			if(res.sortvalue) {
+				params.sortvalue = res.sortvalue || null
+				params.fieldsort = 'initial_price'
+			}
+
+			this.queryParam = {...this.queryParam, ...params,  ...res}
+			debugger;
+			this.loading = true;
+			setTimeout(() => {
+				this.page = 1;
+				this.getProductList('query')
+			}, 300);
 		},
 		handleConfirm(e){
 			// this.indexArr = e.index;
@@ -679,6 +699,7 @@ export default {
 		},
 		// 类模块
 		handleTapCategory(code) {
+			this.$refs.refFilter && this.$refs.refFilter.setValueByCode({typeCode: code})
 			this.queryParam.typeCode = code
 			this.page = 1;
 			this.getProductList('query')

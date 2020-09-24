@@ -11,13 +11,13 @@
 		</view>
         <!-- <view v-show="isFixed" class="mask" :class="{'show':isShowMask,'hide':maskVisibility!=true}" @tap="togglePage(showPage, item.type)"></view> -->
 
-		<block v-for="(page, p_index) in titleList" :key="p_index">
+		<block v-for="(page, p_index) in menuListTemp" :key="p_index">
 
 			<view v-if="page.type=='redio'">
 				<view class="sub-menu-class" :class="{'issure': false, 'show':selectedIndex == p_index,'hide': statusList[p_index].isActive!=true}">
 					<block v-if="page.submenu.length>0">
 						<view >
-							<scroll-view class="sub-menu-list" :class="[titleList[p_index].length>1?'first':'alone']"
+							<scroll-view class="sub-menu-list" :class="[menuListTemp[p_index].length>1?'first':'alone']"
 							:scroll-y="true" :scroll-into-view="'first_id'+firstScrollInto">
 								<block v-for="(subMenu, index) in page.submenu" :key="index">
 									<view class="sub-menu" :id="'first_id'+index" :class="{'on': subMenu.isSelected}" @tap="sortTap(index, page.submenu , page.key)">
@@ -44,10 +44,10 @@
 				<view class="sub-menu-class" :class="{'issure': true, 'show':selectedIndex == p_index,'hide': statusList[p_index].isActive!=true}">
 					<block v-if="page.submenu.length>0">
 						<view >
-							<scroll-view class="sub-menu-list" :class="[titleList[p_index].length>1?'first':'alone']"
+							<scroll-view class="sub-menu-list" :class="[menuListTemp[p_index].length>1?'first':'alone']"
 							:scroll-y="true" :scroll-into-view="'first_id'+firstScrollInto">
 								<block v-for="(subMenu,index) in page.submenu" :key="index">
-									<view class="sub-menu" :id="'first_id'+index" :class="{'on':subMenu.isSelected}" @tap="itemTap(index, page.submenu , page.key , page.isMutiple)">
+									<view class="sub-menu" :id="'first_id'+index" :class="{'on':subMenu.isSelected}" @tap="itemTap(index, page.submenu , page.key , page.isMutiple, p_index)">
 										<view class="menu-name">
 											<text>{{subMenu.name}}</text>
 											<text class="iconfont icongouxuan"></text>
@@ -74,12 +74,8 @@
 </template>
 
 <script>
-	// import popupLayer from '@/components/z-filter/popup-layer.vue';
-	// import slFilterView from '@/components/z-filter/filter-view.vue';
 	export default {
 		components: {
-			// popupLayer,
-			// slFilterView
 		},
 		props: {
              isFixed: Boolean,
@@ -118,6 +114,14 @@
 		},
 
 		computed: {
+			menuListTemp: {
+				get() {
+					return this.getMenuListTemp();
+				},
+				set(newObj) {
+					return newObj;
+				}
+			},
 			selectedObj: {
 				get() {
 					return this.getSelectedObj()
@@ -130,14 +134,12 @@
 		},
 		data() {
 			return {
-				down: 'sl-down',
-				up: 'sl-up',
 				tabHeight: 50,
-				statusList: [],
-				selectedIndex: -1,
-				titleList: [],
-                tempTitleObj: {},
-                showPage:-1,
+				statusList: [], // 记录菜单选中状态
+				selectedIndex: -1, // 当前选中的菜单索引
+				titleList: [], // 一级菜单列表
+                tempTitleObj: {}, // 临时保存菜单显示的title
+                showPage:-1, // 
                 isShowMask:false,
 				maskVisibility: false,
 				firstScrollInto: 0,//滚动区域定位
@@ -145,7 +147,8 @@
 				selectedKey:'',
 				result:{}, // 收集结果
 				independenceObj:{},
-				selectedTitleObj:{}
+				selectedTitleObj:{},
+				activeMenuArr:[]
 
 			};
         },
@@ -158,7 +161,23 @@
 			},
         },
 		methods: {
+			getMenuListTemp() {
+				let arr = this.menuList;
+				for (let i = 0; i < arr.length; i++) {
+					let item = arr[i];
+					for (let j = 0; j < item.submenu.length; j++) {
+						let d_item = item.submenu[j];
+						if (j == 0) {
+							d_item.isSelected = true
+						} else {
+							d_item.isSelected = false
+						}
+					}
+				}
+				return arr;
+			},
 			getSelectedObj() {
+				debugger;
 				let obj = {}
 				for (let i = 0; i < this.titleList.length; i++) {
 					let item = this.titleList[i];
@@ -166,21 +185,21 @@
 
 						if (item.isMutiple) {
 							obj[item.key] = [];
-							item.detailList[0].isSelected = false;
+							item.submenu[0].isSelected = false;
 							if (!Array.isArray(item.defaultSelectedIndex)) { // 如果默认值不是数组
 								item.defaultSelectedIndex = [item.defaultSelectedIndex];
 							}
 							for (let j = 0; j < item.defaultSelectedIndex.length; j++) { // 将默认选中的值放入selectedObj
-								item.detailList[item.defaultSelectedIndex[j]].isSelected = true;
-								obj[item.key].push(item.detailList[item.defaultSelectedIndex[j]].value)
+								item.submenu[item.defaultSelectedIndex[j]].isSelected = true;
+								obj[item.key].push(item.submenu[item.defaultSelectedIndex[j]].value)
 							}
 
 						} else {
-							obj[item.key] = item.detailList[item.defaultSelectedIndex].value;
-							this.selectedTitleObj[item.key] = item.detailList[item.defaultSelectedIndex].title;
-							this.defaultSelectedTitleObj[item.key] = item.detailList[item.defaultSelectedIndex].title;
-							item.detailList[0].isSelected = false;
-							item.detailList[item.defaultSelectedIndex].isSelected = true;
+							obj[item.key] = item.submenu[item.defaultSelectedIndex].value;
+							this.selectedTitleObj[item.key] = item.submenu[item.defaultSelectedIndex].title;
+							this.defaultSelectedTitleObj[item.key] = item.submenu[item.defaultSelectedIndex].title;
+							item.submenu[0].isSelected = false;
+							item.submenu[item.defaultSelectedIndex].isSelected = true;
 						}
 					} else {
 						debugger;
@@ -191,13 +210,88 @@
 						}
 					}
 				}
+				debugger;
 				this.result = obj;
 				return obj;
 			},
+			
 			/**
-			 * 选中/取消选中
+			 * 设置值
 			 */
-			selectHierarchyMenu(page_index, level1_index, level2_index, level3_index) {
+			setValueByCode(obj) {
+
+				for (let _key in obj) {
+					if (!Array.isArray(this.tempTitleObj[_key]) && this.tempTitleObj.hasOwnProperty(_key)) {
+
+						for (let i = 0; i < this.menuListTemp.length; i++) {
+							let {key, submenu, isMutiple = false} = this.menuListTemp[i];
+							if(key == _key && Array.isArray(submenu)) {
+								let selIndex = submenu.findIndex(m=>m.value == obj[_key])
+								if( selIndex > -1){
+									debugger;
+									this.selectedIndex = i;
+									this.selectDetailList = this.menuListTemp[i].submenu;
+									this.selectedKey = this.menuListTemp[i].key;
+
+									this.selectOne(selIndex, submenu, key, isMutiple)
+								}
+							}
+							
+						}
+					}
+				}
+				this.updateSelectedTitle()
+
+				// for (let key in this.tempTitleObj) {
+				// 	for (let i = 0; i < this.titleList.length; i++) {
+				// 		if (this.titleList[i].key == key) {
+				// 			this.titleList[i].title = this.tempTitleObj[key];
+				// 		}
+				// 	}
+				// }
+			},
+
+			filterResult(obj) {
+				let val = obj.result;
+				let titlesObj = obj.titles;
+				// 处理选项映射到菜单title
+				if (this.independence) {
+					if (!this.menuListTemp[this.selectedIndex].isMutiple || this.menuListTemp[this.selectedIndex].isSort) {
+						let tempTitle = '';
+						for (let i = 0; i < this.menuListTemp[this.selectedIndex].submenu.length; i++) {
+							let item = this.menuListTemp[this.selectedIndex].submenu[i];
+							if (item.value == val[this.menuListTemp[this.selectedIndex].key]) {
+								tempTitle = item.title;
+							}
+						}
+						// if (this.menuListTemp[this.selectedIndex].reflexTitle) {
+							this.titleList[this.selectedIndex].title = tempTitle;
+						// }
+					}
+				} else {
+					debugger;
+					for (let key in titlesObj) {
+						if (!Array.isArray(titlesObj[key])) {
+							this.tempTitleObj[key] = titlesObj[key];
+						}
+
+					}
+					for (let key in this.tempTitleObj) {
+						for (let i = 0; i < this.titleList.length; i++) {
+							if (this.titleList[i].key == key) {
+								this.titleList[i].title = this.tempTitleObj[key];
+							}
+						}
+					}
+				}
+
+				if (obj.isReset) {
+					
+				} else{
+					
+					this.$emit("result", val)
+				}
+				
 
 			},
 
@@ -211,11 +305,15 @@
 					'titles': this.selectedTitleObj,
 					'isReset': false
 				}
-				this.$emit("confirm", obj);
+				debugger;
+				// this.$emit("confirm", obj);
+				this.filterResult(obj)
+				this.close()
 			},
 
 			selectOne(index, list, key){
 				debugger;
+				// 是否单独返回结果
 				if (this.independence) {
 					this.independenceObj[this.selectedKey] = list[index].value;
 					this.result = this.independenceObj;
@@ -239,29 +337,56 @@
 			},
 
 
-			itemTap(index, list, key, isMutiple) {
-				debugger;
+			itemTap(index, list, key, isMutiple, rootIndex) {
 				if(isMutiple){
 
 				} else {
 					this.selectOne(index, list, key);
+					debugger;
+					if(rootIndex){
+						this.activeMenuArr[rootIndex][index][0] = label_index;
+						this.selectRadioLabel(rootIndex, index, index)
+					}
 				}
 
 			},
+
+			//选中单选类label-UI状态
+			selectRadioLabel(page_index, box_index, label_index) {
+				debugger;
+				this.activeMenuArr[page_index][box_index][0] = label_index;
+				this.$forceUpdate();
+			},
+			resetClick(list, key){
+				this.resetSelected(list, key)
+			},
+
+			updateSelectedTitle(){
+				for (let key in this.selectedTitleObj) {
+					for (let i = 0; i < this.titleList.length; i++) {
+						if (this.titleList[i].key == key) {
+							this.titleList[i].title = this.selectedTitleObj[key];
+						}
+					}
+				}
+			},
+			
 			sureClick() {
+				debugger;
+				this.updateSelectedTitle()
 				let obj = {
 					'result': this.result,
 					'titles': this.selectedTitleObj,
 					'isReset': false
 				}
-				// this.$emit("confirm", obj);
-				this.emitOk()
+				this.$emit("result", obj.result )
+				this.close()
 			},
             showMenuClick(index, type) {
                 debugger;
 				this.selectedIndex = index;
-				this.selectDetailList = this.statusList[index].submenu;
-				this.selectedKey = this.statusList[index].key;
+				this.selectDetailList = this.menuListTemp[index].submenu;
+				this.selectedKey = this.menuListTemp[index].key;
 
 				if (this.statusList[index].isActive == true) {
 					// this.$refs.popupRef.close();
@@ -297,8 +422,13 @@
 
                 let arr = []; 
 			let titleArr = [];
+			let tmpMenuActiveArr=[];
+
 			let r = {}; // 保存第一级的菜单key + name
 			for (let i = 0; i < this.menuList.length; i++) {
+
+				tmpMenuActiveArr.push(this.processActive(this.menuList[i]))
+
 				arr.push({
 					'isActive': false
                 });
@@ -323,12 +453,72 @@
 
 
 			}
+
+			this.activeMenuArr =  tmpMenuActiveArr;
+
 			this.statusList = arr;
 			this.titleList = titleArr;
 			this.tempTitleObj = r;
 			},
 
-			resetSelected(list, key, title = '') {
+			resetSelected(list, key) {
+				debugger;
+
+				// selectedTitleObj
+				// if(this.selectedIndex != -1) {
+
+					let title = ''//this.menuListTemp[this.selectedIndex]['name']
+
+					for (let i = 0; i < this.menuListTemp.length; i++) {
+						if (this.menuListTemp[i].key == key) {
+							title = this.menuListTemp[i].name;
+							break;
+						}
+					}
+					debugger;
+		
+					for (let i = 0; i < list.length; i++) {
+						if(!list[i].value){
+							list[i].isSelected = true;
+						} else {
+							list[i].isSelected = false;
+						}
+						// if (i == 0) {
+						// 	list[i].isSelected = true;
+						// } else {
+						// }
+					}
+	
+					if (typeof this.result[key] == 'object') {
+						this.result[key] = [];
+						this.selectedTitleObj[key] = title;
+					} else {
+						this.result[key] = '';
+						this.selectedTitleObj[key] = title;
+					}
+	
+					// this.sureClick()
+				// }
+
+				/* if (typeof this.result[key] == 'object') {
+					this.result[key] = [];
+					this.selectedTitleObj[key] = title;
+				} else {
+					this.result[key] = '';
+					this.selectedTitleObj[key] = title;
+				} */
+				/* for (let i = 0; i < list.length; i++) {
+					if (i == 0) {
+						list[i].isSelected = true;
+					} else {
+						list[i].isSelected = false;
+					}
+				} */
+				// #ifdef H5
+				this.$forceUpdate();
+				// #endif
+			},
+			resetSelected2(list, key, title = '') {
 				debugger;
 				if (typeof this.result[key] == 'object') {
 					this.result[key] = [];
@@ -353,35 +543,58 @@
 			 * 重置所有选项
 			 */
 			resetAllSelect(callback) {
-				let titles = [];
-				for (let i = 0; i < this.titleList.length; i++) {
-					let {key, title, submenu} = this.titleList[i]
-					this.resetSelected(submenu, key, title);
-					titles[this.titleList[i].key] = this.titleList[i].title;
+				let obj = {}
+				if(this.selectedIndex != -1) {
+					let titles = [];
+					for (let i = 0; i < this.menuListTemp.length; i++) {
+						let {key, title, submenu} = this.menuListTemp[i]
+						if(Array.isArray(submenu) && submenu.length){
+							this.resetSelected(submenu, key);
+							titles[this.menuListTemp[i].key] = this.menuListTemp[i].title;
+						}
+					}
+					let obj = {
+						'result': this.result,
+						'titles': titles,
+						'isReset': true
+					}
 				}
-				let obj = {
-					'result': this.result,
-					'titles': titles,
-					'isReset': true
-				}
+				this.selectedIndex = -1;
+				this.updateSelectedTitle()
 				// this.$emit("confirm", obj);
 				this.emitOk(obj)
 				callback(this.result);
 			},
 
 			emitOk(obj){
-				/* let obj = {
-					'result': this.result,
-					'titles': this.selectedTitleObj,
-					'isReset': false
-				} */
 				this.$emit("confirm", obj);
-
+			},
+			processPage(index){
+				this.$nextTick(() => {
+					setTimeout(() => {
+						//滚动到选中项
+						// this.firstScrollInto = parseInt(this.activeMenuArr[index][0]);
+						this.firstScrollInto = parseInt(index);
+					}, 0);
+				})
+			},
+			processActive(tmpitem) {
+				let tmpArr = []
+				if (tmpitem.type == 'hierarchy'&&tmpitem.hasOwnProperty('submenu')&&tmpitem.submenu.length>0) {
+					tmpArr.push(null);
+				} else if (tmpitem.type == 'filter') {
+					tmpArr.push([]);
+				} else if (tmpitem.type == 'radio') {
+					tmpArr.push([]);
+				}
+				return tmpArr;
 			},
 			close() {
+				// this.selectedIndex = -1
 				for (let i = 0; i < this.statusList.length; i++) {
 					this.statusList[i].isActive = false;
 				}
+				this.firstScrollInto = null;
 			},
 			discard() {
 			}
