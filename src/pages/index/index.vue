@@ -424,7 +424,6 @@ export default {
 			this.handleScrollTop(0)
 		},
 		handleConfirm2(res) {
-			console.log('handleConfirm2===****');
 			debugger;
 			let params = {sortvalue:null, status:null, typeCode:null,fieldsort:null}
 			if(res.sortvalue) {

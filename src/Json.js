@@ -245,7 +245,7 @@ export const filterDataList = [{
 },
 {
     "name": '状态',
-    "type": 'hierarchy',
+    "type": 'redio',
     "isSort":true,
     "key":"status",
     "submenu": [

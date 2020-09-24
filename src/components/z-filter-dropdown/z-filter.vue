@@ -177,7 +177,6 @@
 				return arr;
 			},
 			getSelectedObj() {
-				debugger;
 				let obj = {}
 				for (let i = 0; i < this.titleList.length; i++) {
 					let item = this.titleList[i];
@@ -202,7 +201,6 @@
 							item.submenu[item.defaultSelectedIndex].isSelected = true;
 						}
 					} else {
-						debugger;
 						if (item.isMutiple) {
 							obj[item.key] = [];
 						} else {
@@ -343,8 +341,8 @@
 				} else {
 					this.selectOne(index, list, key);
 					debugger;
-					if(rootIndex){
-						this.activeMenuArr[rootIndex][index][0] = label_index;
+					if(rootIndex != null){
+						// this.activeMenuArr[rootIndex][index][0] = index;
 						this.selectRadioLabel(rootIndex, index, index)
 					}
 				}
@@ -354,7 +352,12 @@
 			//选中单选类label-UI状态
 			selectRadioLabel(page_index, box_index, label_index) {
 				debugger;
-				this.activeMenuArr[page_index][box_index][0] = label_index;
+				if(page_index != null){
+				// if(page_index != null && box_index == null && label_index == null){
+					// this.activeMenuArr[page_index][box_index][0] = label_index;
+					this.activeMenuArr.splice(page_index, 1, label_index);
+
+				}
 				this.$forceUpdate();
 			},
 			resetClick(list, key){
@@ -413,7 +416,7 @@
                 }
             },
             showPageLayer(index){
-
+				this.processPage(index);
 			},
 			/**
 			 * 初始化菜单
@@ -472,6 +475,7 @@
 					for (let i = 0; i < this.menuListTemp.length; i++) {
 						if (this.menuListTemp[i].key == key) {
 							title = this.menuListTemp[i].name;
+							this.activeMenuArr.splice(i, 1, this.processActive(this.menuListTemp[i]))
 							break;
 						}
 					}
@@ -570,18 +574,21 @@
 				this.$emit("confirm", obj);
 			},
 			processPage(index){
-				this.$nextTick(() => {
-					setTimeout(() => {
-						//滚动到选中项
-						// this.firstScrollInto = parseInt(this.activeMenuArr[index][0]);
-						this.firstScrollInto = parseInt(index);
-					}, 0);
-				})
+				debugger;
+				if(this.menuListTemp[index].type == 'hierarchy') {
+					this.$nextTick(() => {
+						setTimeout(() => {
+							//滚动到选中项
+							this.firstScrollInto = parseInt(this.activeMenuArr[index]);
+						}, 0);
+					})
+
+				}
 			},
 			processActive(tmpitem) {
 				let tmpArr = []
 				if (tmpitem.type == 'hierarchy'&&tmpitem.hasOwnProperty('submenu')&&tmpitem.submenu.length>0) {
-					tmpArr.push(null);
+					tmpArr.push(0);
 				} else if (tmpitem.type == 'filter') {
 					tmpArr.push([]);
 				} else if (tmpitem.type == 'radio') {
