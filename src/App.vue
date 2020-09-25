@@ -18,7 +18,6 @@ export default {
     // #endif
   },
   methods: {
-    ...mapMutations(['setNotifyNum']),
     // 数据初始化
     async initData() {
       uni.setTabBarStyle({
@@ -42,7 +41,6 @@ export default {
       } */
 
       if (this.$mStore.getters.hasLogin) {
-        this.setNotifyNum(uni.getStorageSync('notifyNum') || 0);
         // #ifdef APP-PLUS
         const info = plus.push.getClientInfo();
         // #endif

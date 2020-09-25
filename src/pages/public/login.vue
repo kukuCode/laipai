@@ -43,7 +43,7 @@
         <!-- #endif -->
         <!-- #ifndef MP-WEIXIN -->
         <view>
-          <view style="margin-top:100rpx;text-align: center;font-size:36rpx">请使用微信小程序登录</view>
+          <view style="margin-top:100rpx;text-align: center;font-size:36rpx">请使用微信小程序</view>
         </view>
         <!-- #endif -->
       </view>
